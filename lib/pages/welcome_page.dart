@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:fosscu_app/widgets/app_large_text.dart';
+import 'package:fosscu_app/widgets/app_text.dart';
 import 'package:lottie/lottie.dart';
 
 class WelcomePage extends StatefulWidget {
@@ -14,7 +16,7 @@ class _WelcomePageState extends State<WelcomePage> {
     "https://assets10.lottiefiles.com/packages/lf20_jk0figsg.json",
     "https://assets9.lottiefiles.com/packages/lf20_58jr5g6l.json"
   ];
-  List text = [
+  List textformat = [
     "Welcome to Free and Open Source Organization",
     "A True Place to Get Knowledge of Open-Source Culture",
     "Begin Your Path to the Great World Of Open-Source"
@@ -31,16 +33,21 @@ class _WelcomePageState extends State<WelcomePage> {
               height: double.maxFinite,
               child: Container(
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Lottie.network(
                       images[index],
                       repeat: true,
-                      height: 300,
-                      width: 300,
+                      height: 250,
+                      width: 250,
                     ),
                     Column(
-                      children: [Text(text[index])],
+                      children: [
+                        AppLargeText(
+                          text: "Welcome 👋",
+                        ),
+                        AppText(text: "to Free and Open-Source Community"),
+                      ],
                     )
                   ],
                 ),
