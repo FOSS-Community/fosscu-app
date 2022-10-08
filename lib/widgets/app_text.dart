@@ -1,16 +1,22 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 
-class SmallText extends StatefulWidget {
-  const SmallText({super.key});
+class AppText extends StatelessWidget {
+  double size;
+  final String text;
+  final Color color;
+  AppText(
+      {super.key,
+      this.size = 16,
+      required this.text,
+      this.color = Colors.black54});
 
-  @override
-  State<SmallText> createState() => _SmallTextState();
-}
-
-class _SmallTextState extends State<SmallText> {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Text(
+      text,
+      style: TextStyle(color: color, fontSize: size),
+    );
   }
 }
