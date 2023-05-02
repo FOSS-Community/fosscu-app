@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:fosscu_app/constants/apikey.dart';
 import 'package:fosscu_app/constants/color.dart';
 import 'package:fosscu_app/widgets/mylisttile.dart';
@@ -14,11 +15,9 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  int _selectedIndex = 0;
   /// Defining Headers for API
-  final headers = {
-    'Authorization':
-        'Bearer $apikey'
-  };
+  final headers = {'Authorization': 'Bearer $apikey'};
 
   /// Creating a private dynamic list named as issues
   List<Map<String, dynamic>> _issues = [];
@@ -74,14 +73,39 @@ class _HomePageState extends State<HomePage> {
     _fetchIssue();
     super.initState();
   }
-  
-
+  void _navigateBottomBar(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
     return SafeArea(
       child: Scaffold(
+        extendBody: true,
+        /// BOTTOM NAVIGATION BAR
+        bottomNavigationBar: Container(
+          margin: EdgeInsets.symmetric(horizontal: 40),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(20),
+            child: BottomNavigationBar(
+              
+              currentIndex: _selectedIndex,
+              onTap: _navigateBottomBar,
+              backgroundColor: tileColor,
+              selectedItemColor: greenColor,
+              type: BottomNavigationBarType.fixed,
+              items: const [
+                BottomNavigationBarItem(icon: Icon(FontAwesomeIcons.house), label: 'Home'),
+                BottomNavigationBarItem(icon: Icon(FontAwesomeIcons.peopleGroup), label: 'Contributor'),
+                BottomNavigationBarItem(icon: Icon(FontAwesomeIcons.bookBookmark), label: 'Learn'),
+                BottomNavigationBarItem(icon: Icon(FontAwesomeIcons.person), label: 'Account'),
+              ],
+            ),
+          ),
+        ),
         backgroundColor: blackColor,
         body: SingleChildScrollView(
           child: Column(
@@ -134,7 +158,7 @@ class _HomePageState extends State<HomePage> {
               ),
               Container(
                 width: screenWidth * 0.85,
-                height: screenHeight * 0.48,
+                height: screenHeight * 0.38,
                 decoration: const BoxDecoration(color: blackColor),
                 child: _issues.isEmpty
                     ? const Center(
@@ -148,13 +172,15 @@ class _HomePageState extends State<HomePage> {
                           final repoName =
                               issue['repository_url'].split('/').last;
                           return Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                              color: brightGreyColor,
-                            ),
-                            margin: const EdgeInsets.all(8),
-                            child: MyListTile(author: author, issue: issue, repoName: repoName)
-                          );
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20),
+                                color: brightGreyColor,
+                              ),
+                              margin: const EdgeInsets.all(8),
+                              child: MyListTile(
+                                  author: author,
+                                  issue: issue,
+                                  repoName: repoName));
                         },
                       ),
               ),
