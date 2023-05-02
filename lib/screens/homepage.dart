@@ -137,8 +137,8 @@ class _HomePageState extends State<HomePage> {
               ),
               Container(
                 width: screenWidth * 0.85,
-                height: screenHeight * 0.5,
-                decoration: BoxDecoration(color: blackColor),
+                height: screenHeight * 0.48,
+                decoration: const BoxDecoration(color: blackColor),
                 child: _issues.isEmpty
                     ? const Center(
                         child: CircularProgressIndicator(),

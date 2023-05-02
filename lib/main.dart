@@ -13,7 +13,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
       // Hide the Android navigation bar
     SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.top]);
-    return MaterialApp(
+    return const MaterialApp(
       debugShowCheckedModeBanner: false,
       home: HomePage()
     );
