@@ -148,7 +148,6 @@ class _HomePageState extends State<HomePage> {
                           final author = issue['user'];
                           final repoName =
                               issue['repository_url'].split('/').last;
-                              
                           return Container(
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(20),

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:fosscu_app/constants/color.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 class MyListTile extends StatefulWidget {
   final Map<String, dynamic> issue;
@@ -75,7 +77,9 @@ class _MyListTileState extends State<MyListTile>
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                         SizedBox(height: screenHeight * 0.02,),
+                        SizedBox(
+                          height: screenHeight * 0.02,
+                        ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -86,16 +90,22 @@ class _MyListTileState extends State<MyListTile>
                               child: Text(
                                 widget.author['login'],
                                 style: GoogleFonts.leagueSpartan(
-                                  color: greenColor,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: screenWidth * 0.04
-                                ),
+                                    color: greenColor,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: screenWidth * 0.04),
                               ),
                             ),
-                            OutlinedButton(onPressed: (){}, child: const Text('View Issue'))
+                            OutlinedButton(
+                                onPressed: () {
+                                  launchUrlString(widget.issue['html_url']);
+                                },
+                                child: const Text('View Issue'))
                           ],
                         ),
-                         SizedBox(height: screenHeight * 0.04,),
+                        SizedBox(
+                          height: screenHeight * 0.04,
+                        ),
+                        
                       ],
                     ))
                 : const SizedBox.shrink(),
