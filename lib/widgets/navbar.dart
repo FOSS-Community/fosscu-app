@@ -40,7 +40,7 @@ class _NavBarScreenState extends State<NavBarScreen> {
       /// BOTTOM NAVIGATION BAR
       bottomNavigationBar: Container(
         margin: const EdgeInsets.symmetric(horizontal: 30).copyWith(bottom: screenHeight * 0.03),
-        child: ClipRRect(
+        child: ClipRRect( 
           
           borderRadius: BorderRadius.circular(20),
           child: BottomNavigationBar(
@@ -48,18 +48,22 @@ class _NavBarScreenState extends State<NavBarScreen> {
             onTap: _navigateBottomBar,
             backgroundColor: tileColor,
             selectedItemColor: greenColor,
+            unselectedItemColor: Colors.white,
+            elevation: 10,
+            selectedFontSize: 12,
+            unselectedFontSize: 10,
             type: BottomNavigationBarType.fixed,
             iconSize: screenHeight * 0.022,
             items: const [
               BottomNavigationBarItem(
-                  icon: Icon(FontAwesomeIcons.house), label: 'Home'),
+                  icon: Icon(FontAwesomeIcons.house), label: ' Home'),
               BottomNavigationBarItem(
                   icon: Icon(FontAwesomeIcons.peopleGroup),
-                  label: 'Contributor'),
+                  label: ' Contributor'),
               BottomNavigationBarItem(
-                  icon: Icon(FontAwesomeIcons.bookBookmark), label: 'Learn'),
+                  icon: Icon(FontAwesomeIcons.bookBookmark), label: ' Learn'),
               BottomNavigationBarItem(
-                  icon: Icon(FontAwesomeIcons.person), label: 'Account'),
+                  icon: Icon(FontAwesomeIcons.person), label: ' Account'),
             ],
           ),
         ),

@@ -17,15 +17,16 @@ class MyListTile extends StatefulWidget {
   State<MyListTile> createState() => _MyListTileState();
 }
 
-class _MyListTileState extends State<MyListTile> {
+class _MyListTileState extends State<MyListTile> with SingleTickerProviderStateMixin{
   bool _isExpanded = false;
+
   @override
   Widget build(BuildContext context) {
-  double screenHeight = MediaQuery.of(context).size.height;
+    double screenHeight = MediaQuery.of(context).size.height;
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
-        color: brightGreyColor,
+        color: tileColor,
       ),
       margin: const EdgeInsets.all(8).copyWith(top: 0),
       child: Column(
@@ -61,22 +62,28 @@ class _MyListTileState extends State<MyListTile> {
               ),
             ),
           ),
-          if (_isExpanded) ...[
-             SizedBox(
-              height: screenHeight * 0.25, 
-              child: const Center(
-                child: Text(
-                  'Expanded content',
-                  style: TextStyle(color: Colors.white),
-                ),
-              ),
-            ),
-          ],
+          AnimatedSize(
+            duration: Duration(milliseconds: 500),
+            curve: Curves.easeInOut,
+            vsync: this,
+            child: _isExpanded
+                ? SizedBox(
+                    height: screenHeight * 0.25,
+                    child: const Center(
+                      child: Text(
+                        'Expanded content',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                  )
+                : const SizedBox.shrink(),
+          ),
         ],
       ),
     );
   }
-    String _getAvatarUrl(String username) {
+
+  String _getAvatarUrl(String username) {
     return 'https://github.com/${username}.png';
   }
 }

@@ -151,7 +151,7 @@ class _HomePageState extends State<HomePage> {
                           return Container(
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(20),
-                                color: brightGreyColor,
+                                color: tileColor,
                               ),
                               margin: const EdgeInsets.all(8),
                               child: MyListTile(
@@ -168,7 +168,5 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  String _getAvatarUrl(String username) {
-    return 'https://github.com/${username}.png';
-  }
+
 }
