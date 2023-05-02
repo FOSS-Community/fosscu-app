@@ -17,22 +17,24 @@ class MyListTile extends StatefulWidget {
   State<MyListTile> createState() => _MyListTileState();
 }
 
-class _MyListTileState extends State<MyListTile> with SingleTickerProviderStateMixin{
+class _MyListTileState extends State<MyListTile>
+    with SingleTickerProviderStateMixin {
   bool _isExpanded = false;
 
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
+    double screenWidth = MediaQuery.of(context).size.width;
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
-        color: tileColor,
+        color: _isExpanded ? Colors.black : tileColor,
       ),
-      margin: const EdgeInsets.all(8).copyWith(top: 0),
+      // margin: const EdgeInsets.all(8).copyWith(top: 0),
       child: Column(
         children: [
           SizedBox(
-            height: screenHeight * 0.07,
+            height: screenHeight * 0.08,
             child: ListTile(
               leading: CircleAvatar(
                 backgroundImage:
@@ -63,19 +65,39 @@ class _MyListTileState extends State<MyListTile> with SingleTickerProviderStateM
             ),
           ),
           AnimatedSize(
-            duration: Duration(milliseconds: 500),
+            duration: const Duration(milliseconds: 500),
             curve: Curves.easeInOut,
+            // ignore: deprecated_member_use
             vsync: this,
             child: _isExpanded
                 ? SizedBox(
                     height: screenHeight * 0.25,
-                    child: const Center(
-                      child: Text(
-                        'Expanded content',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ),
-                  )
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                         SizedBox(height: screenHeight * 0.02,),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Container(
+                              alignment: AlignmentDirectional(-1, 0),
+                              margin: EdgeInsets.symmetric(
+                                  horizontal: screenWidth * 0.04),
+                              child: Text(
+                                widget.author['login'],
+                                style: GoogleFonts.leagueSpartan(
+                                  color: greenColor,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: screenWidth * 0.04
+                                ),
+                              ),
+                            ),
+                            OutlinedButton(onPressed: (){}, child: const Text('View Issue'))
+                          ],
+                        ),
+                         SizedBox(height: screenHeight * 0.04,),
+                      ],
+                    ))
                 : const SizedBox.shrink(),
           ),
         ],
