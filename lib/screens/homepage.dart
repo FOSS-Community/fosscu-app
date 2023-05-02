@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:fosscu_app/constants/apikey.dart';
 import 'package:fosscu_app/constants/color.dart';
+import 'package:fosscu_app/screens/contributor.dart';
+import 'package:fosscu_app/screens/learn.dart';
+import 'package:fosscu_app/screens/profilepage.dart';
 import 'package:fosscu_app/widgets/mylisttile.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
@@ -15,7 +18,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  int _selectedIndex = 0;
   /// Defining Headers for API
   final headers = {'Authorization': 'Bearer $apikey'};
 
@@ -73,39 +75,14 @@ class _HomePageState extends State<HomePage> {
     _fetchIssue();
     super.initState();
   }
-  void _navigateBottomBar(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
+
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
     return SafeArea(
       child: Scaffold(
-        extendBody: true,
-        /// BOTTOM NAVIGATION BAR
-        bottomNavigationBar: Container(
-          margin: EdgeInsets.symmetric(horizontal: 40),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(20),
-            child: BottomNavigationBar(
-              
-              currentIndex: _selectedIndex,
-              onTap: _navigateBottomBar,
-              backgroundColor: tileColor,
-              selectedItemColor: greenColor,
-              type: BottomNavigationBarType.fixed,
-              items: const [
-                BottomNavigationBarItem(icon: Icon(FontAwesomeIcons.house), label: 'Home'),
-                BottomNavigationBarItem(icon: Icon(FontAwesomeIcons.peopleGroup), label: 'Contributor'),
-                BottomNavigationBarItem(icon: Icon(FontAwesomeIcons.bookBookmark), label: 'Learn'),
-                BottomNavigationBarItem(icon: Icon(FontAwesomeIcons.person), label: 'Account'),
-              ],
-            ),
-          ),
-        ),
+        
         backgroundColor: blackColor,
         body: SingleChildScrollView(
           child: Column(
