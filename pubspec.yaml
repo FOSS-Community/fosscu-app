@@ -39,6 +39,7 @@ dependencies:
   http: ^0.13.6
   url_launcher: ^6.1.10
   shimmer_animation: ^2.1.0+1
+  slidable_button: ^2.0.0+1
 
 dev_dependencies:
   flutter_test:
