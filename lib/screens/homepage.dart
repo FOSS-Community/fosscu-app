@@ -11,6 +11,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 import 'package:shimmer_animation/shimmer_animation.dart';
+import 'package:slidable_button/slidable_button.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -21,7 +22,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   /// Variable to check between issues and pull requests
-  bool _isListIssues = true;
+  bool _isListIssues = false;
 
   /// Defining Headers for API
   final headers = {'Authorization': 'Bearer $apikey'};
@@ -162,40 +163,48 @@ class _HomePageState extends State<HomePage> {
               SizedBox(
                 height: screenHeight * 0.01,
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    'Issues',
-                    style: TextStyle(
-                        color: _isListIssues ? Colors.white : greenColor,
-                        fontWeight:
-                            _isListIssues ? FontWeight.w400 : FontWeight.bold),
+              HorizontalSlidableButton(
+                onChanged: (position) {
+                  setState(() {
+                    _isListIssues = !_isListIssues;
+                  });
+                },
+                width: screenWidth * 0.35,
+                buttonWidth: 60,
+                label: _isListIssues
+                    ? Text(
+                        'PRs',
+                        style: GoogleFonts.leagueSpartan(
+                          color: blackColor,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      )
+                    : Text(
+                        'Issues',
+                        style: GoogleFonts.leagueSpartan(
+                          color: blackColor,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                dismissible: false,
+                color: greenTrackColor,
+                buttonColor: greenColor,
+                child: Padding(
+                  padding: EdgeInsets.all(8).copyWith(left: 15, right: 15),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Issues',
+                        style: GoogleFonts.leagueSpartan(color: Colors.white),
+                      ),
+                      Text(
+                        'PRs',
+                        style: GoogleFonts.leagueSpartan(color: Colors.white),
+                      )
+                    ],
                   ),
-                  Transform.scale(
-                    scale: 1,
-                    child: Switch(
-                      value: _isListIssues,
-                      onChanged: (value) {
-                        setState(() {
-                          _isListIssues = !_isListIssues;
-                        });
-                      },
-                      activeColor: greenColor,
-                      activeTrackColor: greenTrackColor,
-                      inactiveTrackColor: greenTrackColor,
-                      inactiveThumbColor: greenColor,
-                      splashRadius: 0,
-                    ),
-                  ),
-                  Text(
-                    'PRs',
-                    style: TextStyle(
-                        color: _isListIssues ? greenColor : Colors.white,
-                        fontWeight:
-                            _isListIssues ? FontWeight.bold : FontWeight.w400),
-                  ),
-                ],
+                ),
               ),
             ],
           ),
