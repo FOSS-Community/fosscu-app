@@ -30,7 +30,7 @@ class _MyListTileState extends State<MyListTile>
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
-        color: _isExpanded ? Colors.black : tileColor,
+        color: _isExpanded ? darkGreyColor : tileColor,
       ),
       // margin: const EdgeInsets.all(8).copyWith(top: 0),
       child: Column(
@@ -58,11 +58,11 @@ class _MyListTileState extends State<MyListTile>
               ),
               title: Text(
                 widget.issue['title'],
-                style: GoogleFonts.leagueSpartan(color: Colors.white),
+                style: GoogleFonts.leagueSpartan(color: Colors.white, fontSize: screenWidth * 0.03),
               ),
               subtitle: Text(
                 'Repo: ${widget.repoName}',
-                style: const TextStyle(color: Colors.white),
+                style:  TextStyle(color: Colors.white, fontSize: screenWidth * 0.02),
               ),
             ),
           ),

@@ -20,6 +20,9 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  /// Variable to check between issues and pull requests
+  bool _isListIssues = true;
+
   /// Defining Headers for API
   final headers = {'Authorization': 'Bearer $apikey'};
 
@@ -140,43 +143,112 @@ class _HomePageState extends State<HomePage> {
                 decoration: const BoxDecoration(color: blackColor),
                 child: _issues.isEmpty
                     ? Shimmer(
-                      duration: const Duration(seconds: 2),
-                      interval: const Duration(milliseconds: 500),
-                      color: Colors.white,
-                      enabled: true,
-                      child: Container(
+                        duration: const Duration(seconds: 2),
+                        interval: const Duration(milliseconds: 500),
+                        color: Colors.white,
+                        enabled: true,
+                        child: Container(
                           width: screenWidth * 0.85,
                           height: screenHeight * 0.38,
                           decoration: BoxDecoration(
-                            color: brightGreyColor,
-                            borderRadius: BorderRadius.circular(20)
-                          ),
+                              color: brightGreyColor,
+                              borderRadius: BorderRadius.circular(20)),
                         ),
-                    )
-                    : ListView.builder(
-                        itemCount: _issues.length.toInt(),
-                        itemBuilder: (context, index) {
-                          final Map<String, dynamic> issue = _issues[index];
-                          final author = issue['user'];
-                          final repoName =
-                              issue['repository_url'].split('/').last;
-                          return Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20),
-                                color: tileColor,
-                              ),
-                              margin: const EdgeInsets.all(8),
-                              child: MyListTile(
-                                  author: author,
-                                  issue: issue,
-                                  repoName: repoName));
-                        },
-                      ),
+                      )
+                    : _isListIssues
+                        ? prListView()
+                        : issueListView(),
+              ),
+              SizedBox(
+                height: screenHeight * 0.01,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    'Issues',
+                    style: TextStyle(
+                        color: _isListIssues ? Colors.white : greenColor,
+                        fontWeight:
+                            _isListIssues ? FontWeight.w400 : FontWeight.bold),
+                  ),
+                  Transform.scale(
+                    scale: 1,
+                    child: Switch(
+                      value: _isListIssues,
+                      onChanged: (value) {
+                        setState(() {
+                          _isListIssues = !_isListIssues;
+                        });
+                      },
+                      activeColor: greenColor,
+                      activeTrackColor: greenTrackColor,
+                      inactiveTrackColor: greenTrackColor,
+                      inactiveThumbColor: greenColor,
+                      splashRadius: 0,
+                    ),
+                  ),
+                  Text(
+                    'PRs',
+                    style: TextStyle(
+                        color: _isListIssues ? greenColor : Colors.white,
+                        fontWeight:
+                            _isListIssues ? FontWeight.bold : FontWeight.w400),
+                  ),
+                ],
               ),
             ],
           ),
         ),
       ),
+    );
+  }
+
+  /// Issue List View
+  Widget issueListView() {
+    return ListView.builder(
+      itemCount: _issues.length.toInt(),
+      itemBuilder: (context, index) {
+        final Map<String, dynamic> issue = _issues[index];
+        final author = issue['user'];
+        final repoName = issue['repository_url'].split('/').last;
+        if (issue['pull_request'] == null) {
+          return Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                color: tileColor,
+              ),
+              margin: const EdgeInsets.all(8),
+              child:
+                  MyListTile(author: author, issue: issue, repoName: repoName));
+        } else {
+          return Container();
+        }
+      },
+    );
+  }
+
+  /// Pull requests List View
+  Widget prListView() {
+    return ListView.builder(
+      itemCount: _issues.length.toInt(),
+      itemBuilder: (context, index) {
+        final Map<String, dynamic> issue = _issues[index];
+        final author = issue['user'];
+        final repoName = issue['repository_url'].split('/').last;
+        if (issue['pull_request'] != null) {
+          return Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                color: tileColor,
+              ),
+              margin: const EdgeInsets.all(8),
+              child:
+                  MyListTile(author: author, issue: issue, repoName: repoName));
+        } else {
+          return Container();
+        }
+      },
     );
   }
 }
