@@ -10,6 +10,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import 'package:shimmer_animation/shimmer_animation.dart';
+
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
@@ -82,7 +84,6 @@ class _HomePageState extends State<HomePage> {
     double screenHeight = MediaQuery.of(context).size.height;
     return SafeArea(
       child: Scaffold(
-        
         backgroundColor: blackColor,
         body: SingleChildScrollView(
           child: Column(
@@ -138,9 +139,20 @@ class _HomePageState extends State<HomePage> {
                 height: screenHeight * 0.38,
                 decoration: const BoxDecoration(color: blackColor),
                 child: _issues.isEmpty
-                    ? const Center(
-                        child: CircularProgressIndicator(),
-                      )
+                    ? Shimmer(
+                      duration: const Duration(seconds: 2),
+                      interval: const Duration(milliseconds: 500),
+                      color: Colors.white,
+                      enabled: true,
+                      child: Container(
+                          width: screenWidth * 0.85,
+                          height: screenHeight * 0.38,
+                          decoration: BoxDecoration(
+                            color: brightGreyColor,
+                            borderRadius: BorderRadius.circular(20)
+                          ),
+                        ),
+                    )
                     : ListView.builder(
                         itemCount: _issues.length.toInt(),
                         itemBuilder: (context, index) {
@@ -167,6 +179,4 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
-
-
 }
