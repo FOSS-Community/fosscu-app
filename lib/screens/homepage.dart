@@ -169,7 +169,7 @@ class _HomePageState extends State<HomePage> {
                     _isListIssues = !_isListIssues;
                   });
                 },
-                width: screenWidth * 0.35,
+                width: screenWidth * 0.3,
                 buttonWidth: 60,
                 label: _isListIssues
                     ? Text(
@@ -193,16 +193,7 @@ class _HomePageState extends State<HomePage> {
                   padding: EdgeInsets.all(8).copyWith(left: 15, right: 15),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'Issues',
-                        style: GoogleFonts.leagueSpartan(color: Colors.white),
-                      ),
-                      Text(
-                        'PRs',
-                        style: GoogleFonts.leagueSpartan(color: Colors.white),
-                      )
-                    ],
+                    
                   ),
                 ),
               ),
