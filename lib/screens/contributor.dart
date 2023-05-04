@@ -143,6 +143,7 @@ class _ContributorPageState extends State<ContributorPage> {
                                 author: author,
                                 issue: issue,
                                 repoName: repoName,
+                                mulitiplicationFactor: 0.12,
                               ),
                             );
                           },

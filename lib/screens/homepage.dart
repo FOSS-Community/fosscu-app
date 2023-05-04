@@ -193,7 +193,6 @@ class _HomePageState extends State<HomePage> {
                   padding: EdgeInsets.all(8).copyWith(left: 15, right: 15),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    
                   ),
                 ),
               ),
@@ -214,13 +213,18 @@ class _HomePageState extends State<HomePage> {
         final repoName = issue['repository_url'].split('/').last;
         if (issue['pull_request'] == null) {
           return Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                color: tileColor,
-              ),
-              margin: const EdgeInsets.all(8),
-              child:
-                  MyListTile(author: author, issue: issue, repoName: repoName));
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              color: tileColor,
+            ),
+            margin: const EdgeInsets.all(8),
+            child: MyListTile(
+              author: author,
+              issue: issue,
+              repoName: repoName,
+              mulitiplicationFactor: 0.25,
+            ),
+          );
         } else {
           return Container();
         }
@@ -238,13 +242,18 @@ class _HomePageState extends State<HomePage> {
         final repoName = issue['repository_url'].split('/').last;
         if (issue['pull_request'] != null) {
           return Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                color: tileColor,
-              ),
-              margin: const EdgeInsets.all(8),
-              child:
-                  MyListTile(author: author, issue: issue, repoName: repoName));
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              color: tileColor,
+            ),
+            margin: const EdgeInsets.all(8),
+            child: MyListTile(
+              author: author,
+              issue: issue,
+              repoName: repoName,
+              mulitiplicationFactor: 0.25,
+            ),
+          );
         } else {
           return Container();
         }

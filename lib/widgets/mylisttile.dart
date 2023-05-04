@@ -8,7 +8,9 @@ class MyListTile extends StatefulWidget {
   final Map<String, dynamic> issue;
   final Map<String, dynamic> author;
   final String repoName;
+  final double mulitiplicationFactor;
   const MyListTile({
+    required this.mulitiplicationFactor,
     required this.author,
     required this.issue,
     required this.repoName,
@@ -73,7 +75,7 @@ class _MyListTileState extends State<MyListTile>
             vsync: this,
             child: _isExpanded
                 ? SizedBox(
-                    height: screenHeight * 0.25,
+                    height: screenHeight * widget.mulitiplicationFactor,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
