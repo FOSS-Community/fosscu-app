@@ -41,6 +41,7 @@ dependencies:
   shimmer_animation: ^2.1.0+1
   slidable_button: ^2.0.0+1
   flutter_svg: ^2.0.5
+  animate_do: ^3.0.2
 
 dev_dependencies:
   flutter_test:
