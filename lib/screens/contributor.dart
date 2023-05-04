@@ -5,7 +5,11 @@ import 'package:fosscu_app/constants/apikey.dart';
 import 'package:fosscu_app/constants/color.dart';
 import 'package:fosscu_app/constants/svg.dart';
 import 'package:fosscu_app/widgets/contributor_page_tile.dart';
+import 'package:fosscu_app/widgets/contributors_profile_container.dart';
+import 'package:fosscu_app/widgets/merged_pr_container.dart';
 import 'package:fosscu_app/widgets/mylisttile.dart';
+import 'package:fosscu_app/widgets/raised_pr_container.dart';
+import 'package:fosscu_app/widgets/top5_contributors_container.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:shimmer_animation/shimmer_animation.dart';
@@ -108,13 +112,13 @@ class _ContributorPageState extends State<ContributorPage> {
                 height: screenHeight * 0.033,
               ),
               Container(
-                margin: EdgeInsets.only(left: screenWidth * 0.15),
-                alignment: AlignmentDirectional(-1, 0),
+                  margin: EdgeInsets.only(left: screenWidth * 0.15),
+                  alignment: AlignmentDirectional(-1, 0),
                   child: Text(
-                'Unclaimed Issues',
-                style: GoogleFonts.leagueSpartan(
-                    color: greenColor, fontWeight: FontWeight.bold),
-              )),
+                    'Unclaimed Issues',
+                    style: GoogleFonts.leagueSpartan(
+                        color: greenColor, fontWeight: FontWeight.bold),
+                  )),
               SizedBox(
                 height: screenHeight * 0.003,
               ),
@@ -133,19 +137,23 @@ class _ContributorPageState extends State<ContributorPage> {
                             final author = issue['user'];
                             final repoName =
                                 issue['repository_url'].split('/').last;
-                            return Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20),
-                                color: tileColor,
-                              ),
-                              margin: const EdgeInsets.all(8),
-                              child: MyListTile(
-                                author: author,
-                                issue: issue,
-                                repoName: repoName,
-                                mulitiplicationFactor: 0.12,
-                              ),
-                            );
+                            if (issue['pull_request'] == null) {
+                              return Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(20),
+                                  color: tileColor,
+                                ),
+                                margin: const EdgeInsets.all(8),
+                                child: MyListTile(
+                                  author: author,
+                                  issue: issue,
+                                  repoName: repoName,
+                                  mulitiplicationFactor: 0.12,
+                                ),
+                              );
+                            } else {
+                              return Container();
+                            }
                           },
                         )
                       : Shimmer(
@@ -170,9 +178,16 @@ class _ContributorPageState extends State<ContributorPage> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: const [
-                          ContributionTile(picture: openPr, text: 'Raised PRs'),
                           ContributionTile(
-                              picture: mergedPr, text: 'Merged PRs')
+                            picture: openPr,
+                            text: 'Raised PRs',
+                            containerToLoad: RaisedPRContainer(),
+                          ),
+                          ContributionTile(
+                            picture: mergedPr,
+                            text: 'Merged PRs',
+                            containerToLoad: MergedPRContainer(),
+                          )
                         ],
                       ),
                     ),
@@ -180,11 +195,15 @@ class _ContributorPageState extends State<ContributorPage> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: const [
                         ContributionTile(
-                            picture: gitIcon,
-                            text: "Contributors\n        Profile"),
+                          picture: gitIcon,
+                          text: "Contributors\n        Profile",
+                          containerToLoad: ContributorProfile(),
+                        ),
                         ContributionTile(
-                            picture: glasses,
-                            text: "         Top 5\nContributors")
+                          picture: glasses,
+                          text: "         Top 5\nContributors",
+                          containerToLoad: Top5Contributors(),
+                        ),
                       ],
                     )
                   ],
