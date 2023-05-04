@@ -29,25 +29,17 @@ class _ContributionTileState extends State<ContributionTile> {
 
     return GestureDetector(
       onTapDown: (details) {
-        setState(() {
-          _isTappedDown = true;
-        });
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => widget.containerToLoad),
         );
-      },
-      onTapUp: (details) {
-        setState(() {
-          _isTappedDown = false;
-        });
       },
       child: Container(
         width: screenWidth * 0.32,
         height: screenWidth * 0.32,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(25),
-          color: _isTappedDown ? blackColor : midGreyColor,
+          color:  midGreyColor,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
