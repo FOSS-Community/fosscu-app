@@ -2,12 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fosscu_app/constants/color.dart';
 import 'package:fosscu_app/constants/svg.dart';
+import 'package:fosscu_app/widgets/raised_pr_container.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ContributionTile extends StatefulWidget {
   final String picture;
   final String text;
+  final Widget containerToLoad;
   const ContributionTile({
+    required this.containerToLoad,
     required this.picture,
     required this.text,
     super.key,
@@ -23,24 +26,28 @@ class _ContributionTileState extends State<ContributionTile> {
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
+
     return GestureDetector(
       onTapDown: (details) {
         setState(() {
           _isTappedDown = true;
         });
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => widget.containerToLoad),
+        );
       },
       onTapUp: (details) {
         setState(() {
           _isTappedDown = false;
         });
       },
-      
-           child: Container(
+      child: Container(
         width: screenWidth * 0.32,
         height: screenWidth * 0.32,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(25),
-          color: _isTappedDown? blackColor: midGreyColor,
+          color: _isTappedDown ? blackColor : midGreyColor,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
