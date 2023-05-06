@@ -95,12 +95,12 @@ class _RaisedPRContainerState extends State<RaisedPRContainer> {
                   Navigator.pop(context);
                 },
                 child: Container(
-                  margin: const EdgeInsets.all(10),
+                  margin: const EdgeInsets.all(10).copyWith(top: 15),
                   alignment: const AlignmentDirectional(1, 1),
                   child: SvgPicture.asset(
                     cross,
-                    height: screenWidth * 0.1,
-                    width: screenWidth * 0.1,
+                    height: screenWidth * 0.05,
+                    width: screenWidth * 0.05,
                   ),
                 ),
               ),
@@ -187,11 +187,11 @@ class _RaisedPRContainerState extends State<RaisedPRContainer> {
                             filled: true,
                             fillColor: brightGreyColor,
                             border: OutlineInputBorder(
-                              borderSide:
-                                  const BorderSide(color: orangeColor, width: 2),
+                              borderSide: const BorderSide(
+                                  color: orangeColor, width: 2),
                               borderRadius: BorderRadius.circular(25),
                             ),
-                            labelText: 'Enter number of days',
+                            labelText: 'View the PRs of last entered days',
                             labelStyle: GoogleFonts.leagueSpartan(
                                 color: orangeColor,
                                 fontSize: 16,
@@ -205,17 +205,26 @@ class _RaisedPRContainerState extends State<RaisedPRContainer> {
                         ),
                       ),
                     ),
-                    SizedBox(width: screenWidth * 0.03,),
-                    Container(
-                      decoration: BoxDecoration(
-                        color: brightGreyColor,
-                        borderRadius: BorderRadius.circular(25)
-                      ),
-                      child: IconButton(
+                    SizedBox(
+                      width: screenWidth * 0.03,
+                    ),
+                    SizedBox(
+                      width: 55,
+                      height: 50,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: brightGreyColor,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(25))),
                         onPressed: () {
                           fetchRecentPRs(int.parse(days_controller.text));
                         },
-                        icon: const Icon(Icons.search, color: orangeColor, weight: 20),
+                        child: const Center(
+                            child: Icon(
+                          Icons.search,
+                          color: orangeColor,
+                          weight: 20,
+                        )),
                       ),
                     ),
                   ],
