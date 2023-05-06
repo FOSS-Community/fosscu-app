@@ -107,7 +107,7 @@ class _RaisedPRContainerState extends State<RaisedPRContainer> {
               Row(
                 children: [
                   Container(
-                    margin: const EdgeInsets.all(10).copyWith(top: 0),
+                    margin: const EdgeInsets.all(10).copyWith(top: 0, left: 20),
                     alignment: Alignment.topLeft,
                     width: screenWidth * 0.5,
                     child: Text(
