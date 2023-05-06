@@ -21,17 +21,16 @@ class RaisedPRContainer extends StatefulWidget {
 class _RaisedPRContainerState extends State<RaisedPRContainer> {
   final String organization = 'FOSS-Community';
   final String personalAccessToken = apikey;
-  int numofDays = 3;
+  final TextEditingController days_controller = TextEditingController();
 
   List<dynamic> recentPRs = [];
 
   @override
   void initState() {
-    fetchRecentPRs();
     super.initState();
   }
 
-  Future<void> fetchRecentPRs() async {
+  Future<void> fetchRecentPRs(int numofDays) async {
     /// Date and Time Details
     final now = DateTime.now();
     final daysAgo = now.subtract(Duration(days: numofDays));
@@ -83,93 +82,150 @@ class _RaisedPRContainerState extends State<RaisedPRContainer> {
     return Scaffold(
       backgroundColor: blackColor,
       body: Container(
-        margin: const EdgeInsets.all(20).copyWith(top: 50),
+        margin: const EdgeInsets.all(20).copyWith(top: 60),
         decoration: BoxDecoration(
           color: midGreyColor,
           borderRadius: BorderRadius.circular(25),
         ),
-        child: Column(
-          children: [
-            GestureDetector(
-              onTap: () {
-                Navigator.pop(context);
-              },
-              child: Container(
-                margin: const EdgeInsets.all(10),
-                alignment: const AlignmentDirectional(1, 1),
-                child: SvgPicture.asset(
-                  cross,
-                  height: screenWidth * 0.1,
-                  width: screenWidth * 0.1,
-                ),
-              ),
-            ),
-            Row(
-              children: [
-                Container(
-                  margin: const EdgeInsets.all(10).copyWith(top: 0),
-                  alignment: Alignment.topLeft,
-                  width: screenWidth * 0.5,
-                  child: Text(
-                    'Recently Raised PRs',
-                    style: GoogleFonts.leagueSpartan(
-                      color: orangeColor,
-                      fontWeight: FontWeight.bold,
-                      fontSize: screenWidth * 0.09,
-                      height: 1.2,
-                      decoration: null,
-                    ),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              GestureDetector(
+                onTap: () {
+                  Navigator.pop(context);
+                },
+                child: Container(
+                  margin: const EdgeInsets.all(10),
+                  alignment: const AlignmentDirectional(1, 1),
+                  child: SvgPicture.asset(
+                    cross,
+                    height: screenWidth * 0.1,
+                    width: screenWidth * 0.1,
                   ),
                 ),
-              ],
-            ),
-            Container(
-              width: screenWidth * 0.8,
-              height: screenHeight * 0.6,
-              margin: EdgeInsets.only(bottom: screenHeight * 0.04),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(25),
               ),
-              child: recentPRs.isNotEmpty
-                  ? ListView.builder(
-                      itemCount: recentPRs.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        final issue = recentPRs[index];
-                        final author = issue['user'];
-                        final repoName =
-                            issue['repository_url'].split('/').last;
-                        if (issue['pull_request'] != null) {
-                          return Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                              color: tileColor,
-                            ),
-                            margin: const EdgeInsets.all(8),
-                            child: MyListTile(
-                              author: author,
-                              issue: issue,
-                              repoName: repoName,
-                              mulitiplicationFactor: 0.12,
-                            ),
-                          );
-                        } else {
-                          return Container();
-                        }
-                      },
-                    )
-                  : Shimmer(
-                      duration: const Duration(seconds: 2),
-                      interval: const Duration(milliseconds: 500),
-                      color: Colors.white,
-                      enabled: true,
-                      child: Container(
-                        decoration: BoxDecoration(
-                            color: brightGreyColor,
-                            borderRadius: BorderRadius.circular(25)),
+              Row(
+                children: [
+                  Container(
+                    margin: const EdgeInsets.all(10).copyWith(top: 0),
+                    alignment: Alignment.topLeft,
+                    width: screenWidth * 0.5,
+                    child: Text(
+                      'Recently Raised PRs',
+                      style: GoogleFonts.leagueSpartan(
+                        color: orangeColor,
+                        fontWeight: FontWeight.bold,
+                        fontSize: screenWidth * 0.09,
+                        height: 1.2,
+                        decoration: null,
                       ),
                     ),
-            ),
-          ],
+                  ),
+                ],
+              ),
+              Container(
+                width: screenWidth * 0.8,
+                height: screenHeight * 0.6,
+                margin: EdgeInsets.only(bottom: screenHeight * 0.04),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(25),
+                ),
+                child: recentPRs.isNotEmpty
+                    ? ListView.builder(
+                        itemCount: recentPRs.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          final issue = recentPRs[index];
+                          final author = issue['user'];
+                          final repoName =
+                              issue['repository_url'].split('/').last;
+                          if (issue['pull_request'] != null) {
+                            return Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20),
+                                color: tileColor,
+                              ),
+                              margin: const EdgeInsets.all(8),
+                              child: MyListTile(
+                                author: author,
+                                issue: issue,
+                                repoName: repoName,
+                                mulitiplicationFactor: 0.12,
+                              ),
+                            );
+                          } else {
+                            return Container();
+                          }
+                        },
+                      )
+                    : Shimmer(
+                        duration: const Duration(seconds: 2),
+                        interval: const Duration(milliseconds: 500),
+                        color: Colors.white,
+                        enabled: true,
+                        child: Container(
+                          decoration: BoxDecoration(
+                              color: brightGreyColor,
+                              borderRadius: BorderRadius.circular(25)),
+                        ),
+                      ),
+              ),
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: screenWidth * 0.06),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: Container(
+                        child: TextField(
+                          controller: days_controller,
+                          style: GoogleFonts.leagueSpartan(
+                              color: orangeColor,
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold),
+                          keyboardType: TextInputType.number,
+                          decoration: InputDecoration(
+                            filled: true,
+                            fillColor: brightGreyColor,
+                            border: OutlineInputBorder(
+                              borderSide:
+                                  const BorderSide(color: orangeColor, width: 2),
+                              borderRadius: BorderRadius.circular(25),
+                            ),
+                            labelText: 'Enter number of days',
+                            labelStyle: GoogleFonts.leagueSpartan(
+                                color: orangeColor,
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold),
+                            hintText: 'Days',
+                            hintStyle: GoogleFonts.leagueSpartan(
+                                color: orangeColor,
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: screenWidth * 0.03,),
+                    Container(
+                      decoration: BoxDecoration(
+                        color: brightGreyColor,
+                        borderRadius: BorderRadius.circular(25)
+                      ),
+                      child: IconButton(
+                        onPressed: () {
+                          fetchRecentPRs(int.parse(days_controller.text));
+                        },
+                        icon: const Icon(Icons.search, color: orangeColor, weight: 20),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(
+                height: screenHeight * 0.05,
+              )
+            ],
+          ),
         ),
       ),
     );
