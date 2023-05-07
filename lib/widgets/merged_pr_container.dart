@@ -22,18 +22,18 @@ class MergedPRContainer extends StatefulWidget {
 }
 
 class _MergedPRContainerState extends State<MergedPRContainer> {
+  final TextEditingController days_controller = TextEditingController();
   List<Map<String, dynamic>> _mergedPRs = [];
 
   @override
   void initState() {
     super.initState();
-    _getMergedPRs();
   }
 
-  Future<void> _getMergedPRs() async {
+  Future<void> _getMergedPRs(int numofDays) async {
     final token = apikey;
     final DateTime now = DateTime.now();
-    final DateTime threeDaysAgo = now.subtract(const Duration(days: 3));
+    final DateTime threeDaysAgo = now.subtract( Duration(days: numofDays));
     final String since = threeDaysAgo.toIso8601String();
 
     final response = await http.get(
@@ -51,6 +51,7 @@ class _MergedPRContainerState extends State<MergedPRContainer> {
                   'url': item['html_url'],
                   'userAvatarUrl': item['user']['avatar_url'],
                   'userHtmlUrl': item['user']['html_url'],
+                  'user': item['user'],
                 })
             .toList();
 
@@ -120,11 +121,17 @@ class _MergedPRContainerState extends State<MergedPRContainer> {
                         itemBuilder: (BuildContext context, int index) {
                           final pr = _mergedPRs[index];
 
-                          return CustomListTile(
-                            repository: pr['repository'],
-                            title: pr['title'],
-                            url: pr['url'],
-                            userAvatarUrl: pr['userAvatarUrl'],
+                          return Container(
+                            margin:
+                                EdgeInsets.only(bottom: screenHeight * 0.02),
+                            child: CustomListTile(
+                              user: pr['user']['login'],
+                              mulitiplicationFactor: 0.17,
+                              repository: pr['repository'],
+                              title: pr['title'],
+                              url: pr['url'],
+                              userAvatarUrl: pr['userAvatarUrl'],
+                            ),
                           );
                         },
                       )
@@ -148,7 +155,7 @@ class _MergedPRContainerState extends State<MergedPRContainer> {
                     Expanded(
                       child: Container(
                         child: TextField(
-                          //controller: days_controller,
+                          controller: days_controller,
                           style: GoogleFonts.leagueSpartan(
                               color: purpleColor,
                               fontSize: 16,
@@ -188,7 +195,7 @@ class _MergedPRContainerState extends State<MergedPRContainer> {
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(25))),
                         onPressed: () {
-                          //fetchRecentMergedPRs(int.parse(days_controller.text));
+                          _getMergedPRs(int.parse(days_controller.text));
                         },
                         child: const Center(
                             child: Icon(
