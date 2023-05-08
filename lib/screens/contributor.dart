@@ -196,7 +196,7 @@ class _ContributorPageState extends State<ContributorPage> {
                       children: const [
                         ContributionTile(
                           picture: gitIcon,
-                          text: "Contributors\n        Profile",
+                          text: "Members\n   Profile",
                           containerToLoad: ContributorProfile(),
                         ),
                         ContributionTile(
