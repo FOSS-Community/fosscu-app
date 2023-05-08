@@ -10,7 +10,9 @@ class CustomListTile extends StatefulWidget {
   final String url;
   final double mulitiplicationFactor;
   final String user;
+  final String buttonName;
   const CustomListTile({
+    required this.buttonName,
     required this.user,
     required this.mulitiplicationFactor,
     required this.repository,
@@ -97,7 +99,7 @@ class _CustomListTileState extends State<CustomListTile>
                                   onPressed: () {
                                     launchUrlString(widget.url);
                                   },
-                                  child: Text('View PR'))
+                                  child: Text(widget.buttonName))
                             ],
                           ),
                         ),

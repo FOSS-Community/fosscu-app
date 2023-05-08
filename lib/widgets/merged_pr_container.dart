@@ -125,6 +125,7 @@ class _MergedPRContainerState extends State<MergedPRContainer> {
                             margin:
                                 EdgeInsets.only(bottom: screenHeight * 0.02),
                             child: CustomListTile(
+                              buttonName: 'View PR',
                               user: pr['user']['login'],
                               mulitiplicationFactor: 0.17,
                               repository: pr['repository'],
