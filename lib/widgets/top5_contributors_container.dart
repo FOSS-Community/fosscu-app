@@ -101,8 +101,8 @@ final response = await http.get(
                 alignment: const AlignmentDirectional(1, 1),
                 child: SvgPicture.asset(
                   cross,
-                  height: screenWidth * 0.1,
-                  width: screenWidth * 0.1,
+                  height: screenWidth * 0.05,
+                  width: screenWidth * 0.05,
                 ),
               ),
             ),
