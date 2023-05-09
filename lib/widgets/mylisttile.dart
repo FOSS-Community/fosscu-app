@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:fosscu_app/constants/color.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 class MyListTile extends StatefulWidget {
   final Map<String, dynamic> issue;
   final Map<String, dynamic> author;
   final String repoName;
+  final double mulitiplicationFactor;
   const MyListTile({
+    required this.mulitiplicationFactor,
     required this.author,
     required this.issue,
     required this.repoName,
@@ -73,7 +74,7 @@ class _MyListTileState extends State<MyListTile>
             vsync: this,
             child: _isExpanded
                 ? SizedBox(
-                    height: screenHeight * 0.25,
+                    height: screenHeight * widget.mulitiplicationFactor,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [

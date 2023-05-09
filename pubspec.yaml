@@ -40,6 +40,8 @@ dependencies:
   url_launcher: ^6.1.10
   shimmer_animation: ^2.1.0+1
   slidable_button: ^2.0.0+1
+  flutter_svg: ^2.0.5
+  animate_do: ^3.0.2
 
 dev_dependencies:
   flutter_test:
@@ -63,6 +65,9 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
+  assets:
+
+   - assets/svgs/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
