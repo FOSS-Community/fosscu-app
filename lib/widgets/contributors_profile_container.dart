@@ -78,7 +78,7 @@ class _ContributorProfileState extends State<ContributorProfile> {
                           fontWeight: FontWeight.bold,
                           fontSize: screenWidth * 0.09,
                           height: 1.2,
-                          decoration: null),
+                          decoration: null,),
                     )),
               ],
             ),
