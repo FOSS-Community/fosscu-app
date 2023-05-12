@@ -4,7 +4,9 @@ import 'package:google_fonts/google_fonts.dart';
 
 class LearnPageCard extends StatelessWidget {
   final String text;
+  final Widget pageToLoad;
   const LearnPageCard({
+    required this.pageToLoad,
     required this.text,
     super.key,
   });
@@ -34,7 +36,16 @@ class LearnPageCard extends StatelessWidget {
                 text,
                 style: textStyle,
               ),
-              IconButton(onPressed: (){}, icon: Icon(Icons.arrow_right_alt_outlined, color: Colors.white,size: screenWidth * 0.07,))
+              IconButton(
+                  onPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => pageToLoad));
+                  },
+                  icon: Icon(
+                    Icons.arrow_right_alt_outlined,
+                    color: Colors.white,
+                    size: screenWidth * 0.07,
+                  ))
             ],
           ),
         ),
