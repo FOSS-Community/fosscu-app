@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fosscu_app/constants/color.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class CodeText extends StatelessWidget {
@@ -10,10 +11,14 @@ class CodeText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final TextStyle textStyle = GoogleFonts.nanumGothicCoding(color: Colors.white);
-    return Text(
-      text,
-      style: textStyle,
+    double screenWidth = MediaQuery.of(context).size.width;
+    final TextStyle textStyle = GoogleFonts.nanumGothicCoding(color: yellowColor);
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
+      child: Text(
+        text,
+        style: textStyle,
+      ),
     );
   }
 }

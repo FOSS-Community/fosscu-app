@@ -16,7 +16,7 @@ class CodeSnippet extends StatelessWidget {
     double screenHeight = MediaQuery.of(context).size.height;
     final TextStyle textStyle = GoogleFonts.nanumGothicCoding(
       color: Colors.white,
-      fontSize: screenHeight * 0.01,
+      fontSize: screenHeight * 0.0125,
     );
     return Container(
       margin: EdgeInsets.only(left: screenWidth * 0.042),
@@ -25,7 +25,7 @@ class CodeSnippet extends StatelessWidget {
           Container(
             decoration: BoxDecoration(
                 color: darkGreyColor, borderRadius: BorderRadius.circular(20)),
-            padding: EdgeInsets.all(screenWidth * 0.03),
+            padding: EdgeInsets.all(screenWidth * 0.03).copyWith(top: screenWidth * 0.02, bottom: screenWidth * 0.02),
             child: Text(
               text,
               style: textStyle,
