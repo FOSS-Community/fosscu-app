@@ -6,16 +6,14 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-
   const MyApp({super.key});
   @override
   Widget build(BuildContext context) {
-      // Hide the Android navigation bar
-   // SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.top]);
-    return  const MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: NavBarScreen()
-    );
+    // Hide the Android navigation bar
+    // SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.top]);
+    return MaterialApp(
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(useMaterial3: true),
+        home: const NavBarScreen());
   }
 }
-

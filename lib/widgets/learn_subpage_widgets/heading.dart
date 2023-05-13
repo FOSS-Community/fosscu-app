@@ -17,7 +17,7 @@ class LearnPageHeading extends StatelessWidget {
     final TextStyle textStyle = GoogleFonts.leagueSpartan(color: color, fontSize: screenWidth * 0.04, fontWeight: FontWeight.bold);
     return Container(
       decoration: BoxDecoration(
-        color: darkGreyColor,
+        color: blackColor,
         borderRadius: BorderRadius.circular(10)
       ),
       alignment: const AlignmentDirectional(-1, 0),

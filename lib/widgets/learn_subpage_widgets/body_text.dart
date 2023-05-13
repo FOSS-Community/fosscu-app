@@ -14,15 +14,21 @@ class LearnPageBodyText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
-    final TextStyle textStyle = GoogleFonts.leagueSpartan(color: color, fontSize: screenWidth * 0.04, fontWeight: FontWeight.w400, height: 1.3);
+    double screenHeight = MediaQuery.of(context).size.height;
+    final TextStyle textStyle = GoogleFonts.leagueSpartan(
+        color: color,
+        fontSize: screenHeight * 0.023,
+        fontWeight: FontWeight.w400,
+        height: 1.3);
     return Container(
       decoration: BoxDecoration(
-        color: darkGreyColor,
-        borderRadius: BorderRadius.circular(20)
-      ),
+          color: darkGreyColor, borderRadius: BorderRadius.circular(20)),
       margin: EdgeInsets.all(screenWidth * 0.05),
       padding: EdgeInsets.all(screenWidth * 0.03),
-      child: Text(text, style: textStyle,),
+      child: Text(
+        text,
+        style: textStyle,
+      ),
     );
   }
 }
