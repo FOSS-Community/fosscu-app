@@ -26,6 +26,7 @@ class StartWithFundamentalsPage3 extends StatelessWidget {
                   LearnPageHeading(
                     color: greenColor,
                     text: 'How is Open-Source even Sustainable?',
+                    size: 0.04,
                   ),
                   LearnPageBodyText(
                     color: Colors.white,
@@ -39,6 +40,7 @@ class StartWithFundamentalsPage3 extends StatelessWidget {
                   LearnPageHeading(
                     color: greenColor,
                     text: 'How can a novice start with Open-Source?',
+                    size: 0.04,
                   ),
                   LearnPageBodyText(
                     color: Colors.white,
