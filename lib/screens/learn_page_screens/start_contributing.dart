@@ -18,7 +18,7 @@ class _StartContributingState extends State<StartContributing> {
   Widget build(BuildContext context) {
     final double screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
-            body: Stack(
+      body: Stack(
         children: [
           PageView(
             onPageChanged: (index) {
