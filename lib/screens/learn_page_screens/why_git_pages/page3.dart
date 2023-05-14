@@ -31,7 +31,7 @@ class WhyGitPage3 extends StatelessWidget {
                   ),
                   LearnPageBodyText(
                     color: Colors.white,
-                    text: "The very first thing that one needs to do is to intall Git, the software on your machine(It comes pre installed with some linux distros)"
+                    text: "The very first thing that one needs to do is to install Git, the software on your machine(It comes pre installed with some linux distros)"
                   ),
                   LearnPageSubHeading(size: 0.03, color: Colors.white, text: "To check whether git is intalled on your system, Run"),
                   CodeSnippet(text: 'git --version'),

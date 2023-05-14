@@ -6,7 +6,6 @@ import 'package:fosscu_app/screens/learn_page_screens/practice.dart';
 import 'package:fosscu_app/screens/learn_page_screens/start_contributing.dart';
 import 'package:fosscu_app/screens/learn_page_screens/start_with_fundamentals.dart';
 import 'package:fosscu_app/screens/learn_page_screens/understanding_branches.dart';
-import 'package:fosscu_app/screens/learn_page_screens/understanding_commands.dart';
 import 'package:fosscu_app/screens/learn_page_screens/what_is_github.dart';
 import 'package:fosscu_app/screens/learn_page_screens/why_git.dart';
 import 'package:fosscu_app/widgets/learn_page_card.dart';
@@ -118,16 +117,12 @@ class LearnPage extends StatelessWidget {
                   pageToLoad: WhatIsGithub(),
                 ),
                 const LearnPageCard(
-                  text: 'Understanding Commands',
-                  pageToLoad: UnderstandingCommands(),
+                  text: 'Understanding Branches',
+                  pageToLoad: UnderstandingBranches(),
                 ),
                 const LearnPageCard(
                   text: 'Start Contributing',
                   pageToLoad: StartContributing(),
-                ),
-                const LearnPageCard(
-                  text: 'Understanding Branches',
-                  pageToLoad: UnderstandingBranches(),
                 ),
                 const LearnPageCard(
                   text: 'Advanced Concepts',
