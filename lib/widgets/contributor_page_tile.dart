@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fosscu_app/constants/color.dart';
-import 'package:fosscu_app/constants/svg.dart';
-import 'package:fosscu_app/widgets/raised_pr_container.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ContributionTile extends StatefulWidget {

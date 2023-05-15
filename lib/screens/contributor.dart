@@ -201,7 +201,7 @@ class _ContributorPageState extends State<ContributorPage> {
                         ),
                         ContributionTile(
                           picture: glasses,
-                          text: "         Top 10\nContributors",
+                          text: "      Top 10\nContributor",
                           containerToLoad: Top5Contributors(),
                         ),
                       ],
