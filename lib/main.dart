@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fosscu_app/screens/auth_page_screens/auth_page.dart';
 import 'package:fosscu_app/widgets/navbar.dart';
 
 void main() {
@@ -14,6 +15,6 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: ThemeData(useMaterial3: true),
-        home: const NavBarScreen());
+        home: const AuthPage());
   }
 }
