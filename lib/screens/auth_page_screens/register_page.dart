@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fosscu_app/constants/color.dart';
+import 'package:fosscu_app/constants/svg.dart';
 import 'package:fosscu_app/widgets/auth_widgets/auth_button.dart';
 import 'package:fosscu_app/widgets/auth_widgets/auth_field.dart';
 
@@ -87,16 +89,19 @@ class _RegisterPageState extends State<RegisterPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              SizedBox(height: screenHeight * 0.05),
-              const Text(
-                'Become a New member of FOSSCU',
-                style: TextStyle(color: greenColor),
+              SizedBox(height: screenHeight * 0.08),
+              SvgPicture.asset(
+                fosscu,
+                height: screenHeight * 0.25,
+                width: screenWidth * 0.25,
               ),
+              SizedBox(height: screenHeight * 0.1),
 
               /// Email Field
               AuthField(
+                icon: Icons.mail,
                 controller: emailController,
-                hintText: 'Email',
+                hintText: ' email',
                 obscureText: false,
               ),
 
@@ -104,8 +109,9 @@ class _RegisterPageState extends State<RegisterPage> {
 
               /// Password Field
               AuthField(
+                icon: Icons.key,
                 controller: passwordController,
-                hintText: 'Password',
+                hintText: ' password',
                 obscureText: true,
               ),
 
@@ -113,8 +119,9 @@ class _RegisterPageState extends State<RegisterPage> {
 
               /// Confirm Password Field
               AuthField(
+                icon: Icons.key,
                 controller: confirmPasswordController,
-                hintText: 'Confirm Password',
+                hintText: ' confirm password',
                 obscureText: true,
               ),
 
@@ -135,7 +142,7 @@ class _RegisterPageState extends State<RegisterPage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text('Already have an account?'),
+                  const Text('Already have an account? ', style: TextStyle(color: Colors.white),),
                   GestureDetector(
                     onTap: widget.onTap,
                     child: const Text(

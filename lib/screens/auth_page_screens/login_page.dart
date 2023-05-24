@@ -77,30 +77,29 @@ class _LogInPageState extends State<LogInPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              SizedBox(height: screenHeight * 0.05),
+              SizedBox(height: screenHeight * 0.08),
               SvgPicture.asset(
                 fosscu,
-                height: screenHeight * 0.2,
-                width: screenWidth * 0.2,
+                height: screenHeight * 0.25,
+                width: screenWidth * 0.25,
               ),
-              const Text(
-                'Become a member of FOSSCU',
-                style: TextStyle(color: greenColor),
-              ),
+              SizedBox(height: screenHeight * 0.1),
 
               /// Email Field
               AuthField(
+                icon: Icons.mail,
                 controller: emailController,
-                hintText: 'Email',
+                hintText: ' email',
                 obscureText: false,
               ),
 
-              SizedBox(height: screenHeight * 0.01),
+              SizedBox(height: screenHeight * 0.03),
 
               /// Password Field
               AuthField(
+                icon: Icons.key,
                 controller: passwordController,
-                hintText: 'Password',
+                hintText: ' password',
                 obscureText: true,
               ),
 
@@ -116,14 +115,14 @@ class _LogInPageState extends State<LogInPage> {
                     Text(
                       'Forgot Password?',
                       style: TextStyle(
-                        color: brightGreyColor,
+                        color: Colors.white,
                       ),
                     ),
                   ],
                 ),
               ),
 
-              SizedBox(height: screenHeight * 0.01),
+              SizedBox(height: screenHeight * 0.02),
 
               /// Sign in Button
               AuthButton(
@@ -140,7 +139,7 @@ class _LogInPageState extends State<LogInPage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text('Not a member?'),
+                  const Text('Not a member? ', style: TextStyle(color: Colors.white),),
                   GestureDetector(
                     onTap: widget.onTap,
                     child: const Text(
