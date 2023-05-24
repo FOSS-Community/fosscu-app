@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fosscu_app/constants/color.dart';
+import 'package:fosscu_app/constants/svg.dart';
 import 'package:fosscu_app/widgets/auth_widgets/auth_button.dart';
 import 'package:fosscu_app/widgets/auth_widgets/auth_field.dart';
 
@@ -76,6 +78,11 @@ class _LogInPageState extends State<LogInPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               SizedBox(height: screenHeight * 0.05),
+              SvgPicture.asset(
+                fosscu,
+                height: screenHeight * 0.2,
+                width: screenWidth * 0.2,
+              ),
               const Text(
                 'Become a member of FOSSCU',
                 style: TextStyle(color: greenColor),
