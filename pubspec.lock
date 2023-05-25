@@ -192,6 +192,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_webview_plugin:
+    dependency: transitive
+    description:
+      name: flutter_webview_plugin
+      sha256: "158d87eed165e3491b3d74ff47bebd260ddb1b1ad4f739dd230a76d30e07302a"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.3.11"
   font_awesome_flutter:
     dependency: "direct main"
     description:
@@ -200,6 +208,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "10.4.0"
+  github_sign_in:
+    dependency: "direct main"
+    description:
+      name: github_sign_in
+      sha256: "1e641165ed859e4c795a56f7d3f7e4ed1a79701ecb37a07814fe1da83ee9fa94"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.4"
   google_fonts:
     dependency: "direct main"
     description:

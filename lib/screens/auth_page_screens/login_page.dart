@@ -1,8 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:fosscu_app/constants/color.dart';
 import 'package:fosscu_app/constants/svg.dart';
+import 'package:fosscu_app/services/auth/auth_service.dart';
 import 'package:fosscu_app/widgets/auth_widgets/auth_button.dart';
 import 'package:fosscu_app/widgets/auth_widgets/auth_field.dart';
 
@@ -139,7 +141,10 @@ class _LogInPageState extends State<LogInPage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text('Not a member? ', style: TextStyle(color: Colors.white),),
+                  const Text(
+                    'Not a member? ',
+                    style: TextStyle(color: Colors.white),
+                  ),
                   GestureDetector(
                     onTap: widget.onTap,
                     child: const Text(
@@ -150,6 +155,35 @@ class _LogInPageState extends State<LogInPage> {
                     ),
                   ),
                 ],
+              ),
+              SizedBox(height: screenHeight * 0.05),
+              GestureDetector(
+                onTap: () => AuthService().signInWithGoogle(),
+                child: Container(
+                  width: screenWidth * 0.5,
+                  height: screenHeight * 0.07,
+                  decoration: BoxDecoration(
+                      border: Border.all(
+                        color: brightGreyColor,
+                        width: 0.5,
+                      ),
+                      borderRadius: BorderRadius.circular(10)),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: const [
+                      Icon(
+                        FontAwesomeIcons.google,
+                        color: Colors.white,
+                      ),
+                      Text(
+                        'Continue with Google!',
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
+                      )
+                    ],
+                  ),
+                ),
               )
             ],
           ),
