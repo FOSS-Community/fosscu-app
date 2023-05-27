@@ -45,7 +45,7 @@ class _CustomListTileState extends State<CustomListTile>
         ),
         height: _isExpanded
             ? screenHeight * widget.mulitiplicationFactor
-            : screenHeight * 0.08,
+            : screenHeight * 0.09,
         child: Column(
           children: [
             ListTile(
@@ -56,6 +56,8 @@ class _CustomListTileState extends State<CustomListTile>
                 widget.title,
                 style: GoogleFonts.leagueSpartan(
                     color: Colors.white, fontSize: screenWidth * 0.03),
+                overflow: TextOverflow.ellipsis,
+                maxLines: 3,
               ),
               subtitle: Text(
                 widget.repository,
