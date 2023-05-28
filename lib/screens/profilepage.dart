@@ -1,3 +1,4 @@
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -109,9 +110,31 @@ class ProfilePage extends StatelessWidget {
               SizedBox(height: screenHeight * 0.04),
               const ProfileText(text: 'Your Name'),
               ProfileTextField(
-                  textEditingController: _nameController,
-                  hintText: 'name',
-                  icon: FontAwesomeIcons.person)
+                textEditingController: _nameController,
+                hintText: 'name',
+                icon: FontAwesomeIcons.person,
+              ),
+              const ProfileText(text: 'Your Github Username'),
+              ProfileTextField(
+                textEditingController: _githubController,
+                hintText: 'github username',
+                icon: FontAwesomeIcons.person,
+              ),
+              const ProfileText(text: 'Your Discord Username'),
+              ProfileTextField(
+                textEditingController: _discordController,
+                hintText: 'discord username',
+                icon: FontAwesomeIcons.person,
+              ),
+              ElevatedButton(
+                  onPressed: () {
+                    addUserDetails(
+                      _nameController.text.trim(),
+                      _githubController.text.trim(),
+                      _discordController.text.trim(),
+                    );
+                  },
+                  child: const Icon(FontAwesomeIcons.arrowRotateLeft))
             ],
           ),
         ),
