@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -17,6 +18,20 @@ class ProfilePage extends StatelessWidget {
     // Text Editing Controllers
     final _nameController = TextEditingController();
     final _githubController = TextEditingController();
+    final _discordController = TextEditingController();
+
+    Future addUserDetails(
+      String yourName,
+      String github,
+      String discord,
+    ) async {
+      await FirebaseFirestore.instance.collection('users').add({
+        'your name': yourName,
+        'github': github,
+        'discord': discord,
+      });
+    }
+
     return Scaffold(
       backgroundColor: blackColor,
       body: SafeArea(
