@@ -20,7 +20,7 @@ class ProfileTextField extends StatelessWidget {
       margin: EdgeInsets.symmetric(horizontal: screenWidth * 0.06, vertical: screenHeight * 0.02),
       child: TextField(
         controller: textEditingController,
-        style: const TextStyle(color: brightGreyColor),
+        style: const TextStyle(color: Colors.white),
         decoration: InputDecoration(
           prefixIcon: Icon(icon),
           prefixIconColor: brightGreyColor,
