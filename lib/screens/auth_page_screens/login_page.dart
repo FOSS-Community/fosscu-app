@@ -1,0 +1,194 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:fosscu_app/constants/color.dart';
+import 'package:fosscu_app/constants/svg.dart';
+import 'package:fosscu_app/services/auth/auth_service.dart';
+import 'package:fosscu_app/widgets/auth_widgets/auth_button.dart';
+import 'package:fosscu_app/widgets/auth_widgets/auth_field.dart';
+
+class LogInPage extends StatefulWidget {
+  final Function()? onTap;
+  const LogInPage({
+    required this.onTap,
+    super.key,
+  });
+
+  @override
+  State<LogInPage> createState() => _LogInPageState();
+}
+
+class _LogInPageState extends State<LogInPage> {
+  /// Email Text Controller
+  final emailController = TextEditingController();
+
+  /// Password Text Controller
+  final passwordController = TextEditingController();
+
+  /// Sign user in method
+  void signUserIn() async {
+    /// Loading
+    showDialog(
+        context: context,
+        builder: (context) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        });
+
+    /// try sign in
+    try {
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: emailController.text,
+        password: passwordController.text,
+      );
+
+      /// pop loading
+      // ignore: use_build_context_synchronously
+      Navigator.pop(context);
+    } on FirebaseAuthException catch (e) {
+      /// pop loading
+      Navigator.pop(context);
+
+      /// Show error message
+      errorMessage(e.code);
+    }
+  }
+
+  /// Method to show error message
+
+  void errorMessage(String message) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text(message),
+          );
+        });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
+    return Scaffold(
+      backgroundColor: blackColor,
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(height: screenHeight * 0.08),
+              SvgPicture.asset(
+                fosscu,
+                height: screenHeight * 0.25,
+                width: screenWidth * 0.25,
+              ),
+              SizedBox(height: screenHeight * 0.1),
+
+              /// Email Field
+              AuthField(
+                icon: Icons.mail,
+                controller: emailController,
+                hintText: ' email',
+                obscureText: false,
+              ),
+
+              SizedBox(height: screenHeight * 0.03),
+
+              /// Password Field
+              AuthField(
+                icon: Icons.key,
+                controller: passwordController,
+                hintText: ' password',
+                obscureText: true,
+              ),
+
+              SizedBox(height: screenHeight * 0.02),
+
+              /// Forgot Password
+
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: const [
+                    Text(
+                      'Forgot Password?',
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+              SizedBox(height: screenHeight * 0.02),
+
+              /// Sign in Button
+              AuthButton(
+                onTap: signUserIn,
+                text: 'Sign in',
+              ),
+
+              SizedBox(height: screenHeight * 0.01),
+
+              /// Sign In With Services
+
+              /// Not a member
+              SizedBox(height: screenHeight * 0.02),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text(
+                    'Not a member? ',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  GestureDetector(
+                    onTap: widget.onTap,
+                    child: const Text(
+                      ' Register Now',
+                      style: TextStyle(
+                          color: Colors.blueAccent,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: screenHeight * 0.05),
+              GestureDetector(
+                onTap: () => AuthService().signInWithGoogle(),
+                child: Container(
+                  width: screenWidth * 0.5,
+                  height: screenHeight * 0.07,
+                  decoration: BoxDecoration(
+                      border: Border.all(
+                        color: brightGreyColor,
+                        width: 0.5,
+                      ),
+                      borderRadius: BorderRadius.circular(10)),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: const [
+                      Icon(
+                        FontAwesomeIcons.google,
+                        color: Colors.white,
+                      ),
+                      Text(
+                        'Continue with Google!',
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}

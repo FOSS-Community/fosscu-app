@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>470079992749-t3ge7gj5ounbe02d5fq827oihtvue92v.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.470079992749-t3ge7gj5ounbe02d5fq827oihtvue92v</string>
+	<key>API_KEY</key>
+	<string>AIzaSyAAwykQPjHhv9keQ1TNCy8MfOCJQWb51eQ</string>
+	<key>GCM_SENDER_ID</key>
+	<string>470079992749</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.fosscuApp</string>
+	<key>PROJECT_ID</key>
+	<string>fosscu-92e09</string>
+	<key>STORAGE_BUCKET</key>
+	<string>fosscu-92e09.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:470079992749:ios:2c6c32bf66013890726724</string>
+</dict>
+</plist>

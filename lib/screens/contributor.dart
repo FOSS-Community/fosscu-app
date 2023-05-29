@@ -6,6 +6,7 @@ import 'package:fosscu_app/constants/color.dart';
 import 'package:fosscu_app/constants/svg.dart';
 import 'package:fosscu_app/widgets/contributor_page_tile.dart';
 import 'package:fosscu_app/widgets/contributors_profile_container.dart';
+import 'package:fosscu_app/widgets/listtile.dart';
 import 'package:fosscu_app/widgets/merged_pr_container.dart';
 import 'package:fosscu_app/widgets/mylisttile.dart';
 import 'package:fosscu_app/widgets/raised_pr_container.dart';
@@ -25,8 +26,7 @@ class _ContributorPageState extends State<ContributorPage> {
   final String organization = 'FOSS-Community';
   final String personalAccessToken = apikey;
 
-  List<dynamic> unclaimedIssues = [];
-
+  List<Map<String, dynamic>> _unclaimedIssues = [];
   @override
   void initState() {
     super.initState();
@@ -34,40 +34,28 @@ class _ContributorPageState extends State<ContributorPage> {
   }
 
   Future<void> fetchUnclaimedIssues() async {
-    //  Fetch all repositories of the org
-    final repositoriesUrl =
-        Uri.parse('https://api.github.com/orgs/$organization/repos');
-    final headers = {'Authorization': 'token $personalAccessToken'};
-    final repositoriesResponse =
-        await http.get(repositoriesUrl, headers: headers);
+    final response = await http.get(
+        Uri.parse(
+            'https://api.github.com/search/issues?q=is:issue+is:open+org:FOSS-Community+no:assignee'),
+        headers: {'Authorization': 'token $apikey'});
 
-    if (repositoriesResponse.statusCode == 200) {
-      final List<dynamic> repositories = jsonDecode(repositoriesResponse.body);
+    final data = json.decode(response.body);
 
-      // Fetch issues for each repository and filter unclaimed issues
-      final List<http.Response> issuesResponses =
-          await Future.wait(repositories.map((repository) async {
-        final issuesUrl = Uri.parse(
-            'https://api.github.com/repos/$organization/${repository['name']}/issues');
-        final issuesResponse = await http.get(issuesUrl, headers: headers);
-        return issuesResponse;
-      }));
+    final List<Map<String, dynamic>> unclaimedIssues =
+        (data['items'] as List<dynamic>)
+            .map<Map<String, dynamic>>((item) => {
+                  'title': item['title'],
+                  'repository': item['repository_url'].split('/').last,
+                  'url': item['html_url'],
+                  'userAvatarUrl': item['user']['avatar_url'],
+                  'userHtmlUrl': item['user']['html_url'],
+                  'user': item['user'],
+                })
+            .toList();
 
-      final List<dynamic> issues =
-          issuesResponses.fold([], (previousValue, response) {
-        if (response.statusCode == 200) {
-          previousValue.addAll(jsonDecode(response.body));
-        }
-        return previousValue;
-      });
-
-      unclaimedIssues =
-          issues.where((issue) => issue['assignee'] == null).toList();
-    } else {
-      print('Failed to fetch repositories: ${repositoriesResponse.statusCode}');
-    }
-
-    setState(() {});
+    setState(() {
+      _unclaimedIssues = unclaimedIssues;
+    });
   }
 
   @override
@@ -129,31 +117,23 @@ class _ContributorPageState extends State<ContributorPage> {
                   decoration: BoxDecoration(
                       color: blackColor,
                       borderRadius: BorderRadius.circular(25)),
-                  child: unclaimedIssues.isNotEmpty
+                  child: _unclaimedIssues.isNotEmpty
                       ? ListView.builder(
-                          itemCount: unclaimedIssues.length,
+                          itemCount: _unclaimedIssues.length,
                           itemBuilder: (BuildContext context, int index) {
-                            final issue = unclaimedIssues[index];
-                            final author = issue['user'];
-                            final repoName =
-                                issue['repository_url'].split('/').last;
-                            if (issue['pull_request'] == null) {
-                              return Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(20),
-                                  color: tileColor,
-                                ),
-                                margin: const EdgeInsets.all(8),
-                                child: MyListTile(
-                                  author: author,
-                                  issue: issue,
-                                  repoName: repoName,
-                                  mulitiplicationFactor: 0.12,
-                                ),
-                              );
-                            } else {
-                              return Container();
-                            }
+                            final issue = _unclaimedIssues[index];
+                            return Container(
+                              margin: const EdgeInsets.only(bottom: 30),
+                              child: CustomListTile(
+                                buttonName: 'view issue',
+                                user: issue['user']['login'],
+                                mulitiplicationFactor: 0.17,
+                                repository: issue['repository'],
+                                title: issue['title'],
+                                url: issue['url'],
+                                userAvatarUrl: issue['userAvatarUrl'],
+                              ),
+                            );
                           },
                         )
                       : Shimmer(

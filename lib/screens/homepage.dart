@@ -5,6 +5,7 @@ import 'package:fosscu_app/constants/color.dart';
 import 'package:fosscu_app/screens/contributor.dart';
 import 'package:fosscu_app/screens/learn.dart';
 import 'package:fosscu_app/screens/profilepage.dart';
+import 'package:fosscu_app/widgets/listtile.dart';
 import 'package:fosscu_app/widgets/mylisttile.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
@@ -29,49 +30,55 @@ class _HomePageState extends State<HomePage> {
 
   /// Creating a private dynamic list named as issues
   List<Map<String, dynamic>> _issues = [];
+  List<Map<String, dynamic>> _prs = [];
 
   /// Function to fetch open issues from all repositories
 
   Future<void> _fetchIssue() async {
-    /// Getting a list of all repositories from FOSS-Community
+    final response = await http.get(
+        Uri.parse(
+            'https://api.github.com/search/issues?q=is:issue+is:open+org:FOSS-Community'),
+        headers: {'Authorization': 'token $apikey'});
 
-    /// Creating a final variable to store url of organization
+    final data = json.decode(response.body);
 
-    final orgUrl = 'https://api.github.com/orgs/FOSS-Community/repos';
+    final List<Map<String, dynamic>> issues = (data['items'] as List<dynamic>)
+        .map<Map<String, dynamic>>((item) => {
+              'title': item['title'],
+              'repository': item['repository_url'].split('/').last,
+              'url': item['html_url'],
+              'userAvatarUrl': item['user']['avatar_url'],
+              'userHtmlUrl': item['user']['html_url'],
+              'user': item['user'],
+            })
+        .toList();
 
-    /// Creating a final variable to store the response from api
-
-    final orgResponse = await http.get(Uri.parse(orgUrl), headers: headers);
-
-    /// Getting all the repos of org
-
-    final orgRepos = jsonDecode(orgResponse.body);
-
-    /// Loop through each repository and get a list of all the open issues
-
-    final List<Map<String, dynamic>> issues = [];
-
-    for (final repo in orgRepos) {
-      /// Creating a final variable to store url of every issue
-      final issuesUrl =
-          'https://api.github.com/repos/FOSS-Community/${repo["name"]}/issues?state=open';
-
-      /// Creating a final variable to store the response of issues from that repo
-      final issuesResponse =
-          await http.get(Uri.parse(issuesUrl), headers: headers);
-
-      /// Creating a final variable to store the issues of that repository
-      final repoIssues = json.decode(issuesResponse.body);
-
-      /// Adding issues of that repository to the dynamic list "issues"
-      issues.addAll(List<Map<String, dynamic>>.from(repoIssues));
-
-      /// End of loop
-    }
-
-    /// Giving the value of issue to global _issues
     setState(() {
       _issues = issues;
+    });
+  }
+
+  Future<void> _fetchPrs() async {
+    final response = await http.get(
+        Uri.parse(
+            'https://api.github.com/search/issues?q=is:pr+is:open+org:FOSS-Community'),
+        headers: {'Authorization': 'token $apikey'});
+
+    final data = json.decode(response.body);
+
+    final List<Map<String, dynamic>> prs = (data['items'] as List<dynamic>)
+        .map<Map<String, dynamic>>((item) => {
+              'title': item['title'],
+              'repository': item['repository_url'].split('/').last,
+              'url': item['html_url'],
+              'userAvatarUrl': item['user']['avatar_url'],
+              'userHtmlUrl': item['user']['html_url'],
+              'user': item['user'],
+            })
+        .toList();
+
+    setState(() {
+      _prs = prs;
     });
   }
 
@@ -79,6 +86,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     _fetchIssue();
+    _fetchPrs();
     super.initState();
   }
 
@@ -203,61 +211,57 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  /// Issue List View
+  ///  issue list view
   Widget issueListView() {
     return ListView.builder(
-      itemCount: _issues.length.toInt(),
-      itemBuilder: (context, index) {
-        final Map<String, dynamic> issue = _issues[index];
-        final author = issue['user'];
-        final repoName = issue['repository_url'].split('/').last;
-        if (issue['pull_request'] == null) {
-          return Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
-              color: tileColor,
-            ),
-            margin: const EdgeInsets.all(8),
-            child: MyListTile(
-              author: author,
-              issue: issue,
-              repoName: repoName,
-              mulitiplicationFactor: 0.25,
-            ),
-          );
-        } else {
-          return Container();
-        }
+      itemCount: _issues.length,
+      itemBuilder: (
+        BuildContext context,
+        int index,
+      ) {
+        final issue = _issues[index];
+
+        return Container(
+          margin: const EdgeInsets.only(bottom: 30),
+          child: CustomListTile(
+            buttonName: 'view issue',
+            user: issue['user']['login'],
+            mulitiplicationFactor: 0.17,
+            repository: issue['repository'],
+            title: issue['title'],
+            url: issue['url'],
+            userAvatarUrl: issue['userAvatarUrl'],
+          ),
+        );
       },
     );
   }
 
-  /// Pull requests List View
-  Widget prListView() {
+  ///  open pr list view
+  Widget prListView(){
     return ListView.builder(
-      itemCount: _issues.length.toInt(),
-      itemBuilder: (context, index) {
-        final Map<String, dynamic> issue = _issues[index];
-        final author = issue['user'];
-        final repoName = issue['repository_url'].split('/').last;
-        if (issue['pull_request'] != null) {
-          return Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
-              color: tileColor,
-            ),
-            margin: const EdgeInsets.all(8),
-            child: MyListTile(
-              author: author,
-              issue: issue,
-              repoName: repoName,
-              mulitiplicationFactor: 0.25,
-            ),
-          );
-        } else {
-          return Container();
-        }
+      itemCount: _prs.length,
+      itemBuilder: (
+        BuildContext context,
+        int index,
+      ) {
+        final pr = _prs[index];
+
+        return Container(
+          margin: const EdgeInsets.only(bottom: 30),
+          child: CustomListTile(
+            buttonName: 'view pr',
+            user: pr['user']['login'],
+            mulitiplicationFactor: 0.17,
+            repository: pr['repository'],
+            title: pr['title'],
+            url: pr['url'],
+            userAvatarUrl: pr['userAvatarUrl'],
+          ),
+        );
       },
     );
   }
+
+ 
 }
