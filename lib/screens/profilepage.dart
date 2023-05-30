@@ -161,8 +161,8 @@ class _ProfilePageState extends State<ProfilePage> {
                 hintText: 'discord username',
                 icon: FontAwesomeIcons.discord,
               ),
-              ElevatedButton(
-                onPressed: () {
+              GestureDetector(
+                onTap: () {
                   setUserData();
                   const snackBar = SnackBar(
                     content: Text(
@@ -172,7 +172,27 @@ class _ProfilePageState extends State<ProfilePage> {
                   );
                   ScaffoldMessenger.of(context).showSnackBar(snackBar);
                 },
-                child: const Text('Save'),
+                child: Container(
+                  width: screenWidth * 0.2,
+                  height: screenHeight * 0.045,
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: brightGreyColor,
+                      width: 0.5,
+                    ),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: const Align(
+                    alignment: Alignment.center,
+                    child: Text(
+                      'Save',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold
+                      ),
+                    ),
+                  ),
+                ),
               ),
               TextButton(
                   onPressed: () {
