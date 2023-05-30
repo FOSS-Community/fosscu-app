@@ -164,6 +164,13 @@ class _ProfilePageState extends State<ProfilePage> {
               ElevatedButton(
                 onPressed: () {
                   setUserData();
+                  const snackBar = SnackBar(
+                    content: Text(
+                      'Updated details',
+                    ),
+                    duration: Duration(seconds: 2),
+                  );
+                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
                 },
                 child: const Text('Save'),
               ),
