@@ -20,6 +20,7 @@ class MergedPRContainer extends StatefulWidget {
 class _MergedPRContainerState extends State<MergedPRContainer> {
   final TextEditingController days_controller = TextEditingController();
   List<Map<String, dynamic>> _mergedPRs = [];
+  bool hasSearched = false;
 
   @override
   void initState() {
@@ -29,7 +30,7 @@ class _MergedPRContainerState extends State<MergedPRContainer> {
   Future<void> _getMergedPRs(int numofDays) async {
     final token = apikey;
     final DateTime now = DateTime.now();
-    final DateTime threeDaysAgo = now.subtract( Duration(days: numofDays));
+    final DateTime threeDaysAgo = now.subtract(Duration(days: numofDays));
     final String since = threeDaysAgo.toIso8601String();
 
     final response = await http.get(
@@ -111,36 +112,45 @@ class _MergedPRContainerState extends State<MergedPRContainer> {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(25),
                 ),
-                child: _mergedPRs.isNotEmpty
-                    ? ListView.builder(
-                        itemCount: _mergedPRs.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          final pr = _mergedPRs[index];
+                child: hasSearched
+                    ? _mergedPRs.isNotEmpty
+                        ? ListView.builder(
+                            itemCount: _mergedPRs.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              final pr = _mergedPRs[index];
 
-                          return Container(
-                            margin:
-                                EdgeInsets.only(bottom: screenHeight * 0.02),
-                            child: CustomListTile(
-                              buttonName: 'View PR',
-                              user: pr['user']['login'],
-                              mulitiplicationFactor: 0.17,
-                              repository: pr['repository'],
-                              title: pr['title'],
-                              url: pr['url'],
-                              userAvatarUrl: pr['userAvatarUrl'],
+                              return Container(
+                                margin: EdgeInsets.only(
+                                    bottom: screenHeight * 0.02),
+                                child: CustomListTile(
+                                  buttonName: 'View PR',
+                                  user: pr['user']['login'],
+                                  mulitiplicationFactor: 0.17,
+                                  repository: pr['repository'],
+                                  title: pr['title'],
+                                  url: pr['url'],
+                                  userAvatarUrl: pr['userAvatarUrl'],
+                                ),
+                              );
+                            },
+                          )
+                        : Shimmer(
+                            duration: const Duration(seconds: 2),
+                            interval: const Duration(milliseconds: 500),
+                            color: Colors.white,
+                            enabled: true,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  color: brightGreyColor,
+                                  borderRadius: BorderRadius.circular(25)),
                             ),
-                          );
-                        },
-                      )
-                    : Shimmer(
-                        duration: const Duration(seconds: 2),
-                        interval: const Duration(milliseconds: 500),
-                        color: Colors.white,
-                        enabled: true,
-                        child: Container(
-                          decoration: BoxDecoration(
-                              color: brightGreyColor,
-                              borderRadius: BorderRadius.circular(25)),
+                          )
+                    : Container(
+                        alignment: Alignment.center,
+                        child: const Text(
+                          'Please enter the number of days to proceed!',
+                          style: TextStyle(
+                              color: purpleColor, fontWeight: FontWeight.bold),
                         ),
                       ),
               ),
@@ -193,6 +203,9 @@ class _MergedPRContainerState extends State<MergedPRContainer> {
                                 borderRadius: BorderRadius.circular(25))),
                         onPressed: () {
                           _getMergedPRs(int.parse(days_controller.text));
+                          setState(() {
+                            hasSearched = true;
+                          });
                         },
                         child: const Center(
                             child: Icon(
