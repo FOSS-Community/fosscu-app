@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fosscu_app/constants/apikey.dart';
@@ -22,6 +21,7 @@ class _RaisedPRContainerState extends State<RaisedPRContainer> {
   final String organization = 'FOSS-Community';
   final String personalAccessToken = apikey;
   final TextEditingController days_controller = TextEditingController();
+  bool hasSearched = false;
 
   List<dynamic> recentPRs = [];
 
@@ -104,6 +104,8 @@ class _RaisedPRContainerState extends State<RaisedPRContainer> {
                   ),
                 ),
               ),
+
+              /// Recently raised PRS
               Row(
                 children: [
                   Container(
@@ -123,6 +125,9 @@ class _RaisedPRContainerState extends State<RaisedPRContainer> {
                   ),
                 ],
               ),
+
+              /// Recently raised PRS
+
               Container(
                 width: screenWidth * 0.8,
                 height: screenHeight * 0.6,
@@ -130,42 +135,53 @@ class _RaisedPRContainerState extends State<RaisedPRContainer> {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(25),
                 ),
-                child: recentPRs.isNotEmpty
-                    ? ListView.builder(
-                        itemCount: recentPRs.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          final issue = recentPRs[index];
-                          final author = issue['user'];
-                          final repoName =
-                              issue['repository_url'].split('/').last;
-                          if (issue['pull_request'] != null) {
-                            return Container(
+                child: hasSearched
+                    ? recentPRs.isNotEmpty
+                        ? ListView.builder(
+                            itemCount: recentPRs.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              final issue = recentPRs[index];
+                              final author = issue['user'];
+                              final repoName =
+                                  issue['repository_url'].split('/').last;
+                              if (issue['pull_request'] != null) {
+                                return Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20),
+                                    color: tileColor,
+                                  ),
+                                  margin: const EdgeInsets.all(8),
+                                  child: MyListTile(
+                                    author: author,
+                                    issue: issue,
+                                    repoName: repoName,
+                                    mulitiplicationFactor: 0.12,
+                                  ),
+                                );
+                              } else {
+                                return Container();
+                              }
+                            },
+                          )
+                        : Shimmer(
+                            duration: const Duration(seconds: 2),
+                            interval: const Duration(milliseconds: 500),
+                            color: Colors.white,
+                            enabled: true,
+                            child: Container(
                               decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20),
-                                color: tileColor,
-                              ),
-                              margin: const EdgeInsets.all(8),
-                              child: MyListTile(
-                                author: author,
-                                issue: issue,
-                                repoName: repoName,
-                                mulitiplicationFactor: 0.12,
-                              ),
-                            );
-                          } else {
-                            return Container();
-                          }
-                        },
-                      )
-                    : Shimmer(
-                        duration: const Duration(seconds: 2),
-                        interval: const Duration(milliseconds: 500),
-                        color: Colors.white,
-                        enabled: true,
-                        child: Container(
-                          decoration: BoxDecoration(
-                              color: brightGreyColor,
-                              borderRadius: BorderRadius.circular(25)),
+                                  color: brightGreyColor,
+                                  borderRadius: BorderRadius.circular(25)),
+                            ),
+                          )
+                    : Container(
+                        alignment: Alignment.center,
+                        child: const Text(
+                          'Please enter the number of days to proceed!',
+                          style: TextStyle(
+                            color: orangeColor,
+                            fontWeight: FontWeight.bold
+                          ),
                         ),
                       ),
               ),
@@ -218,6 +234,9 @@ class _RaisedPRContainerState extends State<RaisedPRContainer> {
                                 borderRadius: BorderRadius.circular(25))),
                         onPressed: () {
                           fetchRecentPRs(int.parse(days_controller.text));
+                          setState(() {
+                            hasSearched = true;
+                          });
                         },
                         child: const Center(
                             child: Icon(
