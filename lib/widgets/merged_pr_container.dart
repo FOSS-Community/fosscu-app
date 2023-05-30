@@ -1,18 +1,14 @@
 import 'dart:convert';
 
-import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fosscu_app/constants/apikey.dart';
 import 'package:fosscu_app/constants/color.dart';
 import 'package:fosscu_app/constants/svg.dart';
 import 'package:fosscu_app/widgets/listtile.dart';
-import 'package:fosscu_app/widgets/mylisttile.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shimmer_animation/shimmer_animation.dart';
 import 'package:http/http.dart' as http;
-import 'package:url_launcher/url_launcher.dart';
-import 'package:url_launcher/url_launcher_string.dart';
 
 class MergedPRContainer extends StatefulWidget {
   const MergedPRContainer({super.key});
