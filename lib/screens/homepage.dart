@@ -1,12 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:fosscu_app/constants/apikey.dart';
 import 'package:fosscu_app/constants/color.dart';
-import 'package:fosscu_app/screens/contributor.dart';
-import 'package:fosscu_app/screens/learn.dart';
-import 'package:fosscu_app/screens/profilepage.dart';
 import 'package:fosscu_app/widgets/listtile.dart';
-import 'package:fosscu_app/widgets/mylisttile.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';

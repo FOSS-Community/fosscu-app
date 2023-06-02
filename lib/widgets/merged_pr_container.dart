@@ -134,6 +134,9 @@ class _MergedPRContainerState extends State<MergedPRContainer> {
                               );
                             },
                           )
+
+                        /// timer
+
                         : Shimmer(
                             duration: const Duration(seconds: 2),
                             interval: const Duration(milliseconds: 500),
@@ -141,8 +144,9 @@ class _MergedPRContainerState extends State<MergedPRContainer> {
                             enabled: true,
                             child: Container(
                               decoration: BoxDecoration(
-                                  color: brightGreyColor,
-                                  borderRadius: BorderRadius.circular(25)),
+                                color: brightGreyColor,
+                                borderRadius: BorderRadius.circular(25),
+                              ),
                             ),
                           )
                     : Container(
