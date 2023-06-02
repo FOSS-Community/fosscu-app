@@ -1,3 +1,5 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:fosscu_app/constants/apikey.dart';
 import 'package:fosscu_app/constants/color.dart';
@@ -8,6 +10,7 @@ import 'dart:convert';
 
 import 'package:shimmer_animation/shimmer_animation.dart';
 import 'package:slidable_button/slidable_button.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -26,6 +29,10 @@ class _HomePageState extends State<HomePage> {
   /// Creating a private dynamic list named as issues
   List<Map<String, dynamic>> _issues = [];
   List<Map<String, dynamic>> _prs = [];
+
+  /// Pageview controller
+  final PageController _controller = PageController();
+  bool onLastPage = false;
 
   /// Function to fetch open issues from all repositories
 
@@ -77,11 +84,43 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  /// List of past event images
+  String _image1 = '';
+  String _image2 = '';
+  String _image3 = '';
+  String _image4 = '';
+  String _image5 = '';
+
+  /// Fetching images for past events
+  void fetchPastEventImages() async {
+    DocumentSnapshot snapshot = await FirebaseFirestore.instance
+        .collection('past_events')
+        .doc('Mz1I9yOYAPsHXcOP5XTw')
+        .get();
+
+    if (snapshot.exists) {
+      String image1 = snapshot.get('image1');
+      String image2 = snapshot.get('image2');
+      String image3 = snapshot.get('image3');
+      String image4 = snapshot.get('image4');
+      String image5 = snapshot.get('image5');
+      print(image1);
+      setState(() {
+        _image1 = image1;
+        _image2 = image2;
+        _image3 = image3;
+        _image4 = image4;
+        _image5 = image5;
+      });
+    }
+  }
+
   /// Calling _fetchIssue when screen is intialized
   @override
   void initState() {
     _fetchIssue();
     _fetchPrs();
+    fetchPastEventImages();
     super.initState();
   }
 
@@ -97,6 +136,51 @@ class _HomePageState extends State<HomePage> {
             children: [
               SizedBox(
                 height: screenHeight * 0.05,
+              ),
+              // Past event pictures
+              Container(
+                height: screenHeight * 0.25, // Set the desired height
+                margin: EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    color: darkGreyColor),
+                child: Stack(
+                  children: [
+                    PageView(
+                      onPageChanged: (index) {
+                        setState(() {
+                          onLastPage = (index == 4);
+                        });
+                      },
+                      controller: _controller,
+                      children: [
+                        CachedNetworkImage(imageUrl: _image1),
+                        CachedNetworkImage(imageUrl: _image2),
+                        CachedNetworkImage(imageUrl: _image3),
+                        CachedNetworkImage(imageUrl: _image4),
+                        CachedNetworkImage(imageUrl: _image5),
+                      ],
+                    ),
+                    Container(
+                      alignment: const AlignmentDirectional(0, 1),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          SmoothPageIndicator(
+                            controller: _controller,
+                            count: 5,
+                            effect: ExpandingDotsEffect(
+                              dotColor: Colors.grey,
+                              activeDotColor: Colors.white,
+                              dotWidth: screenWidth * 0.013,
+                              dotHeight: screenWidth * 0.005,
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
+                  ],
+                ),
               ),
               Align(
                 alignment: const AlignmentDirectional(-1, 0),
@@ -233,7 +317,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   ///  open pr list view
-  Widget prListView(){
+  Widget prListView() {
     return ListView.builder(
       itemCount: _prs.length,
       itemBuilder: (
@@ -257,6 +341,4 @@ class _HomePageState extends State<HomePage> {
       },
     );
   }
-
- 
 }
