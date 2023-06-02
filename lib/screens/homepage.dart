@@ -91,26 +91,40 @@ class _HomePageState extends State<HomePage> {
   String _image4 = '';
   String _image5 = '';
 
+  /// Texts for past events
+  String pastEventHeadText = '';
+  String pastEventBodyText = '';
+
   /// Fetching images for past events
-  void fetchPastEventImages() async {
+  void fetchPastEvent() async {
     DocumentSnapshot snapshot = await FirebaseFirestore.instance
         .collection('past_events')
         .doc('Mz1I9yOYAPsHXcOP5XTw')
         .get();
 
-    if (snapshot.exists) {
+    DocumentSnapshot textSnapshot = await FirebaseFirestore.instance
+        .collection('past_events')
+        .doc('Text')
+        .get();
+
+    if (snapshot.exists && textSnapshot.exists) {
       String image1 = snapshot.get('image1');
       String image2 = snapshot.get('image2');
       String image3 = snapshot.get('image3');
       String image4 = snapshot.get('image4');
       String image5 = snapshot.get('image5');
-      print(image1);
+
+      String headText = textSnapshot.get('heading');
+      String bodyText = textSnapshot.get('body');
       setState(() {
         _image1 = image1;
         _image2 = image2;
         _image3 = image3;
         _image4 = image4;
         _image5 = image5;
+
+        pastEventHeadText = headText;
+        pastEventBodyText = bodyText;
       });
     }
   }
@@ -120,7 +134,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     _fetchIssue();
     _fetchPrs();
-    fetchPastEventImages();
+    fetchPastEvent();
     super.initState();
   }
 
@@ -140,7 +154,7 @@ class _HomePageState extends State<HomePage> {
               // Past event pictures
               Container(
                 height: screenHeight * 0.25, // Set the desired height
-                margin: EdgeInsets.all(10),
+                margin: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
                     color: darkGreyColor),
@@ -175,6 +189,35 @@ class _HomePageState extends State<HomePage> {
                               dotWidth: screenWidth * 0.013,
                               dotHeight: screenWidth * 0.005,
                             ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      alignment: const AlignmentDirectional(-1, 1),
+                      child: Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Text(
+                                pastEventHeadText,
+                                style: GoogleFonts.leagueSpartan(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Text(
+                                pastEventBodyText,
+                                style: GoogleFonts.leagueSpartan(
+                                  color: Colors.black,
+                                ),
+                              ),
+                            ],
                           ),
                         ],
                       ),
