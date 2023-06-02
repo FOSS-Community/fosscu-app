@@ -11,6 +11,7 @@ import 'dart:convert';
 import 'package:shimmer_animation/shimmer_animation.dart';
 import 'package:slidable_button/slidable_button.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:stroke_text/stroke_text.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -194,32 +195,43 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
                     Container(
-                      alignment: const AlignmentDirectional(-1, 1),
-                      child: Column(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Text(
-                                pastEventHeadText,
-                                style: GoogleFonts.leagueSpartan(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                            ],
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Text(
-                                pastEventBodyText,
-                                style: GoogleFonts.leagueSpartan(
-                                  color: Colors.black,
+                      alignment: const AlignmentDirectional(-1, 0),
+                      margin: const EdgeInsets.only(left: 10),
+                      child: Positioned(
+                        top: screenHeight * 0.18,
+                        child: Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                StrokeText(
+                                  text: pastEventHeadText,
+                                  textStyle: GoogleFonts.leagueSpartan(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18
+                                  ),
+                                  strokeColor: Colors.black,
+                                  strokeWidth: 1.5,
                                 ),
-                              ),
-                            ],
-                          ),
-                        ],
+                              ],
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                StrokeText(
+                                  text: pastEventBodyText,
+                                  textStyle: GoogleFonts.leagueSpartan(
+                                    color: Colors.white,
+                                    fontSize: 14
+                                  ),
+                                  strokeColor: Colors.black,
+                                  strokeWidth: 1.5,
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
                     )
                   ],
