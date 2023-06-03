@@ -12,6 +12,7 @@ import 'package:shimmer_animation/shimmer_animation.dart';
 import 'package:slidable_button/slidable_button.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:stroke_text/stroke_text.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -91,6 +92,7 @@ class _HomePageState extends State<HomePage> {
   /// Texts for past events
   String pastEventHeadText = '';
   String pastEventBodyText = '';
+  String pastEventLink = '';
 
   /// Fetching images for past events
   void fetchPastEvent() async {
@@ -108,10 +110,12 @@ class _HomePageState extends State<HomePage> {
       String image1 = snapshot.get('image1');
       String headText = textSnapshot.get('heading');
       String bodyText = textSnapshot.get('body');
+      String eventLink = textSnapshot.get('link');
       setState(() {
         _image1 = image1;
         pastEventHeadText = headText;
         pastEventBodyText = bodyText;
+        pastEventLink = eventLink;
       });
     }
   }
@@ -140,6 +144,17 @@ class _HomePageState extends State<HomePage> {
               ),
               // Past event pictures
               Container(
+                alignment: Alignment.centerLeft,
+                margin: EdgeInsets.only(left: screenWidth * 0.05),
+                child: Text(
+                  'Our Past Events!',
+                  style: GoogleFonts.leagueSpartan(
+                    fontWeight: FontWeight.bold,
+                    color: greenColor,
+                  ),
+                ),
+              ),
+              Container(
                 height: screenHeight * 0.25, // Set the desired height
                 margin: const EdgeInsets.symmetric(
                   vertical: 10,
@@ -151,10 +166,16 @@ class _HomePageState extends State<HomePage> {
                 ),
                 child: Stack(
                   children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(20),
-                      child: CachedNetworkImage(imageUrl: _image1),
+                    GestureDetector(
+                      onTap: () {
+                        launchUrlString(pastEventLink, mode: LaunchMode.externalApplication);
+                      },
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(20),
+                        child: CachedNetworkImage(imageUrl: _image1),
+                      ),
                     ),
+                    
                   ],
                 ),
               ),
