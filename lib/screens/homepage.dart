@@ -85,12 +85,8 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  /// List of past event images
+  /// past event picture
   String _image1 = '';
-  String _image2 = '';
-  String _image3 = '';
-  String _image4 = '';
-  String _image5 = '';
 
   /// Texts for past events
   String pastEventHeadText = '';
@@ -110,20 +106,10 @@ class _HomePageState extends State<HomePage> {
 
     if (snapshot.exists && textSnapshot.exists) {
       String image1 = snapshot.get('image1');
-      String image2 = snapshot.get('image2');
-      String image3 = snapshot.get('image3');
-      String image4 = snapshot.get('image4');
-      String image5 = snapshot.get('image5');
-
       String headText = textSnapshot.get('heading');
       String bodyText = textSnapshot.get('body');
       setState(() {
         _image1 = image1;
-        _image2 = image2;
-        _image3 = image3;
-        _image4 = image4;
-        _image5 = image5;
-
         pastEventHeadText = headText;
         pastEventBodyText = bodyText;
       });
@@ -155,85 +141,20 @@ class _HomePageState extends State<HomePage> {
               // Past event pictures
               Container(
                 height: screenHeight * 0.25, // Set the desired height
-                margin: const EdgeInsets.all(10),
+                margin: const EdgeInsets.symmetric(
+                  vertical: 10,
+                  horizontal: 20,
+                ),
                 decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    color: darkGreyColor),
+                  borderRadius: BorderRadius.circular(20),
+                  color: Colors.black,
+                ),
                 child: Stack(
                   children: [
-                    PageView(
-                      onPageChanged: (index) {
-                        setState(() {
-                          onLastPage = (index == 4);
-                        });
-                      },
-                      controller: _controller,
-                      children: [
-                        CachedNetworkImage(imageUrl: _image1),
-                        CachedNetworkImage(imageUrl: _image2),
-                        CachedNetworkImage(imageUrl: _image3),
-                        CachedNetworkImage(imageUrl: _image4),
-                        CachedNetworkImage(imageUrl: _image5),
-                      ],
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(20),
+                      child: CachedNetworkImage(imageUrl: _image1),
                     ),
-                    Container(
-                      alignment: const AlignmentDirectional(0, 1),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          SmoothPageIndicator(
-                            controller: _controller,
-                            count: 5,
-                            effect: ExpandingDotsEffect(
-                              dotColor: Colors.grey,
-                              activeDotColor: Colors.white,
-                              dotWidth: screenWidth * 0.013,
-                              dotHeight: screenWidth * 0.005,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      alignment: const AlignmentDirectional(-1, 0),
-                      margin: const EdgeInsets.only(left: 10),
-                      child: Positioned(
-                        top: screenHeight * 0.18,
-                        child: Column(
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                StrokeText(
-                                  text: pastEventHeadText,
-                                  textStyle: GoogleFonts.leagueSpartan(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 18
-                                  ),
-                                  strokeColor: Colors.black,
-                                  strokeWidth: 1.5,
-                                ),
-                              ],
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                StrokeText(
-                                  text: pastEventBodyText,
-                                  textStyle: GoogleFonts.leagueSpartan(
-                                    color: Colors.white,
-                                    fontSize: 14
-                                  ),
-                                  strokeColor: Colors.black,
-                                  strokeWidth: 1.5,
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                    )
                   ],
                 ),
               ),
