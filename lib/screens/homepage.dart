@@ -36,6 +36,7 @@ class _HomePageState extends State<HomePage> {
   final PageController _controller = PageController();
   bool onLastPage = false;
 
+
   /// Function to fetch open issues from all repositories
 
   Future<void> _fetchIssue() async {
@@ -94,6 +95,9 @@ class _HomePageState extends State<HomePage> {
   String pastEventBodyText = '';
   String pastEventLink = '';
 
+    /// number of upcoming events
+  double _upcomingEvents = 0;
+
   /// Fetching images for past events
   void fetchPastEvent() async {
     DocumentSnapshot snapshot = await FirebaseFirestore.instance
@@ -120,12 +124,29 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
+  // method for upcoming events
+  void fetchUpcomintEvents() async {
+    DocumentSnapshot snapshot = await FirebaseFirestore.instance
+        .collection('upcoming_events')
+        .doc('upcoming_events')
+        .get();
+
+    if(snapshot.exists){
+      double upcomingEvents = snapshot.get('mumber');
+      setState(() {
+        _upcomingEvents = upcomingEvents;
+      });
+    }
+
+  }
+
   /// Calling _fetchIssue when screen is intialized
   @override
   void initState() {
     _fetchIssue();
     _fetchPrs();
     fetchPastEvent();
+    fetchUpcomintEvents();
     super.initState();
   }
 
@@ -168,14 +189,14 @@ class _HomePageState extends State<HomePage> {
                   children: [
                     GestureDetector(
                       onTap: () {
-                        launchUrlString(pastEventLink, mode: LaunchMode.externalApplication);
+                        launchUrlString(pastEventLink,
+                            mode: LaunchMode.externalApplication);
                       },
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(20),
                         child: CachedNetworkImage(imageUrl: _image1),
                       ),
                     ),
-                    
                   ],
                 ),
               ),
