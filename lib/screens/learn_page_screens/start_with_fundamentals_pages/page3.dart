@@ -21,8 +21,8 @@ class StartWithFundamentalsPage3 extends StatelessWidget {
               SizedBox(
                 height: screenHeight * 0.03,
               ),
-              Column(
-                children: const [
+              const Column(
+                children: [
                   LearnPageHeading(
                     color: greenColor,
                     text: 'How is Open-Source even Sustainable?',
@@ -35,8 +35,8 @@ class StartWithFundamentalsPage3 extends StatelessWidget {
                   ),
                 ],
               ),
-              Column(
-                children: const [
+              const Column(
+                children: [
                   LearnPageHeading(
                     color: greenColor,
                     text: 'How can a novice start with Open-Source?',

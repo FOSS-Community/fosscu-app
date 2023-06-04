@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fosscu_app/constants/color.dart';
 import 'package:fosscu_app/widgets/learn_subpage_widgets/body_text.dart';
-import 'package:fosscu_app/widgets/learn_subpage_widgets/code_snippet.dart';
 import 'package:fosscu_app/widgets/learn_subpage_widgets/heading.dart';
 import 'package:fosscu_app/widgets/learn_subpage_widgets/sub_heading.dart';
 
@@ -22,8 +21,8 @@ class UnderstandingBranchesPage1 extends StatelessWidget {
               SizedBox(
                 height: screenHeight * 0.03,
               ),
-              Column(
-                children: const [
+              const Column(
+                children: [
                   LearnPageHeading(
                     color: greenColor,
                     text: 'Since now we have a brief understanding of Git and Github, but we still do not know about branches.',

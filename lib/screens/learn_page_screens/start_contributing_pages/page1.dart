@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:fosscu_app/constants/color.dart';
-import 'package:fosscu_app/widgets/learn_subpage_widgets/body_text.dart';
-import 'package:fosscu_app/widgets/learn_subpage_widgets/code_snippet.dart';
 import 'package:fosscu_app/widgets/learn_subpage_widgets/heading.dart';
 import 'package:fosscu_app/widgets/learn_subpage_widgets/sub_heading.dart';
 import 'package:url_launcher/url_launcher_string.dart';
@@ -43,7 +41,7 @@ class StartContributingPage1 extends StatelessWidget {
                           "Here are some of the websites where you can find beginner friendly open source projects.."),
                   Container(
                     margin: EdgeInsets.only(left: screenWidth * 0.045),
-                    alignment: AlignmentDirectional(-1, 0),
+                    alignment: const AlignmentDirectional(-1, 0),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,

@@ -2,7 +2,6 @@
 import 'package:flutter/material.dart';
 import 'package:fosscu_app/screens/auth_page_screens/login_page.dart';
 import 'package:fosscu_app/screens/auth_page_screens/register_page.dart';
-import 'package:fosscu_app/screens/homepage.dart';
 
 class LoginOrRegisterPage extends StatefulWidget {
   const LoginOrRegisterPage({super.key});

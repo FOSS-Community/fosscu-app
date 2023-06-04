@@ -28,7 +28,6 @@ class _MergedPRContainerState extends State<MergedPRContainer> {
   }
 
   Future<void> _getMergedPRs(int numofDays) async {
-    final token = apikey;
     final DateTime now = DateTime.now();
     final DateTime threeDaysAgo = now.subtract(Duration(days: numofDays));
     final String since = threeDaysAgo.toIso8601String();

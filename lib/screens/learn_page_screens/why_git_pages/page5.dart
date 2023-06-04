@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:fosscu_app/constants/color.dart';
-import 'package:fosscu_app/widgets/learn_subpage_widgets/body_text.dart';
-import 'package:fosscu_app/widgets/learn_subpage_widgets/code_snippet.dart';
 import 'package:fosscu_app/widgets/learn_subpage_widgets/heading.dart';
 import 'package:fosscu_app/widgets/learn_subpage_widgets/sub_heading.dart';
 
@@ -22,8 +20,8 @@ class WhyGitPage5 extends StatelessWidget {
               SizedBox(
                 height: screenHeight * 0.03,
               ),
-              Column(
-                children: const [
+              const Column(
+                children: [
                   LearnPageHeading(
                     color: greenColor,
                     text: 'What is Staging area?',
@@ -38,8 +36,8 @@ class WhyGitPage5 extends StatelessWidget {
                   
                 ],
               ),
-              Column(
-                children: const [
+              const Column(
+                children: [
                   
                 ],
               ),

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:fosscu_app/screens/auth_page_screens/auth_page.dart';
-import 'package:fosscu_app/widgets/navbar.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 

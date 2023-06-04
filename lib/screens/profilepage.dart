@@ -3,7 +3,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:fosscu_app/constants/color.dart';
-import 'package:fosscu_app/widgets/learn_subpage_widgets/heading.dart';
 import 'package:fosscu_app/widgets/profile_page_widgets/profile_text.dart';
 import 'package:fosscu_app/widgets/profile_page_widgets/profile_text_field.dart';
 import 'package:url_launcher/url_launcher_string.dart';
@@ -200,8 +199,8 @@ class _ProfilePageState extends State<ProfilePage> {
                   },
                   child: Container(
                     margin: EdgeInsets.only(left: screenWidth * 0.05),
-                    child: Row(
-                      children: const [
+                    child: const Row(
+                      children: [
                         Icon(
                           Icons.logout,
                           color: Colors.red,

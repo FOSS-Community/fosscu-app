@@ -19,7 +19,7 @@ class ContributionTile extends StatefulWidget {
 }
 
 class _ContributionTileState extends State<ContributionTile> {
-  bool _isTappedDown = false;
+  final bool _isTappedDown = false;
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;

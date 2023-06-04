@@ -8,7 +8,6 @@ import 'package:fosscu_app/widgets/contributor_page_tile.dart';
 import 'package:fosscu_app/widgets/contributors_profile_container.dart';
 import 'package:fosscu_app/widgets/listtile.dart';
 import 'package:fosscu_app/widgets/merged_pr_container.dart';
-import 'package:fosscu_app/widgets/mylisttile.dart';
 import 'package:fosscu_app/widgets/raised_pr_container.dart';
 import 'package:fosscu_app/widgets/top5_contributors_container.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -101,7 +100,7 @@ class _ContributorPageState extends State<ContributorPage> {
               ),
               Container(
                   margin: EdgeInsets.only(left: screenWidth * 0.15),
-                  alignment: AlignmentDirectional(-1, 0),
+                  alignment: const AlignmentDirectional(-1, 0),
                   child: Text(
                     'Unclaimed Issues',
                     style: GoogleFonts.leagueSpartan(
@@ -155,9 +154,9 @@ class _ContributorPageState extends State<ContributorPage> {
                   children: [
                     Container(
                       margin: EdgeInsets.only(bottom: screenHeight * 0.05),
-                      child: Row(
+                      child: const Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: const [
+                        children: [
                           ContributionTile(
                             picture: openPr,
                             text: 'Raised PRs',
@@ -171,9 +170,9 @@ class _ContributorPageState extends State<ContributorPage> {
                         ],
                       ),
                     ),
-                    Row(
+                    const Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: const [
+                      children: [
                         ContributionTile(
                           picture: gitIcon,
                           text: "Members\n   Profile",

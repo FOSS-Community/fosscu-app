@@ -1,7 +1,6 @@
 /// called by main function
 
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:fosscu_app/screens/auth_page_screens/login_or_register_page.dart';
 import 'package:fosscu_app/widgets/navbar.dart';

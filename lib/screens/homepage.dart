@@ -10,8 +10,6 @@ import 'dart:convert';
 
 import 'package:shimmer_animation/shimmer_animation.dart';
 import 'package:slidable_button/slidable_button.dart';
-import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import 'package:stroke_text/stroke_text.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 class HomePage extends StatefulWidget {
@@ -94,7 +92,7 @@ class _HomePageState extends State<HomePage> {
   String pastEventBodyText = '';
   String pastEventLink = '';
 
-  List<String> _upcomingEventImageUrl = [];
+  final List<String> _upcomingEventImageUrl = [];
 
   /// Fetching images for past events
   void fetchPastEvent() async {
@@ -327,7 +325,7 @@ class _HomePageState extends State<HomePage> {
                 child: Padding(
                   padding:
                       const EdgeInsets.all(8).copyWith(left: 15, right: 15),
-                  child: Row(
+                  child: const Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   ),
                 ),
