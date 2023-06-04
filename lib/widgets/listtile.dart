@@ -99,7 +99,7 @@ class _CustomListTileState extends State<CustomListTile>
                               ),
                               OutlinedButton(
                                   onPressed: () {
-                                    launchUrlString(widget.url);
+                                    launchUrlString(widget.url, mode: LaunchMode.externalApplication);
                                   },
                                   child: Text(widget.buttonName))
                             ],

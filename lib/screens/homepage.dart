@@ -36,7 +36,6 @@ class _HomePageState extends State<HomePage> {
   final PageController _controller = PageController();
   bool onLastPage = false;
 
-
   /// Function to fetch open issues from all repositories
 
   Future<void> _fetchIssue() async {
@@ -95,8 +94,7 @@ class _HomePageState extends State<HomePage> {
   String pastEventBodyText = '';
   String pastEventLink = '';
 
-    /// number of upcoming events
-  double _upcomingEvents = 0;
+  List<String> _upcomingEventImageUrl = [];
 
   /// Fetching images for past events
   void fetchPastEvent() async {
@@ -124,20 +122,50 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
+  /// number of upcoming events
+  double _upcomingEvents = 0;
+
   // method for upcoming events
   void fetchUpcomintEvents() async {
-    DocumentSnapshot snapshot = await FirebaseFirestore.instance
+    DocumentSnapshot noOfEvents = await FirebaseFirestore.instance
         .collection('upcoming_events')
         .doc('upcoming_events')
         .get();
 
-    if(snapshot.exists){
-      double upcomingEvents = snapshot.get('mumber');
+    DocumentSnapshot upcomingEventPictures = await FirebaseFirestore.instance
+        .collection('upcoming_events')
+        .doc('upcoming_events_image')
+        .get();
+
+    if (noOfEvents.exists && upcomingEventPictures.exists) {
+      double upcomingEvent = noOfEvents.get('number');
+      String event1link = upcomingEventPictures.get('event1');
+      String event2link = upcomingEventPictures.get('event2');
+      String event3link = upcomingEventPictures.get('event3');
+      String event4link = upcomingEventPictures.get('event4');
+      String event5link = upcomingEventPictures.get('event5');
+      String event6link = upcomingEventPictures.get('event5');
+      String event7link = upcomingEventPictures.get('event7');
+      String event8link = upcomingEventPictures.get('event8');
+      String event9link = upcomingEventPictures.get('event9');
+      String event10link = upcomingEventPictures.get('event10');
       setState(() {
-        _upcomingEvents = upcomingEvents;
+        _upcomingEvents = upcomingEvent;
+        _upcomingEventImageUrl[0] = event1link;
+        _upcomingEventImageUrl[1] = event2link;
+        _upcomingEventImageUrl[2] = event3link;
+        _upcomingEventImageUrl[3] = event4link;
+        _upcomingEventImageUrl[4] = event5link;
+        _upcomingEventImageUrl[5] = event6link;
+        _upcomingEventImageUrl[6] = event7link;
+        _upcomingEventImageUrl[7] = event8link;
+        _upcomingEventImageUrl[8] = event9link;
+        _upcomingEventImageUrl[9] = event10link;
+        print('upcoming vents value is ');
+
+        print(upcomingEvent);
       });
     }
-
   }
 
   /// Calling _fetchIssue when screen is intialized
@@ -163,7 +191,7 @@ class _HomePageState extends State<HomePage> {
               SizedBox(
                 height: screenHeight * 0.05,
               ),
-              // Past event pictures
+              // Past event text
               Container(
                 alignment: Alignment.centerLeft,
                 margin: EdgeInsets.only(left: screenWidth * 0.05),
@@ -175,6 +203,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
               ),
+              // past event pictures
               Container(
                 height: screenHeight * 0.25, // Set the desired height
                 margin: const EdgeInsets.symmetric(
@@ -200,6 +229,7 @@ class _HomePageState extends State<HomePage> {
                   ],
                 ),
               ),
+
               Align(
                 alignment: const AlignmentDirectional(-1, 0),
                 child: Container(
@@ -295,7 +325,8 @@ class _HomePageState extends State<HomePage> {
                 color: greenTrackColor,
                 buttonColor: greenColor,
                 child: Padding(
-                  padding: EdgeInsets.all(8).copyWith(left: 15, right: 15),
+                  padding:
+                      const EdgeInsets.all(8).copyWith(left: 15, right: 15),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   ),
