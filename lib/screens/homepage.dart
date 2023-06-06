@@ -206,6 +206,32 @@ class _HomePageState extends State<HomePage> {
               SizedBox(
                 height: screenHeight * 0.05,
               ),
+              Align(
+                alignment: const AlignmentDirectional(-1, 0),
+                child: Container(
+                  width: screenWidth * 0.68,
+                  margin: EdgeInsets.only(left: screenWidth * 0.05),
+                  child: RichText(
+                    text: TextSpan(
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: screenWidth * 0.1,
+                          fontWeight: FontWeight.bold,
+                          height: 1.5,
+                        ),
+                        children: const <TextSpan>[
+                          TextSpan(text: 'May the\n'),
+                          TextSpan(
+                              text: 'open source ',
+                              style: TextStyle(color: greenColor)),
+                          TextSpan(text: 'be with you')
+                        ]),
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: screenHeight * 0.05,
+              ),
               // Past event text
               Container(
                 alignment: Alignment.centerLeft,
@@ -363,30 +389,8 @@ class _HomePageState extends State<HomePage> {
                       );
                     }),
               ),
+// open source
 
-              Align(
-                alignment: const AlignmentDirectional(-1, 0),
-                child: Container(
-                  width: screenWidth * 0.68,
-                  margin: EdgeInsets.only(left: screenWidth * 0.07),
-                  child: RichText(
-                    text: TextSpan(
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: screenWidth * 0.1,
-                          fontWeight: FontWeight.bold,
-                          height: 1.5,
-                        ),
-                        children: const <TextSpan>[
-                          TextSpan(text: 'May the\n'),
-                          TextSpan(
-                              text: 'open source ',
-                              style: TextStyle(color: greenColor)),
-                          TextSpan(text: 'be with you')
-                        ]),
-                  ),
-                ),
-              ),
               SizedBox(
                 height: screenHeight * 0.055,
               ),
