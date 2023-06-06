@@ -35,7 +35,7 @@ class _ProfilePageState extends State<ProfilePage> {
   void setUserData() {
     User? user = FirebaseAuth.instance.currentUser;
     String userId = user!.uid;
-    FirebaseFirestore.instance.collection('users').doc(userId).set({
+    FirebaseFirestore.instance.collection('users').doc(user.displayName.toString()).set({
       'your name': nameController.text,
       'github': githubController.text,
       'discord': discordController.text
@@ -47,7 +47,7 @@ class _ProfilePageState extends State<ProfilePage> {
     String userId = user!.uid;
 
     DocumentSnapshot snapshot =
-        await FirebaseFirestore.instance.collection('users').doc(userId).get();
+        await FirebaseFirestore.instance.collection('users').doc(user.displayName.toString()).get();
 
     if (snapshot.exists) {
       String yourName = snapshot.get('your name');
