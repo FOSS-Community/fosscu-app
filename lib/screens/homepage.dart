@@ -92,7 +92,7 @@ class _HomePageState extends State<HomePage> {
   String pastEventBodyText = '';
   String pastEventLink = '';
 
-  final List<String> _upcomingEventImageUrl = [];
+  List<String> upcomingEventImageUrl = [];
 
   /// Fetching images for past events
   void fetchPastEvent() async {
@@ -120,51 +120,27 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  /// number of upcoming events
-  double _upcomingEvents = 0;
+  /// Fetch upcoming events
+  void fetchUpcomingEvents() async {
+    CollectionReference collectionReference = FirebaseFirestore.instance.collection('upcoming_events');
 
-  // method for upcoming events
-  void fetchUpcomintEvents() async {
-    DocumentSnapshot noOfEvents = await FirebaseFirestore.instance
-        .collection('upcoming_events')
-        .doc('upcoming_events')
-        .get();
+    // get docs from collection reference
+    QuerySnapshot  upcomingEvents = await collectionReference.get();
 
-    DocumentSnapshot upcomingEventPictures = await FirebaseFirestore.instance
-        .collection('upcoming_events')
-        .doc('upcoming_events_image')
-        .get();
+    // get data from docs and convert map to list
+      final upcomingEventsLinks = upcomingEvents.docs
+      .map((doc) => doc.data() as Map<String, dynamic>)
+      .toList();
 
-    if (noOfEvents.exists && upcomingEventPictures.exists) {
-      double upcomingEvent = noOfEvents.get('number');
-      String event1link = upcomingEventPictures.get('event1');
-      String event2link = upcomingEventPictures.get('event2');
-      String event3link = upcomingEventPictures.get('event3');
-      String event4link = upcomingEventPictures.get('event4');
-      String event5link = upcomingEventPictures.get('event5');
-      String event6link = upcomingEventPictures.get('event5');
-      String event7link = upcomingEventPictures.get('event7');
-      String event8link = upcomingEventPictures.get('event8');
-      String event9link = upcomingEventPictures.get('event9');
-      String event10link = upcomingEventPictures.get('event10');
-      setState(() {
-        _upcomingEvents = upcomingEvent;
-        _upcomingEventImageUrl[0] = event1link;
-        _upcomingEventImageUrl[1] = event2link;
-        _upcomingEventImageUrl[2] = event3link;
-        _upcomingEventImageUrl[3] = event4link;
-        _upcomingEventImageUrl[4] = event5link;
-        _upcomingEventImageUrl[5] = event6link;
-        _upcomingEventImageUrl[6] = event7link;
-        _upcomingEventImageUrl[7] = event8link;
-        _upcomingEventImageUrl[8] = event9link;
-        _upcomingEventImageUrl[9] = event10link;
-        print('upcoming vents value is ');
-
-        print(upcomingEvent);
-      });
+    for(var event in upcomingEventsLinks) {
+      upcomingEventImageUrl.addAll(event.values.map((value) => value.toString()));
     }
+
+    //print(upcomingEventImageUrl[0]);
+    print(upcomingEventImageUrl.length);
   }
+
+
 
   /// Calling _fetchIssue when screen is intialized
   @override
@@ -172,7 +148,7 @@ class _HomePageState extends State<HomePage> {
     _fetchIssue();
     _fetchPrs();
     fetchPastEvent();
-    fetchUpcomintEvents();
+    fetchUpcomingEvents();
     super.initState();
   }
 
@@ -227,6 +203,8 @@ class _HomePageState extends State<HomePage> {
                   ],
                 ),
               ),
+
+              
 
               Align(
                 alignment: const AlignmentDirectional(-1, 0),
