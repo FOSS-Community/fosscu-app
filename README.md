@@ -15,10 +15,26 @@ For help getting started with Flutter development, view the
 [online documentation](https://docs.flutter.dev/), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
 
+## How to setup the project:
+
+Clone the repository using git clone.
+
+Then Run this from terminal.
+```dart
+pub get
+```
+Under lib/constants create a new file as apikey.dart, It is your key used to fetch data from github api.
+
+```dart
+const apikey = 'paste_your_apikey_here';
+```
+
+
+
 ## Roadmap
 Features
 - [x] Basic info of Club
-- [ ] Login, Registration
+- [x] Login, Registration
     - [ ] Documentation links
     - [ ] Repositories
     - [ ] Learning path
