@@ -204,6 +204,18 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
 
+              Container(
+                alignment: Alignment.centerLeft,
+                margin: EdgeInsets.only(left: screenWidth * 0.05),
+                child: Text(
+                  'Our Upcoming Events!',
+                  style: GoogleFonts.leagueSpartan(
+                    fontWeight: FontWeight.bold,
+                    color: greenColor,
+                  ),
+                ),
+              ),
+
               /// List view to show upcoming events.
               Container(
                 height:
