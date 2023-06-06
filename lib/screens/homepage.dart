@@ -94,6 +94,8 @@ class _HomePageState extends State<HomePage> {
 
   List<String> upcomingEventImageUrl = [];
   List<String> upcomingEventsUrlList = [];
+  List<String> upcomingEventHostList = [];
+  List<String> upcomingEventDateList = [];
 
   /// Fetching images for past events
   void fetchPastEvent() async {
@@ -129,10 +131,20 @@ class _HomePageState extends State<HomePage> {
     CollectionReference registerLinkReference =
         FirebaseFirestore.instance.collection('upcoming_events_links');
 
+    CollectionReference hostReference =
+        FirebaseFirestore.instance.collection('talk_by');
+
+    CollectionReference dateReference =
+        FirebaseFirestore.instance.collection('upcoming_events_dates');
+
     // get docs from collection reference
     QuerySnapshot upcomingEventsImage = await imageReference.get();
 
     QuerySnapshot upcomingEventsUrl = await registerLinkReference.get();
+
+    QuerySnapshot upcomingEventsHost = await hostReference.get();
+
+    QuerySnapshot upcomingEventsDate = await dateReference.get();
 
     // get data from docs and convert map to list
     final upcomingEventsImageLink = upcomingEventsImage.docs
@@ -140,6 +152,14 @@ class _HomePageState extends State<HomePage> {
         .toList();
 
     final upcomingEventsUrls = upcomingEventsUrl.docs
+        .map((doc) => doc.data() as Map<String, dynamic>)
+        .toList();
+
+    final upcomingEventsHosts = upcomingEventsHost.docs
+        .map((doc) => doc.data() as Map<String, dynamic>)
+        .toList();
+
+    final upcomingEventsDates = upcomingEventsDate.docs
         .map((doc) => doc.data() as Map<String, dynamic>)
         .toList();
 
@@ -153,9 +173,14 @@ class _HomePageState extends State<HomePage> {
           .addAll(event.values.map((value) => value.toString()));
     }
 
-    //print(upcomingEventImageUrl[0]);
-    print(upcomingEventImageUrl.length);
-    print(upcomingEventsUrlList.length);
+    for (var event in upcomingEventsHosts) {
+      upcomingEventHostList
+          .addAll(event.values.map((value) => value.toString()));
+    }
+    for (var event in upcomingEventsDates) {
+      upcomingEventDateList
+          .addAll(event.values.map((value) => value.toString()));
+    }
   }
 
   /// Calling _fetchIssue when screen is intialized
@@ -235,7 +260,7 @@ class _HomePageState extends State<HomePage> {
               /// List view to show upcoming events.
               Container(
                 height: (screenHeight * 0.25 * upcomingEventImageUrl.length) +
-                    screenHeight * 0.1,
+                    screenHeight * 0.3,
                 decoration:
                     BoxDecoration(borderRadius: BorderRadius.circular(20)),
                 child: ListView.builder(
@@ -248,7 +273,7 @@ class _HomePageState extends State<HomePage> {
                       final url = upcomingEventImageUrl[index];
                       final regUrl = upcomingEventsUrlList[index];
                       return Container(
-                        height: screenHeight * 0.25,
+                        height: screenHeight * 0.3,
                         margin: const EdgeInsets.symmetric(
                           vertical: 10,
                           horizontal: 20,
@@ -259,16 +284,57 @@ class _HomePageState extends State<HomePage> {
                         ),
                         child: Stack(
                           children: [
-                            GestureDetector(
-                              onTap: () {
-                                launchUrlString(
-                                  regUrl,
-                                  mode: LaunchMode.externalApplication,
-                                );
-                              },
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(20),
-                                child: CachedNetworkImage(imageUrl: url),
+                            Container(
+                              decoration: BoxDecoration(
+                                color: darkGreyColor,
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                              child: Column(
+                                children: [
+                                  GestureDetector(
+                                    onTap: () {},
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(20),
+                                      child: CachedNetworkImage(imageUrl: url),
+                                    ),
+                                  ),
+                                  SizedBox(height: screenHeight * 0.01),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Container(
+                                        margin: const EdgeInsets.all(10),
+                                        child: Column(
+                                          mainAxisAlignment: MainAxisAlignment.start,
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              upcomingEventHostList[index],
+                                              style: GoogleFonts.leagueSpartan(
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                            Text(
+                                              upcomingEventDateList[index],
+                                              style: GoogleFonts.leagueSpartan(
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      ElevatedButton(
+                                          onPressed: () {
+                                            launchUrlString(
+                                              regUrl,
+                                              mode: LaunchMode
+                                                  .externalApplication,
+                                            );
+                                          },
+                                          child: const Text('Register Now!')),
+                                    ],
+                                  )
+                                ],
                               ),
                             ),
                           ],
