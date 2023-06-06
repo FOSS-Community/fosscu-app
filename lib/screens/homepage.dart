@@ -93,6 +93,7 @@ class _HomePageState extends State<HomePage> {
   String pastEventLink = '';
 
   List<String> upcomingEventImageUrl = [];
+  List<String> upcomingEventsUrlList = [];
 
   /// Fetching images for past events
   void fetchPastEvent() async {
@@ -122,24 +123,39 @@ class _HomePageState extends State<HomePage> {
 
   /// Fetch upcoming events
   void fetchUpcomingEvents() async {
-    CollectionReference collectionReference =
+    CollectionReference imageReference =
         FirebaseFirestore.instance.collection('upcoming_events');
 
+    CollectionReference registerLinkReference =
+        FirebaseFirestore.instance.collection('upcoming_events_links');
+
     // get docs from collection reference
-    QuerySnapshot upcomingEvents = await collectionReference.get();
+    QuerySnapshot upcomingEventsImage = await imageReference.get();
+
+    QuerySnapshot upcomingEventsUrl = await registerLinkReference.get();
 
     // get data from docs and convert map to list
-    final upcomingEventsLinks = upcomingEvents.docs
+    final upcomingEventsImageLink = upcomingEventsImage.docs
         .map((doc) => doc.data() as Map<String, dynamic>)
         .toList();
 
-    for (var event in upcomingEventsLinks) {
+    final upcomingEventsUrls = upcomingEventsUrl.docs
+        .map((doc) => doc.data() as Map<String, dynamic>)
+        .toList();
+
+    for (var event in upcomingEventsImageLink) {
       upcomingEventImageUrl
+          .addAll(event.values.map((value) => value.toString()));
+    }
+
+    for (var event in upcomingEventsUrls) {
+      upcomingEventsUrlList
           .addAll(event.values.map((value) => value.toString()));
     }
 
     //print(upcomingEventImageUrl[0]);
     print(upcomingEventImageUrl.length);
+    print(upcomingEventsUrlList.length);
   }
 
   /// Calling _fetchIssue when screen is intialized
@@ -218,8 +234,8 @@ class _HomePageState extends State<HomePage> {
 
               /// List view to show upcoming events.
               Container(
-                height:
-                    (screenHeight * 0.25 * upcomingEventImageUrl.length) + screenHeight * 0.1,
+                height: (screenHeight * 0.25 * upcomingEventImageUrl.length) +
+                    screenHeight * 0.1,
                 decoration:
                     BoxDecoration(borderRadius: BorderRadius.circular(20)),
                 child: ListView.builder(
@@ -230,6 +246,7 @@ class _HomePageState extends State<HomePage> {
                       int index,
                     ) {
                       final url = upcomingEventImageUrl[index];
+                      final regUrl = upcomingEventsUrlList[index];
                       return Container(
                         height: screenHeight * 0.25,
                         margin: const EdgeInsets.symmetric(
@@ -243,7 +260,12 @@ class _HomePageState extends State<HomePage> {
                         child: Stack(
                           children: [
                             GestureDetector(
-                              onTap: () {},
+                              onTap: () {
+                                launchUrlString(
+                                  regUrl,
+                                  mode: LaunchMode.externalApplication,
+                                );
+                              },
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(20),
                                 child: CachedNetworkImage(imageUrl: url),
