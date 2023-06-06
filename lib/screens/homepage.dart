@@ -122,25 +122,25 @@ class _HomePageState extends State<HomePage> {
 
   /// Fetch upcoming events
   void fetchUpcomingEvents() async {
-    CollectionReference collectionReference = FirebaseFirestore.instance.collection('upcoming_events');
+    CollectionReference collectionReference =
+        FirebaseFirestore.instance.collection('upcoming_events');
 
     // get docs from collection reference
-    QuerySnapshot  upcomingEvents = await collectionReference.get();
+    QuerySnapshot upcomingEvents = await collectionReference.get();
 
     // get data from docs and convert map to list
-      final upcomingEventsLinks = upcomingEvents.docs
-      .map((doc) => doc.data() as Map<String, dynamic>)
-      .toList();
+    final upcomingEventsLinks = upcomingEvents.docs
+        .map((doc) => doc.data() as Map<String, dynamic>)
+        .toList();
 
-    for(var event in upcomingEventsLinks) {
-      upcomingEventImageUrl.addAll(event.values.map((value) => value.toString()));
+    for (var event in upcomingEventsLinks) {
+      upcomingEventImageUrl
+          .addAll(event.values.map((value) => value.toString()));
     }
 
     //print(upcomingEventImageUrl[0]);
     print(upcomingEventImageUrl.length);
   }
-
-
 
   /// Calling _fetchIssue when screen is intialized
   @override
@@ -204,7 +204,44 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
 
-              
+              /// List view to show upcoming events.
+              Container(
+                height:
+                    (screenHeight * 0.25 * upcomingEventImageUrl.length) + screenHeight * 0.1,
+                decoration:
+                    BoxDecoration(borderRadius: BorderRadius.circular(20)),
+                child: ListView.builder(
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: upcomingEventImageUrl.length,
+                    itemBuilder: (
+                      BuildContext context,
+                      int index,
+                    ) {
+                      final url = upcomingEventImageUrl[index];
+                      return Container(
+                        height: screenHeight * 0.25,
+                        margin: const EdgeInsets.symmetric(
+                          vertical: 10,
+                          horizontal: 20,
+                        ),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          color: Colors.black,
+                        ),
+                        child: Stack(
+                          children: [
+                            GestureDetector(
+                              onTap: () {},
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(20),
+                                child: CachedNetworkImage(imageUrl: url),
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    }),
+              ),
 
               Align(
                 alignment: const AlignmentDirectional(-1, 0),
