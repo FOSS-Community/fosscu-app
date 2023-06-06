@@ -300,13 +300,16 @@ class _HomePageState extends State<HomePage> {
                                   ),
                                   SizedBox(height: screenHeight * 0.01),
                                   Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
                                       Container(
                                         margin: const EdgeInsets.all(10),
                                         child: Column(
-                                          mainAxisAlignment: MainAxisAlignment.start,
-                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                           children: [
                                             Text(
                                               upcomingEventHostList[index],
@@ -323,15 +326,33 @@ class _HomePageState extends State<HomePage> {
                                           ],
                                         ),
                                       ),
-                                      ElevatedButton(
-                                          onPressed: () {
-                                            launchUrlString(
-                                              regUrl,
-                                              mode: LaunchMode
-                                                  .externalApplication,
-                                            );
-                                          },
-                                          child: const Text('Register Now!')),
+                                      GestureDetector(
+                                        onTap: () {
+                                          launchUrlString(
+                                            regUrl,
+                                            mode:
+                                                LaunchMode.externalApplication,
+                                          );
+                                        },
+                                        child: Container(
+                                          width: screenWidth * 0.26,
+                                          height: screenHeight * 0.05,
+                                          margin: const EdgeInsets.all(10),
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            color: brightGreyColor,
+                                          ),
+                                          child: const Center(
+                                            child: Text(
+                                              'Register Now!',
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      )
                                     ],
                                   )
                                 ],
