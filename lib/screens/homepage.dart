@@ -389,7 +389,6 @@ class _HomePageState extends State<HomePage> {
                       );
                     }),
               ),
-// open source
 
               SizedBox(
                 height: screenHeight * 0.055,
@@ -470,6 +469,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
               ),
+              SizedBox(height: screenHeight * 0.1),
             ],
           ),
         ),
