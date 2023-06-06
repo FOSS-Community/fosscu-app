@@ -215,13 +215,13 @@ class _ProfilePageState extends State<ProfilePage> {
               ProfileTextField(
                 textEditingController: achievementController,
                 hintText: 'discord username',
-                icon: FontAwesomeIcons.discord,
+                icon: FontAwesomeIcons.personArrowUpFromLine,
               ),
               const ProfileText(text: 'Proof of Achievement'),
               ProfileTextField(
                 textEditingController: proofOfWorkController,
                 hintText: 'discord username',
-                icon: FontAwesomeIcons.discord,
+                icon: FontAwesomeIcons.personBurst,
               ),
 
               GestureDetector(
