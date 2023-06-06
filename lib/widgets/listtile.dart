@@ -37,7 +37,7 @@ class _CustomListTileState extends State<CustomListTile>
 
     return Container(
       child: AnimatedContainer(
-        duration: Duration(milliseconds: 500),
+        duration: const Duration(milliseconds: 500),
         curve: Curves.easeInOut,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
@@ -57,7 +57,7 @@ class _CustomListTileState extends State<CustomListTile>
                 style: GoogleFonts.leagueSpartan(
                     color: Colors.white, fontSize: screenWidth * 0.03),
                 overflow: TextOverflow.ellipsis,
-                maxLines: 3,
+                maxLines: 2,
               ),
               subtitle: Text(
                 widget.repository,
@@ -99,7 +99,7 @@ class _CustomListTileState extends State<CustomListTile>
                               ),
                               OutlinedButton(
                                   onPressed: () {
-                                    launchUrlString(widget.url);
+                                    launchUrlString(widget.url, mode: LaunchMode.externalApplication);
                                   },
                                   child: Text(widget.buttonName))
                             ],

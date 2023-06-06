@@ -9,7 +9,7 @@ class TotalPr extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       child: Text(
-        'Total PRs = ' + totalPr,
+        'Total PRs = $totalPr',
         style: GoogleFonts.chivo(color: Colors.black),
       ),
     );

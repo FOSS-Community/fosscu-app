@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fosscu_app/constants/apikey.dart';

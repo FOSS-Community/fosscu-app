@@ -109,11 +109,11 @@ class _LogInPageState extends State<LogInPage> {
 
               /// Forgot Password
 
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 25.0),
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 25.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
-                  children: const [
+                  children: [
                     Text(
                       'Forgot Password?',
                       style: TextStyle(
@@ -168,9 +168,9 @@ class _LogInPageState extends State<LogInPage> {
                         width: 0.5,
                       ),
                       borderRadius: BorderRadius.circular(10)),
-                  child: Row(
+                  child: const Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: const [
+                    children: [
                       Icon(
                         FontAwesomeIcons.google,
                         color: Colors.white,

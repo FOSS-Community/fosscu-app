@@ -22,8 +22,8 @@ class AdvancedConceptsPage1 extends StatelessWidget {
               SizedBox(
                 height: screenHeight * 0.03,
               ),
-              Column(
-                children: const [
+              const Column(
+                children: [
                   LearnPageHeading(
                     color: greenColor,
                     text: 'The Merge Command',

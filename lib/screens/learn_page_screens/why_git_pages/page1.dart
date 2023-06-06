@@ -20,8 +20,8 @@ class WhyGitPage1 extends StatelessWidget {
               SizedBox(
                 height: screenHeight * 0.03,
               ),
-              Column(
-                children: const [
+              const Column(
+                children: [
                   LearnPageHeading(
                     color: greenColor,
                     text: 'To Understand GIT, we first need to understand about version control system',
@@ -34,8 +34,8 @@ class WhyGitPage1 extends StatelessWidget {
                   ),
                 ],
               ),
-              Column(
-                children: const [
+              const Column(
+                children: [
                   LearnPageHeading(
                     color: greenColor,
                     text: 'Git is a distributed version control system',

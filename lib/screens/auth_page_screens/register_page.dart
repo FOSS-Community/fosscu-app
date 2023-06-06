@@ -171,9 +171,9 @@ class _RegisterPageState extends State<RegisterPage> {
                         width: 0.5,
                       ),
                       borderRadius: BorderRadius.circular(10)),
-                  child: Row(
+                  child: const Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: const [
+                    children: [
                       Icon(
                         FontAwesomeIcons.google,
                         color: Colors.white,

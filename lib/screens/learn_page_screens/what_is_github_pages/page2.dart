@@ -21,8 +21,8 @@ class WhatIsGithubPage2 extends StatelessWidget {
               SizedBox(
                 height: screenHeight * 0.03,
               ),
-              Column(
-                children: const [
+              const Column(
+                children: [
                   LearnPageHeading(
                     color: greenColor,
                     text: 'Begin with creating an account on Github, If not already.',

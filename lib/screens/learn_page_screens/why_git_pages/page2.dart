@@ -20,8 +20,8 @@ class WhyGitPage2 extends StatelessWidget {
               SizedBox(
                 height: screenHeight * 0.03,
               ),
-              Column(
-                children: const [
+              const Column(
+                children: [
                   LearnPageHeading(
                     color: greenColor,
                     text: 'Git and Github are different!',
@@ -34,8 +34,8 @@ class WhyGitPage2 extends StatelessWidget {
                   ),
                 ],
               ),
-              Column(
-                children: const [
+              const Column(
+                children: [
                   LearnPageBodyText(
                     color: Colors.white,
                     text:

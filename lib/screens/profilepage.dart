@@ -3,7 +3,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:fosscu_app/constants/color.dart';
-import 'package:fosscu_app/widgets/learn_subpage_widgets/heading.dart';
 import 'package:fosscu_app/widgets/profile_page_widgets/profile_text.dart';
 import 'package:fosscu_app/widgets/profile_page_widgets/profile_text_field.dart';
 import 'package:url_launcher/url_launcher_string.dart';
@@ -161,11 +160,38 @@ class _ProfilePageState extends State<ProfilePage> {
                 hintText: 'discord username',
                 icon: FontAwesomeIcons.discord,
               ),
-              ElevatedButton(
-                onPressed: () {
+              GestureDetector(
+                onTap: () {
                   setUserData();
+                  const snackBar = SnackBar(
+                    content: Text(
+                      'Updated details',
+                    ),
+                    duration: Duration(seconds: 2),
+                  );
+                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
                 },
-                child: const Text('Save'),
+                child: Container(
+                  width: screenWidth * 0.2,
+                  height: screenHeight * 0.045,
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: brightGreyColor,
+                      width: 0.5,
+                    ),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: const Align(
+                    alignment: Alignment.center,
+                    child: Text(
+                      'Save',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold
+                      ),
+                    ),
+                  ),
+                ),
               ),
               TextButton(
                   onPressed: () {
@@ -173,8 +199,8 @@ class _ProfilePageState extends State<ProfilePage> {
                   },
                   child: Container(
                     margin: EdgeInsets.only(left: screenWidth * 0.05),
-                    child: Row(
-                      children: const [
+                    child: const Row(
+                      children: [
                         Icon(
                           Icons.logout,
                           color: Colors.red,

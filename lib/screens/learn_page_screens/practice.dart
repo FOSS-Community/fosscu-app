@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fosscu_app/constants/color.dart';
 import 'package:fosscu_app/widgets/learn_subpage_widgets/body_text.dart';
-import 'package:fosscu_app/widgets/learn_subpage_widgets/code_snippet.dart';
 import 'package:fosscu_app/widgets/learn_subpage_widgets/heading.dart';
 import 'package:fosscu_app/widgets/learn_subpage_widgets/sub_heading.dart';
 import 'package:url_launcher/url_launcher_string.dart';
@@ -32,7 +31,7 @@ class Practice extends StatelessWidget {
                   ),
                   Container(
                     margin: EdgeInsets.only(left: screenWidth * 0.045),
-                    alignment: AlignmentDirectional(-1, 0),
+                    alignment: const AlignmentDirectional(-1, 0),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -68,7 +67,7 @@ class Practice extends StatelessWidget {
                   const LearnPageSubHeading(size: 0.04, color: Colors.white, text: "You can also use graphical tools like GitKraken or SourceTree, they help a lot in understanding large code bases and visualizing things that are tough to understand as a beginner."),
                                     Container(
                     margin: EdgeInsets.only(left: screenWidth * 0.045),
-                    alignment: AlignmentDirectional(-1, 0),
+                    alignment: const AlignmentDirectional(-1, 0),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,

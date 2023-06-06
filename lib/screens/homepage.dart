@@ -1,18 +1,16 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:fosscu_app/constants/apikey.dart';
 import 'package:fosscu_app/constants/color.dart';
-import 'package:fosscu_app/screens/contributor.dart';
-import 'package:fosscu_app/screens/learn.dart';
-import 'package:fosscu_app/screens/profilepage.dart';
 import 'package:fosscu_app/widgets/listtile.dart';
-import 'package:fosscu_app/widgets/mylisttile.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 import 'package:shimmer_animation/shimmer_animation.dart';
 import 'package:slidable_button/slidable_button.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -31,6 +29,10 @@ class _HomePageState extends State<HomePage> {
   /// Creating a private dynamic list named as issues
   List<Map<String, dynamic>> _issues = [];
   List<Map<String, dynamic>> _prs = [];
+
+  /// Pageview controller
+  final PageController _controller = PageController();
+  bool onLastPage = false;
 
   /// Function to fetch open issues from all repositories
 
@@ -82,11 +84,112 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  /// past event picture
+  String _image1 = '';
+
+  /// Texts for past events
+  String pastEventHeadText = '';
+  String pastEventBodyText = '';
+  String pastEventLink = '';
+
+  List<String> upcomingEventImageUrl = [];
+  List<String> upcomingEventsUrlList = [];
+  List<String> upcomingEventHostList = [];
+  List<String> upcomingEventDateList = [];
+
+  /// Fetching images for past events
+  void fetchPastEvent() async {
+    DocumentSnapshot snapshot = await FirebaseFirestore.instance
+        .collection('past_events')
+        .doc('Mz1I9yOYAPsHXcOP5XTw')
+        .get();
+
+    DocumentSnapshot textSnapshot = await FirebaseFirestore.instance
+        .collection('past_events')
+        .doc('Text')
+        .get();
+
+    if (snapshot.exists && textSnapshot.exists) {
+      String image1 = snapshot.get('image1');
+      String headText = textSnapshot.get('heading');
+      String bodyText = textSnapshot.get('body');
+      String eventLink = textSnapshot.get('link');
+      setState(() {
+        _image1 = image1;
+        pastEventHeadText = headText;
+        pastEventBodyText = bodyText;
+        pastEventLink = eventLink;
+      });
+    }
+  }
+
+  /// Fetch upcoming events
+  void fetchUpcomingEvents() async {
+    CollectionReference imageReference =
+        FirebaseFirestore.instance.collection('upcoming_events');
+
+    CollectionReference registerLinkReference =
+        FirebaseFirestore.instance.collection('upcoming_events_links');
+
+    CollectionReference hostReference =
+        FirebaseFirestore.instance.collection('talk_by');
+
+    CollectionReference dateReference =
+        FirebaseFirestore.instance.collection('upcoming_events_dates');
+
+    // get docs from collection reference
+    QuerySnapshot upcomingEventsImage = await imageReference.get();
+
+    QuerySnapshot upcomingEventsUrl = await registerLinkReference.get();
+
+    QuerySnapshot upcomingEventsHost = await hostReference.get();
+
+    QuerySnapshot upcomingEventsDate = await dateReference.get();
+
+    // get data from docs and convert map to list
+    final upcomingEventsImageLink = upcomingEventsImage.docs
+        .map((doc) => doc.data() as Map<String, dynamic>)
+        .toList();
+
+    final upcomingEventsUrls = upcomingEventsUrl.docs
+        .map((doc) => doc.data() as Map<String, dynamic>)
+        .toList();
+
+    final upcomingEventsHosts = upcomingEventsHost.docs
+        .map((doc) => doc.data() as Map<String, dynamic>)
+        .toList();
+
+    final upcomingEventsDates = upcomingEventsDate.docs
+        .map((doc) => doc.data() as Map<String, dynamic>)
+        .toList();
+
+    for (var event in upcomingEventsImageLink) {
+      upcomingEventImageUrl
+          .addAll(event.values.map((value) => value.toString()));
+    }
+
+    for (var event in upcomingEventsUrls) {
+      upcomingEventsUrlList
+          .addAll(event.values.map((value) => value.toString()));
+    }
+
+    for (var event in upcomingEventsHosts) {
+      upcomingEventHostList
+          .addAll(event.values.map((value) => value.toString()));
+    }
+    for (var event in upcomingEventsDates) {
+      upcomingEventDateList
+          .addAll(event.values.map((value) => value.toString()));
+    }
+  }
+
   /// Calling _fetchIssue when screen is intialized
   @override
   void initState() {
     _fetchIssue();
     _fetchPrs();
+    fetchPastEvent();
+    fetchUpcomingEvents();
     super.initState();
   }
 
@@ -107,7 +210,7 @@ class _HomePageState extends State<HomePage> {
                 alignment: const AlignmentDirectional(-1, 0),
                 child: Container(
                   width: screenWidth * 0.68,
-                  margin: EdgeInsets.only(left: screenWidth * 0.07),
+                  margin: EdgeInsets.only(left: screenWidth * 0.05),
                   child: RichText(
                     text: TextSpan(
                         style: TextStyle(
@@ -126,6 +229,167 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
               ),
+              SizedBox(
+                height: screenHeight * 0.05,
+              ),
+              // Past event text
+              Container(
+                alignment: Alignment.centerLeft,
+                margin: EdgeInsets.only(left: screenWidth * 0.05),
+                child: Text(
+                  'Our Past Events!',
+                  style: GoogleFonts.leagueSpartan(
+                    fontWeight: FontWeight.bold,
+                    color: greenColor,
+                  ),
+                ),
+              ),
+              // past event pictures
+              Container(
+                height: screenHeight * 0.25, // Set the desired height
+                margin: const EdgeInsets.symmetric(
+                  vertical: 10,
+                  horizontal: 20,
+                ),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  color: Colors.black,
+                ),
+                child: Stack(
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        launchUrlString(pastEventLink,
+                            mode: LaunchMode.externalApplication);
+                      },
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(20),
+                        child: CachedNetworkImage(imageUrl: _image1),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+              Container(
+                alignment: Alignment.centerLeft,
+                margin: EdgeInsets.only(left: screenWidth * 0.05),
+                child: Text(
+                  'Our Upcoming Events!',
+                  style: GoogleFonts.leagueSpartan(
+                    fontWeight: FontWeight.bold,
+                    color: greenColor,
+                  ),
+                ),
+              ),
+
+              /// List view to show upcoming events.
+              Container(
+                height: (screenHeight * 0.25 * upcomingEventImageUrl.length) +
+                    screenHeight * 0.3,
+                decoration:
+                    BoxDecoration(borderRadius: BorderRadius.circular(20)),
+                child: ListView.builder(
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: upcomingEventImageUrl.length,
+                    itemBuilder: (
+                      BuildContext context,
+                      int index,
+                    ) {
+                      final url = upcomingEventImageUrl[index];
+                      final regUrl = upcomingEventsUrlList[index];
+                      return Container(
+                        height: screenHeight * 0.3,
+                        margin: const EdgeInsets.symmetric(
+                          vertical: 10,
+                          horizontal: 20,
+                        ),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          color: Colors.black,
+                        ),
+                        child: Stack(
+                          children: [
+                            Container(
+                              decoration: BoxDecoration(
+                                color: darkGreyColor,
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                              child: Column(
+                                children: [
+                                  GestureDetector(
+                                    onTap: () {},
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(20),
+                                      child: CachedNetworkImage(imageUrl: url),
+                                    ),
+                                  ),
+                                  SizedBox(height: screenHeight * 0.01),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Container(
+                                        margin: const EdgeInsets.all(10),
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              upcomingEventHostList[index],
+                                              style: GoogleFonts.leagueSpartan(
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                            Text(
+                                              upcomingEventDateList[index],
+                                              style: GoogleFonts.leagueSpartan(
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      GestureDetector(
+                                        onTap: () {
+                                          launchUrlString(
+                                            regUrl,
+                                            mode:
+                                                LaunchMode.externalApplication,
+                                          );
+                                        },
+                                        child: Container(
+                                          width: screenWidth * 0.26,
+                                          height: screenHeight * 0.05,
+                                          margin: const EdgeInsets.all(10),
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            color: brightGreyColor,
+                                          ),
+                                          child: const Center(
+                                            child: Text(
+                                              'Register Now!',
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      )
+                                    ],
+                                  )
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    }),
+              ),
+
               SizedBox(
                 height: screenHeight * 0.055,
               ),
@@ -198,12 +462,14 @@ class _HomePageState extends State<HomePage> {
                 color: greenTrackColor,
                 buttonColor: greenColor,
                 child: Padding(
-                  padding: EdgeInsets.all(8).copyWith(left: 15, right: 15),
-                  child: Row(
+                  padding:
+                      const EdgeInsets.all(8).copyWith(left: 15, right: 15),
+                  child: const Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   ),
                 ),
               ),
+              SizedBox(height: screenHeight * 0.1),
             ],
           ),
         ),
@@ -238,7 +504,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   ///  open pr list view
-  Widget prListView(){
+  Widget prListView() {
     return ListView.builder(
       itemCount: _prs.length,
       itemBuilder: (
@@ -262,6 +528,4 @@ class _HomePageState extends State<HomePage> {
       },
     );
   }
-
- 
 }

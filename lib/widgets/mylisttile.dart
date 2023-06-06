@@ -70,8 +70,6 @@ class _MyListTileState extends State<MyListTile>
           AnimatedSize(
             duration: const Duration(milliseconds: 500),
             curve: Curves.easeInOut,
-            // ignore: deprecated_member_use
-            vsync: this,
             child: _isExpanded
                 ? SizedBox(
                     height: screenHeight * widget.mulitiplicationFactor,
@@ -85,7 +83,7 @@ class _MyListTileState extends State<MyListTile>
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Container(
-                              alignment: AlignmentDirectional(-1, 0),
+                              alignment: const AlignmentDirectional(-1, 0),
                               margin: EdgeInsets.symmetric(
                                   horizontal: screenWidth * 0.04),
                               child: Text(
@@ -117,6 +115,6 @@ class _MyListTileState extends State<MyListTile>
   }
 
   String _getAvatarUrl(String username) {
-    return 'https://github.com/${username}.png';
+    return 'https://github.com/$username.png';
   }
 }

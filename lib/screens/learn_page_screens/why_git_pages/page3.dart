@@ -22,8 +22,8 @@ class WhyGitPage3 extends StatelessWidget {
               SizedBox(
                 height: screenHeight * 0.03,
               ),
-              Column(
-                children: const [
+              const Column(
+                children: [
                   LearnPageHeading(
                     color: greenColor,
                     text: 'How to start working with Git?',
@@ -43,8 +43,8 @@ class WhyGitPage3 extends StatelessWidget {
                   LearnPageBodyText(color: Colors.white, text: 'Basically a repository is just your normal folder that you create on your system, the only difference is you initialize Git (The software) in that folder so that git can keep a track of all the changes in that folder.')
                 ],
               ),
-              Column(
-                children: const [
+              const Column(
+                children: [
                   
                 ],
               ),

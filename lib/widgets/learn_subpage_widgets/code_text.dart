@@ -14,7 +14,7 @@ class CodeText extends StatelessWidget {
     double screenWidth = MediaQuery.of(context).size.width;
     final TextStyle textStyle = GoogleFonts.nanumGothicCoding(color: yellowColor);
     return Container(
-      alignment: AlignmentDirectional(-1, 0),
+      alignment: const AlignmentDirectional(-1, 0),
       margin: EdgeInsets.symmetric(horizontal: screenWidth * 0.06),
       child: Text(
         text,
