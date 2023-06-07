@@ -16,7 +16,7 @@ class DrawerListTile extends StatelessWidget {
     TextStyle textStyle = GoogleFonts.leagueSpartan(
         color: Colors.white, fontWeight: FontWeight.bold);
     return Container(
-      margin: const EdgeInsets.all(8),
+      margin: const EdgeInsets.all(8).copyWith(left: 20, right: 20),
       decoration: BoxDecoration(
         color: brightGreyColor,
         borderRadius: BorderRadius.circular(15),

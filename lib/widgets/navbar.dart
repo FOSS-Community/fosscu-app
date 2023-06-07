@@ -1,14 +1,17 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:fosscu_app/constants/color.dart';
+import 'package:fosscu_app/constants/svg.dart';
 import 'package:fosscu_app/screens/community.dart';
 import 'package:fosscu_app/screens/contributor.dart';
 import 'package:fosscu_app/screens/documentation.dart';
 import 'package:fosscu_app/screens/homepage.dart';
 import 'package:fosscu_app/screens/learn.dart';
 import 'package:fosscu_app/screens/profilepage.dart';
-import 'package:fosscu_app/screens/repositories.dart';
 import 'package:fosscu_app/widgets/drawer_widgets/drawer_listtile.dart';
+import 'package:fosscu_app/widgets/drawer_widgets/drawer_page_listtile.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class NavBarScreen extends StatefulWidget {
@@ -43,12 +46,42 @@ class _NavBarScreenState extends State<NavBarScreen> {
       drawer: Drawer(
         backgroundColor: darkGreyColor,
         child: ListView(
-          children: const [
-            DrawerListTile(
-                text: 'Documentation', pageToLoad: DocumentationPage()),
-            DrawerListTile(
-                text: 'Repositories', pageToLoad: RepositoriesPage()),
-            DrawerListTile(text: 'Community', pageToLoad: CommunityPage()),
+          children: [
+            Theme(
+              data: Theme.of(context).copyWith(
+                dividerTheme: const DividerThemeData(color: Colors.transparent),
+              ),
+              child: DrawerHeader(
+                child: SvgPicture.asset(fosscu),
+              ),
+            ),
+            const DrawerPageListTile(
+                text: 'Documentation', url: 'https://fosscu.org/resource'),
+            const DrawerListTile(
+                text: 'Community', pageToLoad: CommunityPage()),
+            Container(
+              child: TextButton(
+                  onPressed: () {
+                    FirebaseAuth.instance.signOut();
+                  },
+                  child: Container(
+                    margin: EdgeInsets.only(left: screenWidth * 0.05),
+                    child: const Row(
+                      children: [
+                        Icon(
+                          Icons.logout,
+                          color: Colors.red,
+                        ),
+                        Text(
+                          ' Sign out',
+                          style: TextStyle(
+                            color: Colors.red,
+                          ),
+                        ),
+                      ],
+                    ),
+                  )),
+            )
           ],
         ),
       ),

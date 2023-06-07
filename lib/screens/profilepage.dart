@@ -255,27 +255,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                 ),
               ),
-              TextButton(
-                  onPressed: () {
-                    FirebaseAuth.instance.signOut();
-                  },
-                  child: Container(
-                    margin: EdgeInsets.only(left: screenWidth * 0.05),
-                    child: const Row(
-                      children: [
-                        Icon(
-                          Icons.logout,
-                          color: Colors.red,
-                        ),
-                        Text(
-                          ' Sign out',
-                          style: TextStyle(
-                            color: Colors.red,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ))
+
             ],
           ),
         ),
