@@ -177,7 +177,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 child: Row(
                   children: [
                     const Text(
-                      'Your Current XP is :',
+                      'Your Current XP is : ',
                       style: TextStyle(color: Colors.white, fontSize: 16),
                     ),
                     Text(
