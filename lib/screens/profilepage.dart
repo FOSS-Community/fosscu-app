@@ -18,11 +18,16 @@ class _ProfilePageState extends State<ProfilePage> {
   final nameController = TextEditingController();
   final githubController = TextEditingController();
   final discordController = TextEditingController();
+  final achievementController = TextEditingController();
+  final proofOfWorkController = TextEditingController();
+  String xp = '0';
   @override
   void dispose() {
     nameController.dispose();
     githubController.dispose();
     discordController.dispose();
+    achievementController.dispose();
+    proofOfWorkController.dispose();
     super.dispose();
   }
 
@@ -35,10 +40,15 @@ class _ProfilePageState extends State<ProfilePage> {
   void setUserData() {
     User? user = FirebaseAuth.instance.currentUser;
     String userId = user!.uid;
-    FirebaseFirestore.instance.collection('users').doc(userId).set({
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(user.displayName.toString())
+        .set({
       'your name': nameController.text,
       'github': githubController.text,
-      'discord': discordController.text
+      'discord': discordController.text,
+      'achievement': achievementController.text,
+      'proof': proofOfWorkController.text,
     });
   }
 
@@ -46,18 +56,38 @@ class _ProfilePageState extends State<ProfilePage> {
     User? user = FirebaseAuth.instance.currentUser;
     String userId = user!.uid;
 
-    DocumentSnapshot snapshot =
-        await FirebaseFirestore.instance.collection('users').doc(userId).get();
+    DocumentSnapshot snapshot = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(user.displayName.toString())
+        .get();
+
+    DocumentSnapshot xpSnapshot = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(user.displayName.toString())
+        .collection('xp')
+        .doc(user.displayName.toString())
+        .get();
 
     if (snapshot.exists) {
       String yourName = snapshot.get('your name');
       String github = snapshot.get('github');
       String discord = snapshot.get('discord');
+      String achievement = snapshot.get('achievement');
+      String proof = snapshot.get('proof');
 
       setState(() {
         nameController.text = yourName;
         githubController.text = github;
         discordController.text = discord;
+        achievementController.text = achievement;
+        proofOfWorkController.text = proof;
+      });
+    }
+    // check whether xp is created or not
+    if (xpSnapshot.exists) {
+      String points = xpSnapshot.get('points');
+      setState(() {
+        xp = points;
       });
     }
   }
@@ -139,6 +169,27 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
 
               /// End of join Fosscu
+              
+              SizedBox(height: screenHeight * 0.05),
+
+              Container(
+                margin: EdgeInsets.only(left: screenWidth * 0.05),
+                child: Row(
+                  children: [
+                    const Text(
+                      'Your Current XP is : ',
+                      style: TextStyle(color: Colors.white, fontSize: 16),
+                    ),
+                    Text(
+                      xp,
+                      style: const TextStyle(
+                          color: greenColor,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16),
+                    )
+                  ],
+                ),
+              ),
 
               /// Text Fields
               SizedBox(height: screenHeight * 0.04),
@@ -160,6 +211,19 @@ class _ProfilePageState extends State<ProfilePage> {
                 hintText: 'discord username',
                 icon: FontAwesomeIcons.discord,
               ),
+              const ProfileText(text: 'Any recent achievement'),
+              ProfileTextField(
+                textEditingController: achievementController,
+                hintText: 'discord username',
+                icon: FontAwesomeIcons.personArrowUpFromLine,
+              ),
+              const ProfileText(text: 'Proof of Achievement'),
+              ProfileTextField(
+                textEditingController: proofOfWorkController,
+                hintText: 'discord username',
+                icon: FontAwesomeIcons.personBurst,
+              ),
+
               GestureDetector(
                 onTap: () {
                   setUserData();
@@ -186,34 +250,12 @@ class _ProfilePageState extends State<ProfilePage> {
                     child: Text(
                       'Save',
                       style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold
-                      ),
+                          color: Colors.white, fontWeight: FontWeight.bold),
                     ),
                   ),
                 ),
               ),
-              TextButton(
-                  onPressed: () {
-                    FirebaseAuth.instance.signOut();
-                  },
-                  child: Container(
-                    margin: EdgeInsets.only(left: screenWidth * 0.05),
-                    child: const Row(
-                      children: [
-                        Icon(
-                          Icons.logout,
-                          color: Colors.red,
-                        ),
-                        Text(
-                          ' Sign out',
-                          style: TextStyle(
-                            color: Colors.red,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ))
+
             ],
           ),
         ),

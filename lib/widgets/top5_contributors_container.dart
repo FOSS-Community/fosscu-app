@@ -110,7 +110,7 @@ final response = await http.get(
                 Container(
                     margin: const EdgeInsets.all(10).copyWith(top: 0,left: 20),
                     alignment: Alignment.topLeft,
-                    width: screenWidth * 0.5,
+                    width: screenWidth * 0.55,
                     child: Text(
                       'Contributors Top 10',
                       style: GoogleFonts.leagueSpartan(
