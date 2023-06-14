@@ -45,7 +45,7 @@ class _CustomListTileState extends State<CustomListTile>
         ),
         height: _isExpanded
             ? screenHeight * widget.mulitiplicationFactor
-            : screenHeight * 0.09,
+            : screenHeight * widget.mulitiplicationFactor * 0.6,
         child: Column(
           children: [
             ListTile(

@@ -285,12 +285,13 @@ class _HomePageState extends State<HomePage> {
 
               /// List view to show upcoming events.
               Container(
+                margin: EdgeInsets.symmetric(horizontal: screenWidth * 0.01),
                 height: (screenHeight * 0.25 * upcomingEventImageUrl.length) +
                     screenHeight * 0.3,
                 decoration:
                     BoxDecoration(borderRadius: BorderRadius.circular(20)),
                 child: ListView.builder(
-                    physics: const NeverScrollableScrollPhysics(),
+                   // physics: const NeverScrollableScrollPhysics(),
                     itemCount: upcomingEventImageUrl.length,
                     itemBuilder: (
                       BuildContext context,
@@ -299,7 +300,7 @@ class _HomePageState extends State<HomePage> {
                       final url = upcomingEventImageUrl[index];
                       final regUrl = upcomingEventsUrlList[index];
                       return Container(
-                        height: screenHeight * 0.3,
+                        height: screenWidth * 0.65,
                         margin: const EdgeInsets.symmetric(
                           vertical: 10,
                           horizontal: 20,
