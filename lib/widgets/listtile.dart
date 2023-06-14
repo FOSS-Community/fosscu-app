@@ -86,7 +86,8 @@ class _CustomListTileState extends State<CustomListTile>
                     children: [
                       Expanded(
                         child: Container(
-                          margin: EdgeInsets.symmetric(horizontal: screenWidth * 0.03),
+                          margin: EdgeInsets.symmetric(
+                              horizontal: screenWidth * 0.03),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -97,11 +98,36 @@ class _CustomListTileState extends State<CustomListTile>
                                     fontWeight: FontWeight.bold,
                                     fontSize: screenWidth * 0.04),
                               ),
-                              OutlinedButton(
-                                  onPressed: () {
-                                    launchUrlString(widget.url, mode: LaunchMode.externalApplication);
-                                  },
-                                  child: Text(widget.buttonName))
+                              GestureDetector(
+                                onTap: () {
+                                  launchUrlString(
+                                    widget.url,
+                                    mode: LaunchMode.externalApplication,
+                                  );
+                                },
+                                child: Container(
+                                  width: screenWidth * 0.26,
+                                  height: screenHeight * 0.05,
+                                  margin: const EdgeInsets.all(10),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    color: brightGreyColor,
+                                  ),
+                                  child: Center(
+                                    child: Text(
+                                      widget.buttonName,
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              )
+                              // OutlinedButton(
+                              //     onPressed: () {
+                              //       launchUrlString(widget.url, mode: LaunchMode.externalApplication);
+                              //     },
+                              //     child: Text(widget.buttonName))
                             ],
                           ),
                         ),
