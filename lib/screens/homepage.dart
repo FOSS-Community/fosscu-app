@@ -1,3 +1,4 @@
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -255,20 +256,37 @@ class _HomePageState extends State<HomePage> {
                   borderRadius: BorderRadius.circular(20),
                   color: Colors.black,
                 ),
-                child: Stack(
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        launchUrlString(pastEventLink,
-                            mode: LaunchMode.externalApplication);
-                      },
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(20),
-                        child: CachedNetworkImage(imageUrl: _image1),
+                child: _image1 == ''
+                    ? Shimmer(
+                        duration: const Duration(seconds: 2),
+                        interval: const Duration(milliseconds: 500),
+                        color: Colors.white,
+                        enabled: true,
+                        child: Container(
+                          height: screenHeight * 0.25,
+                          margin: const EdgeInsets.symmetric(
+                            vertical: 10,
+                            horizontal: 20,
+                          ),
+                          decoration: BoxDecoration(
+                              color: brightGreyColor,
+                              borderRadius: BorderRadius.circular(20)),
+                        ),
+                      )
+                    : Stack(
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              launchUrlString(pastEventLink,
+                                  mode: LaunchMode.externalApplication);
+                            },
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(20),
+                              child: CachedNetworkImage(imageUrl: _image1),
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
-                  ],
-                ),
               ),
 
               Container(
@@ -285,110 +303,129 @@ class _HomePageState extends State<HomePage> {
 
               /// List view to show upcoming events.
               Container(
-                margin: EdgeInsets.symmetric(horizontal: screenWidth * 0.01),
+                margin: EdgeInsets.symmetric(horizontal: screenWidth * 0.015),
                 height: (screenHeight * 0.25 * upcomingEventImageUrl.length) +
                     screenHeight * 0.3,
                 decoration:
                     BoxDecoration(borderRadius: BorderRadius.circular(20)),
-                child: ListView.builder(
-                   // physics: const NeverScrollableScrollPhysics(),
-                    itemCount: upcomingEventImageUrl.length,
-                    itemBuilder: (
-                      BuildContext context,
-                      int index,
-                    ) {
-                      final url = upcomingEventImageUrl[index];
-                      final regUrl = upcomingEventsUrlList[index];
-                      return Container(
-                        height: screenWidth * 0.65,
-                        margin: const EdgeInsets.symmetric(
-                          vertical: 10,
-                          horizontal: 20,
+                child: upcomingEventImageUrl.isEmpty
+                    ? Shimmer(
+                        duration: const Duration(seconds: 2),
+                        interval: const Duration(milliseconds: 500),
+                        color: Colors.white,
+                        enabled: true,
+                        child: Container(
+                          width: screenWidth * 0.85,
+                          height: screenHeight * 0.38,
+                          decoration: BoxDecoration(
+                            color: brightGreyColor,
+                            borderRadius: BorderRadius.circular(20),
+                          ),
                         ),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          color: Colors.black,
-                        ),
-                        child: Stack(
-                          children: [
-                            Container(
-                              decoration: BoxDecoration(
-                                color: darkGreyColor,
-                                borderRadius: BorderRadius.circular(15),
-                              ),
-                              child: Column(
-                                children: [
-                                  GestureDetector(
-                                    onTap: () {},
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(20),
-                                      child: CachedNetworkImage(imageUrl: url),
-                                    ),
+                      )
+                    : ListView.builder(
+                        // physics: const NeverScrollableScrollPhysics(),
+                        itemCount: upcomingEventImageUrl.length,
+                        itemBuilder: (
+                          BuildContext context,
+                          int index,
+                        ) {
+                          final url = upcomingEventImageUrl[index];
+                          final regUrl = upcomingEventsUrlList[index];
+                          return Container(
+                            height: screenWidth * 0.65,
+                            margin: const EdgeInsets.symmetric(
+                              vertical: 10,
+                              horizontal: 20,
+                            ),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
+                              color: Colors.black,
+                            ),
+                            child: Stack(
+                              children: [
+                                Container(
+                                  decoration: BoxDecoration(
+                                    color: darkGreyColor,
+                                    borderRadius: BorderRadius.circular(15),
                                   ),
-                                  SizedBox(height: screenHeight * 0.01),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                                  child: Column(
                                     children: [
-                                      Container(
-                                        margin: const EdgeInsets.all(10),
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              upcomingEventHostList[index],
-                                              style: GoogleFonts.leagueSpartan(
-                                                color: Colors.white,
-                                              ),
-                                            ),
-                                            Text(
-                                              upcomingEventDateList[index],
-                                              style: GoogleFonts.leagueSpartan(
-                                                color: Colors.white,
-                                              ),
-                                            ),
-                                          ],
+                                      GestureDetector(
+                                        onTap: () {},
+                                        child: ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(20),
+                                          child:
+                                              CachedNetworkImage(imageUrl: url),
                                         ),
                                       ),
-                                      GestureDetector(
-                                        onTap: () {
-                                          launchUrlString(
-                                            regUrl,
-                                            mode:
-                                                LaunchMode.externalApplication,
-                                          );
-                                        },
-                                        child: Container(
-                                          width: screenWidth * 0.26,
-                                          height: screenHeight * 0.05,
-                                          margin: const EdgeInsets.all(10),
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                            color: brightGreyColor,
-                                          ),
-                                          child: const Center(
-                                            child: Text(
-                                              'Register Now!',
-                                              style: TextStyle(
-                                                color: Colors.white,
-                                              ),
+                                      SizedBox(height: screenHeight * 0.01),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Container(
+                                            margin: const EdgeInsets.all(10),
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  upcomingEventHostList[index],
+                                                  style:
+                                                      GoogleFonts.leagueSpartan(
+                                                    color: Colors.white,
+                                                  ),
+                                                ),
+                                                Text(
+                                                  upcomingEventDateList[index],
+                                                  style:
+                                                      GoogleFonts.leagueSpartan(
+                                                    color: Colors.white,
+                                                  ),
+                                                ),
+                                              ],
                                             ),
                                           ),
-                                        ),
+                                          GestureDetector(
+                                            onTap: () {
+                                              launchUrlString(
+                                                regUrl,
+                                                mode: LaunchMode
+                                                    .externalApplication,
+                                              );
+                                            },
+                                            child: Container(
+                                              width: screenWidth * 0.26,
+                                              height: screenHeight * 0.05,
+                                              margin: const EdgeInsets.all(10),
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                                color: brightGreyColor,
+                                              ),
+                                              child: const Center(
+                                                child: Text(
+                                                  'Register Now!',
+                                                  style: TextStyle(
+                                                    color: Colors.white,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          )
+                                        ],
                                       )
                                     ],
-                                  )
-                                ],
-                              ),
+                                  ),
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
-                      );
-                    }),
+                          );
+                        }),
               ),
 
               SizedBox(

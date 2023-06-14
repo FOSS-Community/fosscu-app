@@ -31,11 +31,21 @@ class _NavBarScreenState extends State<NavBarScreen> {
   }
 
   final List<Widget> _pages = const [
-    HomePage(),
-    ContributorPage(),
-    LearnPage(),
-    ProfilePage()
+    HomePage(
+      key: PageStorageKey('Page1'),
+    ),
+    ContributorPage(
+      key: PageStorageKey('Page2'),
+    ),
+    LearnPage(
+      key: PageStorageKey('Page3'),
+    ),
+    ProfilePage(
+      key: PageStorageKey('Page4'),
+    )
   ];
+
+  final PageStorageBucket bucket = PageStorageBucket();
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
@@ -87,7 +97,10 @@ class _NavBarScreenState extends State<NavBarScreen> {
       ),
       backgroundColor: Colors.black,
       extendBody: true,
-      body: _pages[_selectedIndex],
+      body: PageStorage(
+        bucket: bucket,
+        child: _pages[_selectedIndex],
+      ),
 
       /// BOTTOM NAVIGATION BAR
       bottomNavigationBar: Container(
