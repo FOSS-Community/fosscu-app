@@ -20,6 +20,8 @@ class _ProfilePageState extends State<ProfilePage> {
   final discordController = TextEditingController();
   final achievementController = TextEditingController();
   final proofOfWorkController = TextEditingController();
+  final proofOfWorkController2 = TextEditingController();
+  final proofOfWorkController3 = TextEditingController();
   String xp = '0';
   @override
   void dispose() {
@@ -28,6 +30,8 @@ class _ProfilePageState extends State<ProfilePage> {
     discordController.dispose();
     achievementController.dispose();
     proofOfWorkController.dispose();
+    proofOfWorkController2.dispose();
+    proofOfWorkController3.dispose();
     super.dispose();
   }
 
@@ -49,6 +53,8 @@ class _ProfilePageState extends State<ProfilePage> {
       'discord': discordController.text,
       'achievement': achievementController.text,
       'proof': proofOfWorkController.text,
+      'proof2': proofOfWorkController2.text,
+      'proof3': proofOfWorkController3.text,
     });
   }
 
@@ -74,6 +80,8 @@ class _ProfilePageState extends State<ProfilePage> {
       String discord = snapshot.get('discord');
       String achievement = snapshot.get('achievement');
       String proof = snapshot.get('proof');
+      String proof2 = snapshot.get('proof2');
+      String proof3 = snapshot.get('proof3');
 
       setState(() {
         nameController.text = yourName;
@@ -81,6 +89,8 @@ class _ProfilePageState extends State<ProfilePage> {
         discordController.text = discord;
         achievementController.text = achievement;
         proofOfWorkController.text = proof;
+        proofOfWorkController2.text = proof2;
+        proofOfWorkController3.text = proof3;
       });
     }
     // check whether xp is created or not
@@ -169,7 +179,7 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
 
               /// End of join Fosscu
-              
+
               SizedBox(height: screenHeight * 0.05),
 
               Container(
@@ -214,13 +224,25 @@ class _ProfilePageState extends State<ProfilePage> {
               const ProfileText(text: 'Any recent achievement'),
               ProfileTextField(
                 textEditingController: achievementController,
-                hintText: 'discord username',
+                hintText: 'recent achievement',
                 icon: FontAwesomeIcons.personArrowUpFromLine,
               ),
               const ProfileText(text: 'Proof of Achievement'),
               ProfileTextField(
                 textEditingController: proofOfWorkController,
-                hintText: 'discord username',
+                hintText: 'proof of work',
+                icon: FontAwesomeIcons.personBurst,
+              ),
+              const ProfileText(text: 'Additional proof'),
+              ProfileTextField(
+                textEditingController: proofOfWorkController2,
+                hintText: 'additional proof',
+                icon: FontAwesomeIcons.personBurst,
+              ),
+              const ProfileText(text: 'Additional proof'),
+              ProfileTextField(
+                textEditingController: proofOfWorkController3,
+                hintText: 'additional proof',
                 icon: FontAwesomeIcons.personBurst,
               ),
 
@@ -255,7 +277,6 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                 ),
               ),
-
             ],
           ),
         ),

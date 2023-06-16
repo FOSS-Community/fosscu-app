@@ -101,7 +101,7 @@ class _NavBarScreenState extends State<NavBarScreen> {
         bucket: bucket,
         child: _pages[_selectedIndex],
       ),
-
+      
       /// BOTTOM NAVIGATION BAR
       bottomNavigationBar: Container(
         margin: const EdgeInsets.symmetric(horizontal: 30)
