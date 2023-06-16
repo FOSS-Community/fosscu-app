@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fosscu_app/constants/color.dart';
+import 'package:fosscu_app/screens/admin_page_screens/events.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AdminPage extends StatefulWidget {
@@ -35,6 +36,30 @@ class _AdminPageState extends State<AdminPage> {
         child: SingleChildScrollView(
           child: Column(
             children: [
+              // manage events section
+              GestureDetector(
+                onTap: () => Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => EventPage())),
+                child: Container(
+                  margin: EdgeInsets.symmetric(
+                    horizontal: screenWidth * 0.1,
+                    vertical: screenWidth * 0.1,
+                  ),
+                  height: screenWidth * 0.1,
+                  decoration: BoxDecoration(
+                      color: brightGreyColor,
+                      borderRadius: BorderRadius.circular(20)),
+                  child: Center(
+                      child: Text(
+                    'Manage Events',
+                    style: GoogleFonts.leagueSpartan(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: screenWidth * 0.04,
+                    ),
+                  )),
+                ),
+              )
             ],
           ),
         ),
