@@ -277,6 +277,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                 ),
               ),
+              SizedBox(height: screenHeight * 0.05),
             ],
           ),
         ),
