@@ -14,13 +14,20 @@ class EventPage extends StatefulWidget {
 class _EventPageState extends State<EventPage> {
   // past event picture link
   String pastEventPicture = '';
+  int counter = 10;
 
   // text controllers
   final pastEventLinkController = TextEditingController();
+  final newEventImageLinkController = TextEditingController();
+  final newEventDateController = TextEditingController();
+  final newEventLumaController = TextEditingController();
 
   @override
   void dispose() {
     pastEventLinkController.dispose();
+    newEventDateController.dispose();
+    newEventImageLinkController.dispose();
+    newEventLumaController.dispose();
     super.dispose();
   }
 
@@ -50,6 +57,10 @@ class _EventPageState extends State<EventPage> {
         .set({
       'image1': pastEventLinkController.text,
     });
+  }
+
+  void setNewEvent() async {
+    counter++;
   }
 
   @override
@@ -112,13 +123,13 @@ class _EventPageState extends State<EventPage> {
                 GestureDetector(
                   onTap: () {
                     setPastEventLink();
-                     const snackBar = SnackBar(
-                    content: Text(
-                      'Updated Past Event Link',
-                    ),
-                    duration: Duration(seconds: 2),
-                  );
-                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                    const snackBar = SnackBar(
+                      content: Text(
+                        'Updated Past Event Link',
+                      ),
+                      duration: Duration(seconds: 2),
+                    );
+                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
                   },
                   child: Container(
                     margin: EdgeInsets.only(right: screenWidth * 0.04),
@@ -136,10 +147,42 @@ class _EventPageState extends State<EventPage> {
                   ),
                 ),
               ],
-            )
+            ),
+
+            // upcoming events
+            Container(
+              alignment: Alignment.centerLeft,
+              margin: EdgeInsets.all(screenWidth * 0.04),
+              child: Text(
+                'Upcoming Events',
+                style: textStyle,
+              ),
+            ),
           ],
         ),
       )),
+      // floatiing action button to create new events
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          showModalBottomSheet(
+            context: context,
+            builder: (context) => Container(
+              decoration: BoxDecoration(
+                  color: brightGreyColor,
+                  borderRadius: BorderRadius.circular(20).copyWith(
+                    bottomLeft: Radius.zero,
+                    bottomRight: Radius.zero,
+                  )),
+                  child: Column(
+
+                  ),
+            ),
+          );
+        },
+        child: const Icon(
+          FontAwesomeIcons.plus,
+        ),
+      ),
     );
   }
 }
