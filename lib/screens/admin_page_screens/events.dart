@@ -4,6 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:fosscu_app/constants/color.dart';
 import 'package:fosscu_app/widgets/event_widgets/event_class.dart';
 import 'package:fosscu_app/widgets/event_widgets/event_form.dart';
+import 'package:fosscu_app/widgets/event_widgets/upcoming_event_list_tile.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class EventPage extends StatefulWidget {
@@ -227,16 +228,14 @@ class _EventPageState extends State<EventPage> {
                 if (snapshot.hasData) {
                   List<Event> events = snapshot.data!;
                   return SizedBox(
-                    height: screenWidth * 0.4,
+                    height: screenWidth * 1,
                     child: ListView.builder(
                       itemCount: events.length,
                       itemBuilder: (context, index) {
                         Event event = events[index];
-                        return ListTile(
-                          title: Text(
-                            event.eventHost,
-                            style: const TextStyle(color: Colors.white),
-                          ),
+                        return EventListTile(
+                          title: event.eventTitle,
+                          eventDate: event.eventDates,
                         );
                       },
                     ),
@@ -298,7 +297,8 @@ class _EventPageState extends State<EventPage> {
                           submitEvent();
                           Navigator.pop(context);
                         } else {
-                          _showErrorMessage(context, 'Please Fill all the forms');
+                          _showErrorMessage(
+                              context, 'Please Fill all the forms');
                         }
                       },
                       child: const Text('Create new event!'),
