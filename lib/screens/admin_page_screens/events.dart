@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:fosscu_app/constants/color.dart';
+import 'package:fosscu_app/widgets/event_class.dart';
 import 'package:fosscu_app/widgets/event_form.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -34,6 +35,45 @@ class _EventPageState extends State<EventPage> {
   void initState() {
     fetchPastEventLink();
     super.initState();
+  }
+
+  // method to add new event to the database
+  Future<CollectionReference> addEvent(Event event) async {
+    final collection = FirebaseFirestore.instance.collection('events');
+
+    // random document id
+    String documentID = collection.doc().id;
+    final collectionReference = collection.doc(documentID).collection('event');
+
+    return collectionReference
+      ..add({
+        'eventThumbnail': event.eventThumbnail,
+        'eventLumaLink': event.eventLumaLink,
+        'eventDates': event.eventDates,
+        'eventHost': event.eventHost,
+      });
+  }
+
+  // method to sumbit new event
+
+  void submitEvent() {
+    String eventThumbnail = eventThumbnailController.text;
+    String eventLumaLink = eventLumaLinkController.text;
+    String eventDates = eventDatesController.text;
+    String eventHost = eventHostController.text;
+
+    Event newEvent = Event(
+      eventThumbnail: eventThumbnail,
+      eventDates: eventDates,
+      eventLumaLink: eventLumaLink,
+      eventHost: eventHost,
+      eventID: '',
+    );
+    addEvent(newEvent);
+    eventDatesController.clear();
+    eventHostController.clear();
+    eventLumaLinkController.clear();
+    eventThumbnailController.clear();
   }
 
   void fetchPastEventLink() async {
@@ -189,7 +229,22 @@ class _EventPageState extends State<EventPage> {
                     hintText: 'Host of the Event',
                     icon: FontAwesomeIcons.person,
                     controller: eventHostController,
-                  )
+                  ),
+                  SizedBox(height: screenWidth * 0.02),
+                  ElevatedButton(
+                    onPressed: () {
+                      if (eventThumbnailController.text.isNotEmpty &&
+                          eventDatesController.text.isNotEmpty &&
+                          eventHostController.text.isNotEmpty &&
+                          eventHostController.text.isNotEmpty) {
+                        submitEvent();
+                        Navigator.pop(context);
+                      } else {
+                        _showErrorMessage(context, 'Please Fill all the forms');
+                      }
+                    },
+                    child: const Text('Create new event!'),
+                  ),
                 ],
               ),
             ),
@@ -200,5 +255,14 @@ class _EventPageState extends State<EventPage> {
         ),
       ),
     );
+  }
+
+  void _showErrorMessage(BuildContext context, String message) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      behavior: SnackBarBehavior.floating,
+      margin: EdgeInsets.only(bottom: MediaQuery.of(context).size.height * 0.5),
+      content: Text(message),
+      backgroundColor: Colors.red,
+    ));
   }
 }
