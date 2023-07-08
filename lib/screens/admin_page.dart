@@ -39,7 +39,7 @@ class _AdminPageState extends State<AdminPage> {
               // manage events section
               GestureDetector(
                 onTap: () => Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => EventPage())),
+                    MaterialPageRoute(builder: (context) => const EventPage())),
                 child: Container(
                   margin: EdgeInsets.symmetric(
                     horizontal: screenWidth * 0.1,

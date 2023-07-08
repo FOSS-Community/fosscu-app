@@ -21,6 +21,35 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  // Fetching events the new way
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   /// Variable to check between issues and pull requests
   bool _isListIssues = false;
 

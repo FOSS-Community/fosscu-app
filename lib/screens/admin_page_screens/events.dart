@@ -18,16 +18,11 @@ class _EventPageState extends State<EventPage> {
 
   // text controllers
   final pastEventLinkController = TextEditingController();
-  final newEventImageLinkController = TextEditingController();
-  final newEventDateController = TextEditingController();
-  final newEventLumaController = TextEditingController();
+
 
   @override
   void dispose() {
     pastEventLinkController.dispose();
-    newEventDateController.dispose();
-    newEventImageLinkController.dispose();
-    newEventLumaController.dispose();
     super.dispose();
   }
 
@@ -59,9 +54,7 @@ class _EventPageState extends State<EventPage> {
     });
   }
 
-  void setNewEvent() async {
-    counter++;
-  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -174,7 +167,9 @@ class _EventPageState extends State<EventPage> {
                     bottomRight: Radius.zero,
                   )),
                   child: Column(
-
+                    children: [
+                      
+                    ],
                   ),
             ),
           );
