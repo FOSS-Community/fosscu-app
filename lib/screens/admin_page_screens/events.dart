@@ -38,11 +38,11 @@ class _EventPageState extends State<EventPage> {
   }
 
   // method to add new event to the database
-  Future<CollectionReference> addEvent(Event event) async {
+  Future<CollectionReference> addEvent(Event event, String documentID) async {
     final collection = FirebaseFirestore.instance.collection('events');
 
     // random document id
-    String documentID = collection.doc().id;
+    // String documentID = collection.doc().id;
     final collectionReference = collection.doc(documentID).collection('event');
 
     return collectionReference
@@ -51,6 +51,7 @@ class _EventPageState extends State<EventPage> {
         'eventLumaLink': event.eventLumaLink,
         'eventDates': event.eventDates,
         'eventHost': event.eventHost,
+        'eventID': documentID,
       });
   }
 
@@ -62,18 +63,41 @@ class _EventPageState extends State<EventPage> {
     String eventDates = eventDatesController.text;
     String eventHost = eventHostController.text;
 
+    // random document ID
+    String documentID =
+        FirebaseFirestore.instance.collection('events').doc().id;
+
     Event newEvent = Event(
       eventThumbnail: eventThumbnail,
       eventDates: eventDates,
       eventLumaLink: eventLumaLink,
       eventHost: eventHost,
-      eventID: '',
+      eventID: documentID,
     );
-    addEvent(newEvent);
-    eventDatesController.clear();
-    eventHostController.clear();
-    eventLumaLinkController.clear();
-    eventThumbnailController.clear();
+    addEvent(newEvent, documentID);
+    setState(() {
+      eventDatesController.clear();
+      eventHostController.clear();
+      eventLumaLinkController.clear();
+      eventThumbnailController.clear();
+    });
+  }
+
+  // method to retrieve upcoming events using streams
+  Stream<List<Event>> getEvents() {
+    final collection = FirebaseFirestore.instance.collection('events');
+    return collection.snapshots().map((snapshot) {
+      return snapshot.docs.map((doc) {
+        final data = doc.data();
+        return Event(
+          eventID: data['eventID'],
+          eventLumaLink: data['eventLumaLink'],
+          eventThumbnail: data['eventThumbnail'],
+          eventDates: data['eventDates'],
+          eventHost: data['eventHost'],
+        );
+      }).toList();
+    });
   }
 
   void fetchPastEventLink() async {
@@ -101,6 +125,7 @@ class _EventPageState extends State<EventPage> {
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
+    Stream<List<Event>> eventStream = getEvents();
     final textStyle = GoogleFonts.leagueSpartan(
       color: Colors.white,
       fontWeight: FontWeight.bold,
@@ -193,6 +218,30 @@ class _EventPageState extends State<EventPage> {
                 style: textStyle,
               ),
             ),
+            StreamBuilder(
+              stream: eventStream,
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  List<Event> events = snapshot.data!;
+                  return SizedBox(
+                    height: screenWidth * 0.4,
+                    child: ListView.builder(
+                      itemCount: events.length,
+                      itemBuilder: (context, index) {
+                        Event event = events[index];
+                        return ListTile(
+                          title: Text(
+                            event.eventHost,
+                            style: const TextStyle(color: Colors.white),
+                          ),
+                        );
+                      },
+                    ),
+                  );
+                } else if (snapshot.hasError) {}
+                return Container();
+              },
+            )
           ],
         ),
       )),
