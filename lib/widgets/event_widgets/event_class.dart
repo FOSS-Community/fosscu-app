@@ -4,6 +4,7 @@ class Event {
   final String eventLumaLink;
   final String eventHost;
   final String eventID;
+  final String eventTitle;
 
   Event({
     required this.eventThumbnail,
@@ -11,5 +12,6 @@ class Event {
     required this.eventLumaLink,
     required this.eventHost,
     required this.eventID,
+    required this.eventTitle,
   });
 }

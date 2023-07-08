@@ -2,8 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:fosscu_app/constants/color.dart';
-import 'package:fosscu_app/widgets/event_class.dart';
-import 'package:fosscu_app/widgets/event_form.dart';
+import 'package:fosscu_app/widgets/event_widgets/event_class.dart';
+import 'package:fosscu_app/widgets/event_widgets/event_form.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class EventPage extends StatefulWidget {
@@ -24,7 +24,7 @@ class _EventPageState extends State<EventPage> {
   final eventDatesController = TextEditingController();
   final eventLumaLinkController = TextEditingController();
   final eventHostController = TextEditingController();
-
+  final eventTitileController = TextEditingController();
   @override
   void dispose() {
     pastEventLinkController.dispose();
@@ -38,12 +38,13 @@ class _EventPageState extends State<EventPage> {
   }
 
   // method to add new event to the database
-  Future<CollectionReference> addEvent(Event event, ) async {
-    final collection = FirebaseFirestore.instance.collection('events').doc('event_doc').collection('event');
-
-    // random document id
-    // String documentID = collection.doc().id;
-    // final collectionReference = collection.doc(documentID).collection('event');
+  Future<CollectionReference> addEvent(
+    Event event,
+  ) async {
+    final collection = FirebaseFirestore.instance
+        .collection('events')
+        .doc('event_doc')
+        .collection('event');
 
     return collection
       ..add({
@@ -51,6 +52,7 @@ class _EventPageState extends State<EventPage> {
         'eventLumaLink': event.eventLumaLink,
         'eventDates': event.eventDates,
         'eventHost': event.eventHost,
+        'eventTitle': event.eventTitle,
       });
   }
 
@@ -61,26 +63,31 @@ class _EventPageState extends State<EventPage> {
     String eventLumaLink = eventLumaLinkController.text;
     String eventDates = eventDatesController.text;
     String eventHost = eventHostController.text;
+    String eventTitle = eventTitileController.text;
 
     Event newEvent = Event(
-      eventThumbnail: eventThumbnail,
-      eventDates: eventDates,
-      eventLumaLink: eventLumaLink,
-      eventHost: eventHost,
-      eventID: '',
-    );
+        eventThumbnail: eventThumbnail,
+        eventDates: eventDates,
+        eventLumaLink: eventLumaLink,
+        eventHost: eventHost,
+        eventID: '',
+        eventTitle: eventTitle);
     addEvent(newEvent);
     setState(() {
       eventDatesController.clear();
       eventHostController.clear();
       eventLumaLinkController.clear();
       eventThumbnailController.clear();
+      eventTitileController.clear();
     });
   }
 
   // method to retrieve upcoming events using streams
   Stream<List<Event>> getEvents() {
-    final collection = FirebaseFirestore.instance.collection('events').doc('event_doc').collection('event');
+    final collection = FirebaseFirestore.instance
+        .collection('events')
+        .doc('event_doc')
+        .collection('event');
     return collection.snapshots().map((snapshot) {
       return snapshot.docs.map((doc) {
         final data = doc.data();
@@ -90,6 +97,7 @@ class _EventPageState extends State<EventPage> {
           eventThumbnail: data['eventThumbnail'],
           eventDates: data['eventDates'],
           eventHost: data['eventHost'],
+          eventTitle: data['eventTitle'],
         );
       }).toList();
     });
@@ -252,44 +260,52 @@ class _EventPageState extends State<EventPage> {
                     bottomLeft: Radius.zero,
                     bottomRight: Radius.zero,
                   )),
-              child: Column(
-                children: [
-                  EventForm(
-                    hintText: 'Hosted Event Thumbnail Link',
-                    icon: FontAwesomeIcons.link,
-                    controller: eventThumbnailController,
-                  ),
-                  EventForm(
-                    hintText: 'Event Luma Link',
-                    icon: FontAwesomeIcons.link,
-                    controller: eventLumaLinkController,
-                  ),
-                  EventForm(
-                    hintText: 'Event Dates (dd month)',
-                    icon: FontAwesomeIcons.calendar,
-                    controller: eventDatesController,
-                  ),
-                  EventForm(
-                    hintText: 'Host of the Event',
-                    icon: FontAwesomeIcons.person,
-                    controller: eventHostController,
-                  ),
-                  SizedBox(height: screenWidth * 0.02),
-                  ElevatedButton(
-                    onPressed: () {
-                      if (eventThumbnailController.text.isNotEmpty &&
-                          eventDatesController.text.isNotEmpty &&
-                          eventHostController.text.isNotEmpty &&
-                          eventHostController.text.isNotEmpty) {
-                        submitEvent();
-                        Navigator.pop(context);
-                      } else {
-                        _showErrorMessage(context, 'Please Fill all the forms');
-                      }
-                    },
-                    child: const Text('Create new event!'),
-                  ),
-                ],
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    EventForm(
+                      hintText: 'Event Name',
+                      icon: FontAwesomeIcons.person,
+                      controller: eventTitileController,
+                    ),
+                    EventForm(
+                      hintText: 'Hosted Event Thumbnail Link',
+                      icon: FontAwesomeIcons.link,
+                      controller: eventThumbnailController,
+                    ),
+                    EventForm(
+                      hintText: 'Event Luma Link',
+                      icon: FontAwesomeIcons.link,
+                      controller: eventLumaLinkController,
+                    ),
+                    EventForm(
+                      hintText: 'Event Dates (dd month)',
+                      icon: FontAwesomeIcons.calendar,
+                      controller: eventDatesController,
+                    ),
+                    EventForm(
+                      hintText: 'Host of the Event',
+                      icon: FontAwesomeIcons.person,
+                      controller: eventHostController,
+                    ),
+                    SizedBox(height: screenWidth * 0.03),
+                    ElevatedButton(
+                      onPressed: () {
+                        if (eventThumbnailController.text.isNotEmpty &&
+                            eventDatesController.text.isNotEmpty &&
+                            eventHostController.text.isNotEmpty &&
+                            eventHostController.text.isNotEmpty) {
+                          submitEvent();
+                          Navigator.pop(context);
+                        } else {
+                          _showErrorMessage(context, 'Please Fill all the forms');
+                        }
+                      },
+                      child: const Text('Create new event!'),
+                    ),
+                    SizedBox(height: screenWidth * 0.03),
+                  ],
+                ),
               ),
             ),
           );
