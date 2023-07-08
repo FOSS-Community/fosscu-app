@@ -23,11 +23,13 @@ class EventForm extends StatelessWidget {
         top: screenWidth * 0.08,
       ),
       child: TextFormField(
+        
         style: const TextStyle(
           color: Colors.white,
         ),
         controller: controller,
         decoration: InputDecoration(
+          floatingLabelBehavior: FloatingLabelBehavior.auto,
             prefixIcon: Icon(
               icon,
               color: Colors.white,
@@ -51,8 +53,8 @@ class EventForm extends StatelessWidget {
                 20,
               ),
             ),
-            hintText: hintText,
-            hintStyle: TextStyle(
+            labelText: hintText,
+            labelStyle: TextStyle(
               color: Colors.white,
               fontSize: screenWidth * 0.03,
               fontWeight: FontWeight.w300
