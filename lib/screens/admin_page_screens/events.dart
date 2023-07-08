@@ -38,20 +38,19 @@ class _EventPageState extends State<EventPage> {
   }
 
   // method to add new event to the database
-  Future<CollectionReference> addEvent(Event event, String documentID) async {
-    final collection = FirebaseFirestore.instance.collection('events');
+  Future<CollectionReference> addEvent(Event event, ) async {
+    final collection = FirebaseFirestore.instance.collection('events').doc('event_doc').collection('event');
 
     // random document id
     // String documentID = collection.doc().id;
-    final collectionReference = collection.doc(documentID).collection('event');
+    // final collectionReference = collection.doc(documentID).collection('event');
 
-    return collectionReference
+    return collection
       ..add({
         'eventThumbnail': event.eventThumbnail,
         'eventLumaLink': event.eventLumaLink,
         'eventDates': event.eventDates,
         'eventHost': event.eventHost,
-        'eventID': documentID,
       });
   }
 
@@ -63,18 +62,14 @@ class _EventPageState extends State<EventPage> {
     String eventDates = eventDatesController.text;
     String eventHost = eventHostController.text;
 
-    // random document ID
-    String documentID =
-        FirebaseFirestore.instance.collection('events').doc().id;
-
     Event newEvent = Event(
       eventThumbnail: eventThumbnail,
       eventDates: eventDates,
       eventLumaLink: eventLumaLink,
       eventHost: eventHost,
-      eventID: documentID,
+      eventID: '',
     );
-    addEvent(newEvent, documentID);
+    addEvent(newEvent);
     setState(() {
       eventDatesController.clear();
       eventHostController.clear();
@@ -85,12 +80,12 @@ class _EventPageState extends State<EventPage> {
 
   // method to retrieve upcoming events using streams
   Stream<List<Event>> getEvents() {
-    final collection = FirebaseFirestore.instance.collection('events');
+    final collection = FirebaseFirestore.instance.collection('events').doc('event_doc').collection('event');
     return collection.snapshots().map((snapshot) {
       return snapshot.docs.map((doc) {
         final data = doc.data();
         return Event(
-          eventID: data['eventID'],
+          eventID: doc.id,
           eventLumaLink: data['eventLumaLink'],
           eventThumbnail: data['eventThumbnail'],
           eventDates: data['eventDates'],
