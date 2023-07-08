@@ -26,6 +26,24 @@ class _EventListTileState extends State<EventListTile> {
   final eventThumbnailController = TextEditingController();
   final eventLumaLinkController = TextEditingController();
 
+  // method to edit event
+
+  void editEventData() {
+    FirebaseFirestore.instance
+        .collection('events')
+        .doc('event_doc')
+        .collection('event')
+        .doc(widget.documentID)
+        .set({
+      'eventTitle': eventTitileController.text,
+      'eventHost': eventHostController.text,
+      'eventThumbmnail': eventThumbnailController.text,
+      'eventLumaLink': eventLumaLinkController.text,
+      'eventDates': eventDatesController.text,
+    });
+    _showErrorMessage(context, 'Event Data Updated!');
+  }
+
   // method to fetch event data to edit them
 
   void fetchEventData(String documentID) async {
@@ -35,7 +53,7 @@ class _EventListTileState extends State<EventListTile> {
         .collection('event')
         .doc(documentID)
         .get();
-    if(snapshot.exists){
+    if (snapshot.exists) {
       String eventTitle = snapshot.get('eventTitle');
       String eventHost = snapshot.get('eventHost');
       String eventThumbnailLink = snapshot.get('eventThumbnail');
@@ -111,11 +129,12 @@ class _EventListTileState extends State<EventListTile> {
                                   eventDatesController.text.isNotEmpty &&
                                   eventHostController.text.isNotEmpty &&
                                   eventHostController.text.isNotEmpty) {
-                                // submitEvent();
+                                editEventData();
                                 Navigator.pop(context);
+
                               } else {
-                                // _showErrorMessage(
-                                    // context, 'Please Fill all the forms');
+                                 _showErrorMessage(
+                                 context, 'Please Fill all the forms');
                               }
                             },
                             child: const Text('Create new event!'),
@@ -143,5 +162,14 @@ class _EventListTileState extends State<EventListTile> {
         ),
       ),
     );
+  }
+
+  void _showErrorMessage(BuildContext context, String message) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      behavior: SnackBarBehavior.floating,
+      margin: EdgeInsets.only(bottom: MediaQuery.of(context).size.height * 0.5),
+      content: Text(message),
+      backgroundColor: Colors.red,
+    ));
   }
 }
