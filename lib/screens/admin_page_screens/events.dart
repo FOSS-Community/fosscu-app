@@ -163,7 +163,7 @@ class _EventPageState extends State<EventPage> {
             context: context,
             builder: (context) => Container(
               decoration: BoxDecoration(
-                  color: brightGreyColor,
+                  color: darkGreyColor,
                   borderRadius: BorderRadius.circular(20).copyWith(
                     bottomLeft: Radius.zero,
                     bottomRight: Radius.zero,
@@ -171,7 +171,7 @@ class _EventPageState extends State<EventPage> {
               child: Column(
                 children: [
                   EventForm(
-                    hintText: 'Hosted Event Thumbnail link',
+                    hintText: 'Hosted Event Thumbnail Link',
                     icon: FontAwesomeIcons.link,
                     controller: eventThumbnailController,
                   ),
@@ -181,7 +181,7 @@ class _EventPageState extends State<EventPage> {
                     controller: eventLumaLinkController,
                   ),
                   EventForm(
-                    hintText: 'Event Dates',
+                    hintText: 'Event Dates (dd month)',
                     icon: FontAwesomeIcons.calendar,
                     controller: eventDatesController,
                   ),

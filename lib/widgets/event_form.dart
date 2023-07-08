@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fosscu_app/constants/color.dart';
 
 class EventForm extends StatelessWidget {
   final String hintText;
@@ -22,25 +23,40 @@ class EventForm extends StatelessWidget {
         top: screenWidth * 0.08,
       ),
       child: TextFormField(
+        style: const TextStyle(
+          color: Colors.white,
+        ),
         controller: controller,
         decoration: InputDecoration(
-          prefixIcon: Icon(icon),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(
-              20,
+            prefixIcon: Icon(
+              icon,
+              color: Colors.white,
+              size: screenWidth * 0.04,
             ),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderSide: const BorderSide(
-              color: Colors.black,
-              width: 2,
+            enabledBorder: OutlineInputBorder(
+              borderSide: const BorderSide(
+                color: brightGreyColor,
+                width: 1
+              ),
+              borderRadius: BorderRadius.circular(
+                20,
+              ),
             ),
-            borderRadius: BorderRadius.circular(
-              20,
+            focusedBorder: OutlineInputBorder(
+              borderSide: const BorderSide(
+                color: Colors.white,
+                width: 2,
+              ),
+              borderRadius: BorderRadius.circular(
+                20,
+              ),
             ),
-          ),
-          hintText: hintText,
-        ),
+            hintText: hintText,
+            hintStyle: TextStyle(
+              color: Colors.white,
+              fontSize: screenWidth * 0.03,
+              fontWeight: FontWeight.w300
+            )),
       ),
     );
   }
