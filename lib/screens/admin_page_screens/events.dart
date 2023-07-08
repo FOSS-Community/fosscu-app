@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:fosscu_app/constants/color.dart';
+import 'package:fosscu_app/widgets/event_form.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class EventPage extends StatefulWidget {
@@ -18,7 +19,10 @@ class _EventPageState extends State<EventPage> {
 
   // text controllers
   final pastEventLinkController = TextEditingController();
-
+  final eventThumbnailController = TextEditingController();
+  final eventDatesController = TextEditingController();
+  final eventLumaLinkController = TextEditingController();
+  final eventHostController = TextEditingController();
 
   @override
   void dispose() {
@@ -53,8 +57,6 @@ class _EventPageState extends State<EventPage> {
       'image1': pastEventLinkController.text,
     });
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -166,11 +168,30 @@ class _EventPageState extends State<EventPage> {
                     bottomLeft: Radius.zero,
                     bottomRight: Radius.zero,
                   )),
-                  child: Column(
-                    children: [
-                      
-                    ],
+              child: Column(
+                children: [
+                  EventForm(
+                    hintText: 'Hosted Event Thumbnail link',
+                    icon: FontAwesomeIcons.link,
+                    controller: eventThumbnailController,
                   ),
+                  EventForm(
+                    hintText: 'Event Luma Link',
+                    icon: FontAwesomeIcons.link,
+                    controller: eventLumaLinkController,
+                  ),
+                  EventForm(
+                    hintText: 'Event Dates',
+                    icon: FontAwesomeIcons.calendar,
+                    controller: eventDatesController,
+                  ),
+                  EventForm(
+                    hintText: 'Host of the Event',
+                    icon: FontAwesomeIcons.person,
+                    controller: eventHostController,
+                  )
+                ],
+              ),
             ),
           );
         },
