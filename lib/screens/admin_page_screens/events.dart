@@ -6,6 +6,8 @@ import 'package:fosscu_app/widgets/event_widgets/event_class.dart';
 import 'package:fosscu_app/widgets/event_widgets/event_form.dart';
 import 'package:fosscu_app/widgets/event_widgets/upcoming_event_list_tile.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:top_snackbar_flutter/custom_snack_bar.dart';
+import 'package:top_snackbar_flutter/top_snack_bar.dart';
 
 class EventPage extends StatefulWidget {
   const EventPage({super.key});
@@ -319,11 +321,7 @@ class _EventPageState extends State<EventPage> {
   }
 
   void _showErrorMessage(BuildContext context, String message) {
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      behavior: SnackBarBehavior.floating,
-      margin: EdgeInsets.only(bottom: MediaQuery.of(context).size.height * 0.5),
-      content: Text(message),
-      backgroundColor: Colors.red,
-    ));
+    showTopSnackBar(
+        Overlay.of(context), CustomSnackBar.error(message: message));
   }
 }

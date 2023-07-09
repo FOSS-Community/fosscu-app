@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:fosscu_app/constants/color.dart';
 import 'package:fosscu_app/widgets/event_widgets/event_form.dart';
+import 'package:top_snackbar_flutter/custom_snack_bar.dart';
+import 'package:top_snackbar_flutter/top_snack_bar.dart';
 
 class EventListTile extends StatefulWidget {
   final String title;
@@ -165,10 +167,6 @@ class _EventListTileState extends State<EventListTile> {
   }
 
   void _showErrorMessage(BuildContext context, String message) {
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      // margin: EdgeInsets.only(bottom: MediaQuery.of(context).size.height * 0.5),
-      content: Text(message),
-      backgroundColor: Colors.green,
-    ));
+    showTopSnackBar(Overlay.of(context), CustomSnackBar.success(message: message));
   }
 }
