@@ -1,8 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:fosscu_app/constants/color.dart';
-import 'package:fosscu_app/widgets/admin_widgets/member_class.dart';
+import 'package:fosscu_app/widgets/member_widgets.dart/member_class.dart';
 import 'package:fosscu_app/widgets/event_widgets/upcoming_event_list_tile.dart';
+import 'package:fosscu_app/widgets/member_widgets.dart/member_list_tile.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class MembersPage extends StatefulWidget {
@@ -64,8 +65,8 @@ class _MembersPageState extends State<MembersPage> {
                       itemCount: members.length,
                       itemBuilder: (context, index) {
                         Member member = members[index];
-                        return ListTile(
-                          title: Text(member.memberName, style: const TextStyle(color: Colors.white),),
+                        return MemberListTile(
+                          title: member.memberName,
                         );
                       },
                     ),
