@@ -34,7 +34,7 @@ class _EventListTileState extends State<EventListTile> {
         .doc('event_doc')
         .collection('event')
         .doc(widget.documentID)
-        .set({
+        .update({
       'eventTitle': eventTitileController.text,
       'eventHost': eventHostController.text,
       'eventThumbmnail': eventThumbnailController.text,
