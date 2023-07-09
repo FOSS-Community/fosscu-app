@@ -235,7 +235,7 @@ class _EventPageState extends State<EventPage> {
                         Event event = events[index];
                         return EventListTile(
                           title: event.eventTitle,
-                          eventDate: event.eventID,
+                          eventDate: event.eventHost,
                           documentID: event.eventID,
                         );
                       },

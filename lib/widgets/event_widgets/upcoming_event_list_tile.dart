@@ -37,7 +37,7 @@ class _EventListTileState extends State<EventListTile> {
         .update({
       'eventTitle': eventTitileController.text,
       'eventHost': eventHostController.text,
-      'eventThumbmnail': eventThumbnailController.text,
+      'eventThumbnail': eventThumbnailController.text,
       'eventLumaLink': eventLumaLinkController.text,
       'eventDates': eventDatesController.text,
     });
@@ -128,16 +128,16 @@ class _EventListTileState extends State<EventListTile> {
                               if (eventThumbnailController.text.isNotEmpty &&
                                   eventDatesController.text.isNotEmpty &&
                                   eventHostController.text.isNotEmpty &&
-                                  eventHostController.text.isNotEmpty) {
+                                  eventHostController.text.isNotEmpty &&
+                                  eventLumaLinkController.text.isNotEmpty) {
                                 editEventData();
                                 Navigator.pop(context);
-
                               } else {
-                                 _showErrorMessage(
-                                 context, 'Please Fill all the forms');
+                                _showErrorMessage(
+                                    context, 'Please Fill all the forms');
                               }
                             },
-                            child: const Text('Create new event!'),
+                            child: const Text('Update event details!'),
                           ),
                           SizedBox(height: screenWidth * 0.03),
                         ],
@@ -166,10 +166,9 @@ class _EventListTileState extends State<EventListTile> {
 
   void _showErrorMessage(BuildContext context, String message) {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      behavior: SnackBarBehavior.floating,
-      margin: EdgeInsets.only(bottom: MediaQuery.of(context).size.height * 0.5),
+      // margin: EdgeInsets.only(bottom: MediaQuery.of(context).size.height * 0.5),
       content: Text(message),
-      backgroundColor: Colors.red,
+      backgroundColor: Colors.green,
     ));
   }
 }
