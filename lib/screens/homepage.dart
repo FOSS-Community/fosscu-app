@@ -1,9 +1,9 @@
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:fosscu_app/constants/apikey.dart';
 import 'package:fosscu_app/constants/color.dart';
+import 'package:fosscu_app/widgets/event_widgets/event_class.dart';
 import 'package:fosscu_app/widgets/listtile.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
@@ -22,33 +22,6 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   // Fetching events the new way
-
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
   /// Variable to check between issues and pull requests
   bool _isListIssues = false;
@@ -122,11 +95,6 @@ class _HomePageState extends State<HomePage> {
   String pastEventBodyText = '';
   String pastEventLink = '';
 
-  List<String> upcomingEventImageUrl = [];
-  List<String> upcomingEventsUrlList = [];
-  List<String> upcomingEventHostList = [];
-  List<String> upcomingEventDateList = [];
-
   /// Fetching images for past events
   void fetchPastEvent() async {
     DocumentSnapshot snapshot = await FirebaseFirestore.instance
@@ -153,65 +121,37 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  /// Fetch upcoming events
-  void fetchUpcomingEvents() async {
-    CollectionReference imageReference =
-        FirebaseFirestore.instance.collection('upcoming_events');
-
-    CollectionReference registerLinkReference =
-        FirebaseFirestore.instance.collection('upcoming_events_links');
-
-    CollectionReference hostReference =
-        FirebaseFirestore.instance.collection('talk_by');
-
-    CollectionReference dateReference =
-        FirebaseFirestore.instance.collection('upcoming_events_dates');
-
-    // get docs from collection reference
-    QuerySnapshot upcomingEventsImage = await imageReference.get();
-
-    QuerySnapshot upcomingEventsUrl = await registerLinkReference.get();
-
-    QuerySnapshot upcomingEventsHost = await hostReference.get();
-
-    QuerySnapshot upcomingEventsDate = await dateReference.get();
-
-    // get data from docs and convert map to list
-    final upcomingEventsImageLink = upcomingEventsImage.docs
-        .map((doc) => doc.data() as Map<String, dynamic>)
-        .toList();
-
-    final upcomingEventsUrls = upcomingEventsUrl.docs
-        .map((doc) => doc.data() as Map<String, dynamic>)
-        .toList();
-
-    final upcomingEventsHosts = upcomingEventsHost.docs
-        .map((doc) => doc.data() as Map<String, dynamic>)
-        .toList();
-
-    final upcomingEventsDates = upcomingEventsDate.docs
-        .map((doc) => doc.data() as Map<String, dynamic>)
-        .toList();
-
-    for (var event in upcomingEventsImageLink) {
-      upcomingEventImageUrl
-          .addAll(event.values.map((value) => value.toString()));
-    }
-
-    for (var event in upcomingEventsUrls) {
-      upcomingEventsUrlList
-          .addAll(event.values.map((value) => value.toString()));
-    }
-
-    for (var event in upcomingEventsHosts) {
-      upcomingEventHostList
-          .addAll(event.values.map((value) => value.toString()));
-    }
-    for (var event in upcomingEventsDates) {
-      upcomingEventDateList
-          .addAll(event.values.map((value) => value.toString()));
-    }
+  // Stream method to fetch upcoming events
+  Stream<List<Event>> getUpcomingEvents() {
+    final collection = FirebaseFirestore.instance
+        .collection('events')
+        .doc('event_doc')
+        .collection('event');
+    return collection.snapshots().map((snapshot) {
+      return snapshot.docs.map((doc) {
+        final data = doc.data();
+        return Event(
+          eventID: doc.id,
+          eventLumaLink: data['eventLumaLink'],
+          eventThumbnail: data['eventThumbnail'],
+          eventDates: data['eventDates'],
+          eventHost: data['eventHost'],
+          eventTitle: data['eventTitle'],
+        );
+      }).toList();
+    });
   }
+
+  // method to get the length of the Stream
+  Future<int> getStreamLength() async {
+    final stream = getUpcomingEvents();
+    final eventList = await stream.first;
+    return eventList.length;
+  }
+
+  int eventsLength = 0;
+
+
 
   /// Calling _fetchIssue when screen is intialized
   @override
@@ -219,12 +159,19 @@ class _HomePageState extends State<HomePage> {
     _fetchIssue();
     _fetchPrs();
     fetchPastEvent();
-    fetchUpcomingEvents();
+    getStreamLength().then((eventsLength) {
+      int convertedLength = eventsLength;
+      setState(() {
+        eventsLength = convertedLength;
+        print('number of events is $eventsLength');
+      });
+    });
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    Stream<List<Event>> eventStream = getUpcomingEvents();
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
     return SafeArea(
@@ -321,140 +268,143 @@ class _HomePageState extends State<HomePage> {
               Container(
                 alignment: Alignment.centerLeft,
                 margin: EdgeInsets.only(left: screenWidth * 0.05),
-                child: Text(
-                  'Our Upcoming Events!',
-                  style: GoogleFonts.leagueSpartan(
-                    fontWeight: FontWeight.bold,
-                    color: greenColor,
-                  ),
+                child: Row(
+                  children: [
+                    Text(
+                      'Our Upcoming Events!',
+                      style: GoogleFonts.leagueSpartan(
+                        fontWeight: FontWeight.bold,
+                        color: greenColor,
+                      ),
+                    ),
+                    const Text('  (Scroll down)', style: TextStyle(color: Colors.white),)
+                  ],
                 ),
               ),
 
               /// List view to show upcoming events.
               Container(
                 margin: EdgeInsets.symmetric(horizontal: screenWidth * 0.015),
-                height: (screenHeight * 0.25 * upcomingEventImageUrl.length) +
-                    screenHeight * 0.3,
+                height:
+                    (screenHeight * 0.25 * eventsLength) + screenHeight * 0.3,
                 decoration:
                     BoxDecoration(borderRadius: BorderRadius.circular(20)),
-                child: upcomingEventImageUrl.isEmpty
-                    ? Shimmer(
-                        duration: const Duration(seconds: 2),
-                        interval: const Duration(milliseconds: 500),
-                        color: Colors.white,
-                        enabled: true,
-                        child: Container(
-                          width: screenWidth * 0.85,
-                          height: screenHeight * 0.38,
-                          decoration: BoxDecoration(
-                            color: brightGreyColor,
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                        ),
-                      )
-                    : ListView.builder(
-                        // physics: const NeverScrollableScrollPhysics(),
-                        itemCount: upcomingEventImageUrl.length,
-                        itemBuilder: (
-                          BuildContext context,
-                          int index,
-                        ) {
-                          final url = upcomingEventImageUrl[index];
-                          final regUrl = upcomingEventsUrlList[index];
-                          return Container(
-                            height: screenWidth * 0.65,
-                            margin: const EdgeInsets.symmetric(
-                              vertical: 10,
-                              horizontal: 20,
-                            ),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                              color: Colors.black,
-                            ),
-                            child: Stack(
-                              children: [
-                                Container(
+                child:StreamBuilder(
+                        stream: eventStream,
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            List<Event> events = snapshot.data!;
+                            return ListView.builder(
+                              itemCount: events.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                Event event = events[index];
+                                final eventThumbnail = event.eventThumbnail;
+                                final eventLumaLink = event.eventLumaLink;
+                                final eventHostName = event.eventHost;
+                                final eventDates = event.eventDates;
+                                return Container(
+                                  height: screenWidth * 0.65,
+                                  margin: const EdgeInsets.symmetric(
+                                      vertical: 10, horizontal: 20),
                                   decoration: BoxDecoration(
-                                    color: darkGreyColor,
-                                    borderRadius: BorderRadius.circular(15),
-                                  ),
-                                  child: Column(
+                                      borderRadius: BorderRadius.circular(20),
+                                      color: Colors.black),
+                                  child: Stack(
                                     children: [
-                                      GestureDetector(
-                                        onTap: () {},
-                                        child: ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(20),
-                                          child:
-                                              CachedNetworkImage(imageUrl: url),
-                                        ),
-                                      ),
-                                      SizedBox(height: screenHeight * 0.01),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Container(
-                                            margin: const EdgeInsets.all(10),
-                                            child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  upcomingEventHostList[index],
-                                                  style:
-                                                      GoogleFonts.leagueSpartan(
-                                                    color: Colors.white,
-                                                  ),
-                                                ),
-                                                Text(
-                                                  upcomingEventDateList[index],
-                                                  style:
-                                                      GoogleFonts.leagueSpartan(
-                                                    color: Colors.white,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          GestureDetector(
-                                            onTap: () {
-                                              launchUrlString(
-                                                regUrl,
-                                                mode: LaunchMode
-                                                    .externalApplication,
-                                              );
-                                            },
-                                            child: Container(
-                                              width: screenWidth * 0.26,
-                                              height: screenHeight * 0.05,
-                                              margin: const EdgeInsets.all(10),
-                                              decoration: BoxDecoration(
+                                      Container(
+                                        decoration: BoxDecoration(
+                                            color: darkGreyColor,
+                                            borderRadius:
+                                                BorderRadius.circular(15)),
+                                        child: Column(
+                                          children: [
+                                            GestureDetector(
+                                              onTap: () {},
+                                              child: ClipRRect(
                                                 borderRadius:
-                                                    BorderRadius.circular(10),
-                                                color: brightGreyColor,
-                                              ),
-                                              child: const Center(
-                                                child: Text(
-                                                  'Register Now!',
-                                                  style: TextStyle(
-                                                    color: Colors.white,
-                                                  ),
-                                                ),
+                                                    BorderRadius.circular(20),
+                                                child: CachedNetworkImage(
+                                                    imageUrl: eventThumbnail),
                                               ),
                                             ),
-                                          )
-                                        ],
+                                            SizedBox(
+                                                height: screenHeight * 0.01),
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Container(
+                                                  margin:
+                                                      const EdgeInsets.all(10),
+                                                  child: Column(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.start,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Text(
+                                                        eventHostName,
+                                                        style: GoogleFonts
+                                                            .leagueSpartan(
+                                                          color: Colors.white,
+                                                        ),
+                                                      ),
+                                                      Text(
+                                                        eventDates,
+                                                        style: GoogleFonts
+                                                            .leagueSpartan(
+                                                          color: Colors.white,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                                GestureDetector(
+                                                  onTap: () {
+                                                    launchUrlString(
+                                                      eventLumaLink,
+                                                      mode: LaunchMode
+                                                          .externalApplication,
+                                                    );
+                                                  },
+                                                  child: Container(
+                                                    width: screenWidth * 0.26,
+                                                    height: screenHeight * 0.05,
+                                                    margin:
+                                                        const EdgeInsets.all(
+                                                            10),
+                                                    decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              10),
+                                                      color: brightGreyColor,
+                                                    ),
+                                                    child: const Center(
+                                                      child: Text(
+                                                        'Register Now!',
+                                                        style: TextStyle(
+                                                          color: Colors.white,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                )
+                                              ],
+                                            )
+                                          ],
+                                        ),
                                       )
                                     ],
                                   ),
-                                ),
-                              ],
-                            ),
-                          );
-                        }),
+                                );
+                              },
+                            );
+                          } else if (snapshot.hasError){}
+                          return Container();
+                        } 
+                      ),
               ),
 
               SizedBox(
