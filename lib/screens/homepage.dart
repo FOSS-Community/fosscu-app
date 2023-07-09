@@ -95,6 +95,7 @@ class _HomePageState extends State<HomePage> {
   String pastEventBodyText = '';
   String pastEventLink = '';
 
+
   /// Fetching images for past events
   void fetchPastEvent() async {
     DocumentSnapshot snapshot = await FirebaseFirestore.instance
