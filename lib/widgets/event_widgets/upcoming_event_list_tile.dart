@@ -72,6 +72,15 @@ class _EventListTileState extends State<EventListTile> {
     }
   }
 
+  // method to delete event
+  Future<void> _deleteEvent() async {
+    final collection = FirebaseFirestore.instance
+        .collection('events')
+        .doc('event_doc')
+        .collection('event');
+    await collection.doc(widget.documentID).delete();
+  }
+
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
@@ -125,21 +134,35 @@ class _EventListTileState extends State<EventListTile> {
                             controller: eventHostController,
                           ),
                           SizedBox(height: screenWidth * 0.03),
-                          ElevatedButton(
-                            onPressed: () {
-                              if (eventThumbnailController.text.isNotEmpty &&
-                                  eventDatesController.text.isNotEmpty &&
-                                  eventHostController.text.isNotEmpty &&
-                                  eventHostController.text.isNotEmpty &&
-                                  eventLumaLinkController.text.isNotEmpty) {
-                                editEventData();
-                                Navigator.pop(context);
-                              } else {
-                                _showErrorMessage(
-                                    context, 'Please Fill all the forms');
-                              }
-                            },
-                            child: const Text('Update event details!'),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              ElevatedButton(
+                                  onPressed: () {
+                                    _deleteEvent();
+                                    _showErrorMessage(context, 'Event deleted successfully');
+                                    Navigator.pop(context);
+                                  },
+                                  child: const Text('Delete Event')),
+                              ElevatedButton(
+                                onPressed: () {
+                                  if (eventThumbnailController
+                                          .text.isNotEmpty &&
+                                      eventDatesController.text.isNotEmpty &&
+                                      eventHostController.text.isNotEmpty &&
+                                      eventHostController.text.isNotEmpty &&
+                                      eventLumaLinkController.text.isNotEmpty) {
+                                    editEventData();
+                                    Navigator.pop(context);
+                                  } else {
+                                    _showErrorMessage(
+                                        context, 'Please Fill all the forms');
+                                  }
+                                },
+                                child: const Text('Update event details!'),
+                              ),
+                              // delete event.
+                            ],
                           ),
                           SizedBox(height: screenWidth * 0.03),
                         ],
@@ -167,6 +190,7 @@ class _EventListTileState extends State<EventListTile> {
   }
 
   void _showErrorMessage(BuildContext context, String message) {
-    showTopSnackBar(Overlay.of(context), CustomSnackBar.success(message: message));
+    showTopSnackBar(
+        Overlay.of(context), CustomSnackBar.success(message: message));
   }
 }
