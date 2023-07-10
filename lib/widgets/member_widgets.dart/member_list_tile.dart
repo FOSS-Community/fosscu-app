@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:fosscu_app/constants/color.dart';
 import 'package:fosscu_app/constants/svg.dart';
+import 'package:fosscu_app/widgets/member_widgets.dart/button.dart';
 import 'package:fosscu_app/widgets/member_widgets.dart/member_expanded_text.dart';
 import 'package:fosscu_app/widgets/profile_page_widgets/profile_text_field.dart';
 
@@ -114,7 +115,14 @@ class _MemberListTileState extends State<MemberListTile> {
                       ),
                     ),
                     SizedBox(height: screenHeight * 0.01),
-                    MemberText(text: 'Github Username - $github'),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        MemberText(text: 'Github Username - $github'),
+                        MemberPageButton(text: 'Open', urlToLaunch: 'https://github.com/$github')
+                      ],
+                    ),
                     MemberText(text: 'Discord Username - $discord'),
                     MemberText(text: 'Recent Achievement : $achievement'),
                     MemberText(text: 'Proof of Achiveements : $proof'),
@@ -122,6 +130,7 @@ class _MemberListTileState extends State<MemberListTile> {
                       textEditingController: pointsController,
                       hintText: 'Current Points',
                       icon: FontAwesomeIcons.person,
+                      color: brightGreyColor,
                     )
                   ],
                 ),

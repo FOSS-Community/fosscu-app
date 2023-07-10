@@ -12,7 +12,7 @@ class MemberText extends StatelessWidget {
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     return Container(
-      margin: const EdgeInsets.only(bottom: 10),
+      margin: const EdgeInsets.only(bottom: 20),
       child: Text(
         text,
         style: GoogleFonts.leagueSpartan(
