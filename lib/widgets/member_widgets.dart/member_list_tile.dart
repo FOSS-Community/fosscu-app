@@ -8,6 +8,8 @@ import 'package:fosscu_app/widgets/member_widgets.dart/achievement_container.dar
 import 'package:fosscu_app/widgets/member_widgets.dart/button.dart';
 import 'package:fosscu_app/widgets/member_widgets.dart/member_expanded_text.dart';
 import 'package:fosscu_app/widgets/profile_page_widgets/profile_text_field.dart';
+import 'package:top_snackbar_flutter/custom_snack_bar.dart';
+import 'package:top_snackbar_flutter/top_snack_bar.dart';
 
 class MemberListTile extends StatefulWidget {
   final String title; // title is also docID
@@ -85,61 +87,119 @@ class _MemberListTileState extends State<MemberListTile> {
                 margin: EdgeInsets.symmetric(
                   horizontal: screenWidth * 0.03,
                 ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
-                      child: Container(
-                        margin: const EdgeInsets.all(15),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            SvgPicture.asset(
-                              cross,
-                              width: screenWidth * 0.05,
-                              height: screenWidth * 0.05,
-                            )
-                          ],
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
+                        child: Container(
+                          margin: const EdgeInsets.all(15),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              SvgPicture.asset(
+                                cross,
+                                width: screenWidth * 0.05,
+                                height: screenWidth * 0.05,
+                              )
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                    Text(
-                      widget.title,
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: screenWidth * 0.05,
-                        fontWeight: FontWeight.bold,
+                      Text(
+                        widget.title,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: screenWidth * 0.05,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                    ),
-                    SizedBox(height: screenHeight * 0.01),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        MemberText(text: 'Github Username - $github'),
-                        MemberPageButton(text: 'Open', urlToLaunch: 'https://github.com/$github')
-                      ],
-                    ),
-                    MemberText(text: 'Discord Username - $discord'),
-                    const MemberText(text: 'Recent Achievement : '),
-                    AchievementContainer(bodyText: achievement),
-                    MemberText(text: 'Proof of Achiveements : $proof'),
-                    ProfileTextField(
-                      textEditingController: pointsController,
-                      hintText: 'Current Points',
-                      icon: FontAwesomeIcons.person,
-                      color: brightGreyColor,
-                    )
-                  ],
+                      SizedBox(height: screenHeight * 0.01),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          MemberText(text: 'Github Username - $github'),
+                          MemberPageButton(
+                              text: 'Open',
+                              urlToLaunch: 'https://github.com/$github')
+                        ],
+                      ),
+                      MemberText(text: 'Discord Username - $discord'),
+                      const MemberText(text: 'Recent Achievement : '),
+                      AchievementContainer(bodyText: achievement),
+                      const MemberText(text: 'Proof of Achiveements : '),
+                      MemberPageButton(
+                          text: 'Proof of Achievement', urlToLaunch: proof),
+                      SizedBox(height: screenWidth * 0.04),
+                      Visibility(
+                          visible: proof2.isNotEmpty,
+                          child: MemberPageButton(
+                              text: '1st Additional Proof',
+                              urlToLaunch: proof2)),
+                      SizedBox(height: screenWidth * 0.04),
+                      Visibility(
+                          visible: proof3.isNotEmpty,
+                          child: MemberPageButton(
+                              text: '2nd Additional Proof',
+                              urlToLaunch: proof2)),
+                      SizedBox(height: screenWidth * 0.04),
+                      const MemberText(text: 'Manage XP Point :'),
+                      ProfileTextField(
+                        textEditingController: pointsController,
+                        hintText: 'Current Points',
+                        icon: FontAwesomeIcons.person,
+                        color: brightGreyColor,
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          setXp();
+                          _showErrorMessage(context, 'XP updated successfuly');
+                          Navigator.pop(context);
+                        },
+                        child: Container(
+                          margin: EdgeInsets.symmetric(
+                              horizontal: screenWidth * 0.3),
+                          height: screenWidth * 0.1,
+                          decoration: BoxDecoration(
+                              color: brightGreyColor,
+                              borderRadius: BorderRadius.circular(12)),
+                          child: const Center(
+                            child: Text(
+                              'Update XP',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
                 ),
               ),
             ),
           );
         });
+  }
+
+  // update xp points
+  void setXp() {
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(widget.title)
+        .collection('xp')
+        .doc(widget.title)
+        .set({
+      'points': pointsController.text,
+    });
+  }
+
+  void _showErrorMessage(BuildContext context, String message) {
+    showTopSnackBar(
+        Overlay.of(context), CustomSnackBar.success(message: message));
   }
 
   fetchMemberData() async {
