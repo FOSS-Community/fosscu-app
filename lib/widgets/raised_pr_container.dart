@@ -5,6 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fosscu_app/constants/apikey.dart';
 import 'package:fosscu_app/constants/color.dart';
 import 'package:fosscu_app/constants/svg.dart';
+import 'package:fosscu_app/widgets/listtile.dart';
 import 'package:fosscu_app/widgets/mylisttile.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
@@ -23,56 +24,42 @@ class _RaisedPRContainerState extends State<RaisedPRContainer> {
   final TextEditingController days_controller = TextEditingController();
   bool hasSearched = false;
 
-  List<dynamic> recentPRs = [];
+  // List<dynamic> recentPRs = [];
+
+  List<Map<String, dynamic>> _recentPRs = [];
 
   @override
   void initState() {
     super.initState();
   }
 
-  Future<void> fetchRecentPRs(int numofDays) async {
-    /// Date and Time Details
-    final now = DateTime.now();
-    final daysAgo = now.subtract(Duration(days: numofDays));
-    //  Fetch all repositories of the org
-    final repositoriesUrl =
-        Uri.parse('https://api.github.com/orgs/$organization/repos');
-    final headers = {'Authorization': 'token $personalAccessToken'};
-    final repositoriesResponse =
-        await http.get(repositoriesUrl, headers: headers);
+  Future<void> _getRecentPRs(int numofDays) async {
+    final DateTime now = DateTime.now();
+    final DateTime threeDaysAgo = now.subtract(Duration(days: numofDays));
+    final String since = threeDaysAgo.toIso8601String();
 
-    if (repositoriesResponse.statusCode == 200) {
-      final List<dynamic> repositories = jsonDecode(repositoriesResponse.body);
+    final response = await http.get(
+        Uri.parse(
+            'https://api.github.com/search/issues?q=is:pr+is:open+org:FOSS-Community+created:>=$since&per_page=100&include=issues.user'),
+        headers: {'Authorization': 'token $apikey'});
 
-      // Fetch issues for each repository and filter unclaimed issues
-      final List<http.Response> issuesResponses =
-          await Future.wait(repositories.map((repository) async {
-        final issuesUrl = Uri.parse(
-            'https://api.github.com/repos/$organization/${repository['name']}/issues');
-        final issuesResponse = await http.get(issuesUrl, headers: headers);
-        return issuesResponse;
-      }));
+    final data = json.decode(response.body);
 
-      final List<dynamic> issues =
-          issuesResponses.fold([], (previousValue, response) {
-        if (response.statusCode == 200) {
-          previousValue.addAll(jsonDecode(response.body));
-        }
-        return previousValue;
-      });
+    final List<Map<String, dynamic>> recentPRs =
+        (data['items'] as List<dynamic>)
+            .map<Map<String, dynamic>>((item) => {
+                  'title': item['title'],
+                  'repository': item['repository_url'].split('/').last,
+                  'url': item['html_url'],
+                  'userAvatarUrl': item['user']['avatar_url'],
+                  'userHtmlUrl': item['user']['html_url'],
+                  'user': item['user'],
+                })
+            .toList();
 
-      recentPRs = issues.where((issue) {
-        final createdAt = DateTime.parse(issue['created_at']);
-        return issue['assignee'] == null &&
-            issue['pull_request'] != null &&
-            createdAt.isAfter(daysAgo) &&
-            createdAt.isBefore(now);
-      }).toList();
-    } else {
-      print('Failed to fetch repositories: ${repositoriesResponse.statusCode}');
-    }
-
-    setState(() {});
+    setState(() {
+      _recentPRs = recentPRs;
+    });
   }
 
   @override
@@ -136,31 +123,30 @@ class _RaisedPRContainerState extends State<RaisedPRContainer> {
                   borderRadius: BorderRadius.circular(25),
                 ),
                 child: hasSearched
-                    ? recentPRs.isNotEmpty
+                    ? _recentPRs.isNotEmpty
                         ? ListView.builder(
-                            itemCount: recentPRs.length,
+                            itemCount: _recentPRs.length,
                             itemBuilder: (BuildContext context, int index) {
-                              final issue = recentPRs[index];
-                              final author = issue['user'];
-                              final repoName =
-                                  issue['repository_url'].split('/').last;
-                              if (issue['pull_request'] != null) {
-                                return Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(20),
-                                    color: tileColor,
-                                  ),
-                                  margin: const EdgeInsets.all(8),
-                                  child: MyListTile(
-                                    author: author,
-                                    issue: issue,
-                                    repoName: repoName,
-                                    mulitiplicationFactor: 0.12,
-                                  ),
-                                );
-                              } else {
-                                return Container();
-                              }
+                              final issue = _recentPRs[index];
+                              // final author = issue['user'];
+                              // final repoName =
+                              //     issue['repository_url'].split('/').last;
+                              return Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(20),
+                                  color: tileColor,
+                                ),
+                                margin: const EdgeInsets.all(8),
+                                child: CustomListTile(
+                                  buttonName: 'View PR',
+                                  user: issue['user']['login'],
+                                  mulitiplicationFactor: 0.17,
+                                  repository: issue['repository'],
+                                  title: issue['title'],
+                                  url: issue['url'],
+                                  userAvatarUrl: issue['userAvatarUrl'],
+                                ),
+                              );
                             },
                           )
                         : Shimmer(
@@ -179,9 +165,7 @@ class _RaisedPRContainerState extends State<RaisedPRContainer> {
                         child: const Text(
                           'Please enter the number of days to proceed!',
                           style: TextStyle(
-                            color: orangeColor,
-                            fontWeight: FontWeight.bold
-                          ),
+                              color: orangeColor, fontWeight: FontWeight.bold),
                         ),
                       ),
               ),
@@ -225,25 +209,27 @@ class _RaisedPRContainerState extends State<RaisedPRContainer> {
                       width: screenWidth * 0.03,
                     ),
                     SizedBox(
-                      width: 55,
+                      width: 65,
                       height: 50,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor: brightGreyColor,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(25))),
-                        onPressed: () {
-                          fetchRecentPRs(int.parse(days_controller.text));
-                          setState(() {
-                            hasSearched = true;
-                          });
-                        },
-                        child: const Center(
-                            child: Icon(
-                          Icons.search,
-                          color: orangeColor,
-                          weight: 20,
-                        )),
+                      child: Center(
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: brightGreyColor,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20))),
+                          onPressed: () {
+                            _getRecentPRs(int.parse(days_controller.text));
+                            setState(() {
+                              hasSearched = true;
+                            });
+                          },
+                          child: const Center(
+                              child: Icon(
+                            Icons.search,
+                            color: orangeColor,
+                            weight: 20,
+                          )),
+                        ),
                       ),
                     ),
                   ],

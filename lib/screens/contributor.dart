@@ -149,44 +149,42 @@ class _ContributorPageState extends State<ContributorPage> {
                             ),
                           ),
                         )),
-              Container(
-                child: Column(
-                  children: [
-                    Container(
-                      margin: EdgeInsets.only(bottom: screenHeight * 0.05),
-                      child: const Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          ContributionTile(
-                            picture: openPr,
-                            text: 'Raised PRs',
-                            containerToLoad: RaisedPRContainer(),
-                          ),
-                          ContributionTile(
-                            picture: mergedPr,
-                            text: 'Merged PRs',
-                            containerToLoad: MergedPRContainer(),
-                          )
-                        ],
-                      ),
-                    ),
-                    const Row(
+              Column(
+                children: [
+                  Container(
+                    margin: EdgeInsets.only(bottom: screenHeight * 0.05),
+                    child: const Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         ContributionTile(
-                          picture: gitIcon,
-                          text: "Members\n   Profile",
-                          containerToLoad: ContributorProfile(),
+                          picture: openPr,
+                          text: 'Raised PRs',
+                          containerToLoad: RaisedPRContainer(),
                         ),
                         ContributionTile(
-                          picture: glasses,
-                          text: "      Top 10\nContributor",
-                          containerToLoad: Top5Contributors(),
-                        ),
+                          picture: mergedPr,
+                          text: 'Merged PRs',
+                          containerToLoad: MergedPRContainer(),
+                        )
                       ],
-                    )
-                  ],
-                ),
+                    ),
+                  ),
+                  const Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      ContributionTile(
+                        picture: gitIcon,
+                        text: "Members\n   Profile",
+                        containerToLoad: ContributorProfile(),
+                      ),
+                      ContributionTile(
+                        picture: glasses,
+                        text: "      Top 10\nContributor",
+                        containerToLoad: Top5Contributors(),
+                      ),
+                    ],
+                  )
+                ],
               )
             ],
           ),

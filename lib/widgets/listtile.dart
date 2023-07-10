@@ -107,7 +107,6 @@ class _CustomListTileState extends State<CustomListTile>
                                 },
                                 child: Container(
                                   width: screenWidth * 0.26,
-                                  height: screenHeight * 0.05,
                                   margin: const EdgeInsets.all(10),
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(10),
