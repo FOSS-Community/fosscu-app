@@ -3,6 +3,8 @@ import 'package:fosscu_app/constants/color.dart';
 import 'package:fosscu_app/screens/admin_page_screens/events.dart';
 import 'package:fosscu_app/screens/admin_page_screens/members.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:top_snackbar_flutter/custom_snack_bar.dart';
+import 'package:top_snackbar_flutter/top_snack_bar.dart';
 
 class AdminPage extends StatefulWidget {
   const AdminPage({super.key});
@@ -62,8 +64,10 @@ class _AdminPageState extends State<AdminPage> {
                 ),
               ),
               GestureDetector(
-                onTap: () => Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => const MembersPage())),
+                onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const MembersPage())),
                 child: Container(
                   margin: EdgeInsets.symmetric(
                     horizontal: screenWidth * 0.1,

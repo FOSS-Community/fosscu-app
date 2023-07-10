@@ -5,6 +5,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:fosscu_app/constants/color.dart';
 import 'package:fosscu_app/widgets/profile_page_widgets/profile_text.dart';
 import 'package:fosscu_app/widgets/profile_page_widgets/profile_text_field.dart';
+import 'package:top_snackbar_flutter/custom_snack_bar.dart';
+import 'package:top_snackbar_flutter/top_snack_bar.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -256,13 +258,7 @@ class _ProfilePageState extends State<ProfilePage> {
               GestureDetector(
                 onTap: () {
                   setUserData();
-                  const snackBar = SnackBar(
-                    content: Text(
-                      'Updated details',
-                    ),
-                    duration: Duration(seconds: 2),
-                  );
-                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                  _showSuccessMessage(context, 'Data Updated Successfuly');
                 },
                 child: Container(
                   width: screenWidth * 0.2,
@@ -290,5 +286,10 @@ class _ProfilePageState extends State<ProfilePage> {
         ),
       ),
     );
+  }
+
+  void _showSuccessMessage(BuildContext context, String message) {
+    showTopSnackBar(
+        Overlay.of(context), CustomSnackBar.success(message: message));
   }
 }
