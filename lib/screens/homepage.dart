@@ -88,13 +88,8 @@ class _HomePageState extends State<HomePage> {
   }
 
   /// past event picture
-  String _image1 = '';
-
-  /// Texts for past events
-  String pastEventHeadText = '';
-  String pastEventBodyText = '';
-  String pastEventLink = '';
-
+  String pastEventLumaLink = '';
+  String pastEvenThumbnailLink = '';
 
   /// Fetching images for past events
   void fetchPastEvent() async {
@@ -103,21 +98,13 @@ class _HomePageState extends State<HomePage> {
         .doc('Mz1I9yOYAPsHXcOP5XTw')
         .get();
 
-    DocumentSnapshot textSnapshot = await FirebaseFirestore.instance
-        .collection('past_events')
-        .doc('Text')
-        .get();
+    if (snapshot.exists) {
+      String image = snapshot.get('image1');
+      String lumaLink = snapshot.get('lumaLink');
 
-    if (snapshot.exists && textSnapshot.exists) {
-      String image1 = snapshot.get('image1');
-      String headText = textSnapshot.get('heading');
-      String bodyText = textSnapshot.get('body');
-      String eventLink = textSnapshot.get('link');
       setState(() {
-        _image1 = image1;
-        pastEventHeadText = headText;
-        pastEventBodyText = bodyText;
-        pastEventLink = eventLink;
+        pastEvenThumbnailLink = image;
+        pastEventLumaLink = lumaLink;
       });
     }
   }
@@ -151,8 +138,6 @@ class _HomePageState extends State<HomePage> {
   }
 
   int eventsLength = 0;
-
-
 
   /// Calling _fetchIssue when screen is intialized
   @override
@@ -233,7 +218,7 @@ class _HomePageState extends State<HomePage> {
                   borderRadius: BorderRadius.circular(20),
                   color: Colors.black,
                 ),
-                child: _image1 == ''
+                child: pastEvenThumbnailLink == ''
                     ? Shimmer(
                         duration: const Duration(seconds: 2),
                         interval: const Duration(milliseconds: 500),
@@ -254,12 +239,13 @@ class _HomePageState extends State<HomePage> {
                         children: [
                           GestureDetector(
                             onTap: () {
-                              launchUrlString(pastEventLink,
+                              launchUrlString(pastEventLumaLink,
                                   mode: LaunchMode.externalApplication);
                             },
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(20),
-                              child: CachedNetworkImage(imageUrl: _image1),
+                              child: CachedNetworkImage(
+                                  imageUrl: pastEvenThumbnailLink),
                             ),
                           ),
                         ],
@@ -278,7 +264,10 @@ class _HomePageState extends State<HomePage> {
                         color: greenColor,
                       ),
                     ),
-                    const Text('  (Scroll down)', style: TextStyle(color: Colors.white),)
+                    const Text(
+                      '  (Scroll down)',
+                      style: TextStyle(color: Colors.white),
+                    )
                   ],
                 ),
               ),
@@ -290,122 +279,115 @@ class _HomePageState extends State<HomePage> {
                     (screenHeight * 0.25 * eventsLength) + screenHeight * 0.3,
                 decoration:
                     BoxDecoration(borderRadius: BorderRadius.circular(20)),
-                child:StreamBuilder(
-                        stream: eventStream,
-                        builder: (context, snapshot) {
-                          if (snapshot.hasData) {
-                            List<Event> events = snapshot.data!;
-                            return ListView.builder(
-                              itemCount: events.length,
-                              itemBuilder: (BuildContext context, int index) {
-                                Event event = events[index];
-                                final eventThumbnail = event.eventThumbnail;
-                                final eventLumaLink = event.eventLumaLink;
-                                final eventHostName = event.eventHost;
-                                final eventDates = event.eventDates;
-                                return Container(
-                                  height: screenWidth * 0.65,
-                                  margin: const EdgeInsets.symmetric(
-                                      vertical: 10, horizontal: 20),
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(20),
-                                      color: Colors.black),
-                                  child: Stack(
-                                    children: [
-                                      Container(
-                                        decoration: BoxDecoration(
-                                            color: darkGreyColor,
+                child: StreamBuilder(
+                    stream: eventStream,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        List<Event> events = snapshot.data!;
+                        return ListView.builder(
+                          itemCount: events.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            Event event = events[index];
+                            final eventThumbnail = event.eventThumbnail;
+                            final eventLumaLink = event.eventLumaLink;
+                            final eventHostName = event.eventHost;
+                            final eventDates = event.eventDates;
+                            return Container(
+                              height: screenWidth * 0.65,
+                              margin: const EdgeInsets.symmetric(
+                                  vertical: 10, horizontal: 20),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(20),
+                                  color: Colors.black),
+                              child: Stack(
+                                children: [
+                                  Container(
+                                    decoration: BoxDecoration(
+                                        color: darkGreyColor,
+                                        borderRadius:
+                                            BorderRadius.circular(15)),
+                                    child: Column(
+                                      children: [
+                                        GestureDetector(
+                                          onTap: () {},
+                                          child: ClipRRect(
                                             borderRadius:
-                                                BorderRadius.circular(15)),
-                                        child: Column(
+                                                BorderRadius.circular(20),
+                                            child: CachedNetworkImage(
+                                                imageUrl: eventThumbnail),
+                                          ),
+                                        ),
+                                        SizedBox(height: screenHeight * 0.01),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
                                           children: [
-                                            GestureDetector(
-                                              onTap: () {},
-                                              child: ClipRRect(
-                                                borderRadius:
-                                                    BorderRadius.circular(20),
-                                                child: CachedNetworkImage(
-                                                    imageUrl: eventThumbnail),
+                                            Container(
+                                              margin: const EdgeInsets.all(10),
+                                              child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    eventHostName,
+                                                    style: GoogleFonts
+                                                        .leagueSpartan(
+                                                      color: Colors.white,
+                                                    ),
+                                                  ),
+                                                  Text(
+                                                    eventDates,
+                                                    style: GoogleFonts
+                                                        .leagueSpartan(
+                                                      color: Colors.white,
+                                                    ),
+                                                  ),
+                                                ],
                                               ),
                                             ),
-                                            SizedBox(
-                                                height: screenHeight * 0.01),
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Container(
-                                                  margin:
-                                                      const EdgeInsets.all(10),
-                                                  child: Column(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment.start,
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      Text(
-                                                        eventHostName,
-                                                        style: GoogleFonts
-                                                            .leagueSpartan(
-                                                          color: Colors.white,
-                                                        ),
-                                                      ),
-                                                      Text(
-                                                        eventDates,
-                                                        style: GoogleFonts
-                                                            .leagueSpartan(
-                                                          color: Colors.white,
-                                                        ),
-                                                      ),
-                                                    ],
+                                            GestureDetector(
+                                              onTap: () {
+                                                launchUrlString(
+                                                  eventLumaLink,
+                                                  mode: LaunchMode
+                                                      .externalApplication,
+                                                );
+                                              },
+                                              child: Container(
+                                                width: screenWidth * 0.26,
+                                                height: screenHeight * 0.05,
+                                                margin:
+                                                    const EdgeInsets.all(10),
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(10),
+                                                  color: brightGreyColor,
+                                                ),
+                                                child: const Center(
+                                                  child: Text(
+                                                    'Register Now!',
+                                                    style: TextStyle(
+                                                      color: Colors.white,
+                                                    ),
                                                   ),
                                                 ),
-                                                GestureDetector(
-                                                  onTap: () {
-                                                    launchUrlString(
-                                                      eventLumaLink,
-                                                      mode: LaunchMode
-                                                          .externalApplication,
-                                                    );
-                                                  },
-                                                  child: Container(
-                                                    width: screenWidth * 0.26,
-                                                    height: screenHeight * 0.05,
-                                                    margin:
-                                                        const EdgeInsets.all(
-                                                            10),
-                                                    decoration: BoxDecoration(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              10),
-                                                      color: brightGreyColor,
-                                                    ),
-                                                    child: const Center(
-                                                      child: Text(
-                                                        'Register Now!',
-                                                        style: TextStyle(
-                                                          color: Colors.white,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                )
-                                              ],
+                                              ),
                                             )
                                           ],
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                );
-                              },
+                                        )
+                                      ],
+                                    ),
+                                  )
+                                ],
+                              ),
                             );
-                          } else if (snapshot.hasError){}
-                          return Container();
-                        } 
-                      ),
+                          },
+                        );
+                      } else if (snapshot.hasError) {}
+                      return Container();
+                    }),
               ),
 
               SizedBox(

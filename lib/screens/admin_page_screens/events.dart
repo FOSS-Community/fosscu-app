@@ -23,11 +23,13 @@ class _EventPageState extends State<EventPage> {
 
   // text controllers
   final pastEventLinkController = TextEditingController();
+  final pasEventLumaLinkController = TextEditingController();
   final eventThumbnailController = TextEditingController();
   final eventDatesController = TextEditingController();
   final eventLumaLinkController = TextEditingController();
   final eventHostController = TextEditingController();
   final eventTitileController = TextEditingController();
+
   @override
   void dispose() {
     pastEventLinkController.dispose();
@@ -113,8 +115,10 @@ class _EventPageState extends State<EventPage> {
         .get();
     if (snapshot.exists) {
       String imageLink = snapshot.get('image1');
+      String lumaLink = snapshot.get('lumaLink');
       setState(() {
         pastEventLinkController.text = imageLink;
+        pasEventLumaLinkController.text = lumaLink;
       });
     }
   }
@@ -125,6 +129,7 @@ class _EventPageState extends State<EventPage> {
         .doc('Mz1I9yOYAPsHXcOP5XTw')
         .set({
       'image1': pastEventLinkController.text,
+      'lumaLink': pasEventLumaLinkController.text,
     });
   }
 
@@ -189,13 +194,65 @@ class _EventPageState extends State<EventPage> {
                 GestureDetector(
                   onTap: () {
                     setPastEventLink();
-                    const snackBar = SnackBar(
-                      content: Text(
-                        'Updated Past Event Link',
-                      ),
-                      duration: Duration(seconds: 2),
-                    );
-                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                    _showSuccessMessage(context, "Updated Past Event");
+                  },
+                  child: Container(
+                    margin: EdgeInsets.only(right: screenWidth * 0.04),
+                    width: screenWidth * 0.1,
+                    height: screenWidth * 0.1,
+                    decoration: BoxDecoration(
+                        color: brightGreyColor,
+                        borderRadius: BorderRadius.circular(
+                          screenWidth * 0.05,
+                        )),
+                    child: const Icon(
+                      FontAwesomeIcons.arrowUp,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            Container(
+              alignment: Alignment.centerLeft,
+              margin: EdgeInsets.all(screenWidth * 0.04),
+              child: Text(
+                'Past Event Luma Link',
+                style: textStyle,
+              ),
+            ),
+            Row(
+              children: [
+                Expanded(
+                  child: Container(
+                    margin: EdgeInsets.symmetric(
+                      horizontal: screenWidth * 0.04,
+                    ),
+                    child: TextFormField(
+                      style: const TextStyle(color: Colors.white),
+                      controller: pasEventLumaLinkController,
+                      decoration: InputDecoration(
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                              color: Colors.white,
+                              width: 1,
+                            ),
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                              color: Colors.white,
+                              width: 2,
+                            ),
+                            borderRadius: BorderRadius.circular(20),
+                          )),
+                    ),
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    setPastEventLink();
+                    _showSuccessMessage(context, "Updated Past Event");
                   },
                   child: Container(
                     margin: EdgeInsets.only(right: screenWidth * 0.04),
@@ -323,5 +380,10 @@ class _EventPageState extends State<EventPage> {
   void _showErrorMessage(BuildContext context, String message) {
     showTopSnackBar(
         Overlay.of(context), CustomSnackBar.error(message: message));
+  }
+
+  void _showSuccessMessage(BuildContext context, String message) {
+    showTopSnackBar(
+        Overlay.of(context), CustomSnackBar.success(message: message));
   }
 }
