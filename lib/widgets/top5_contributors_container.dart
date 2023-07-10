@@ -144,7 +144,7 @@ final response = await http.get(
                             child: CustomListTile(
                               buttonName: 'View Profile',
                                 user: user,
-                                mulitiplicationFactor: 0.15,
+                                mulitiplicationFactor: 0.175,
                                 repository: contributions,
                                 title: user,
                                 url: url,
