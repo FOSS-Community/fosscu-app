@@ -252,23 +252,26 @@ class _HomePageState extends State<HomePage> {
                       ),
               ),
 
-              Container(
-                alignment: Alignment.centerLeft,
-                margin: EdgeInsets.only(left: screenWidth * 0.05),
-                child: Row(
-                  children: [
-                    Text(
-                      'Our Upcoming Events!',
-                      style: GoogleFonts.leagueSpartan(
-                        fontWeight: FontWeight.bold,
-                        color: greenColor,
+              Visibility(
+                visible: eventsLength == 0,
+                child: Container(
+                  alignment: Alignment.centerLeft,
+                  margin: EdgeInsets.only(left: screenWidth * 0.05),
+                  child: Row(
+                    children: [
+                      Text(
+                        'Our Upcoming Events!',
+                        style: GoogleFonts.leagueSpartan(
+                          fontWeight: FontWeight.bold,
+                          color: greenColor,
+                        ),
                       ),
-                    ),
-                    const Text(
-                      '  (Scroll down)',
-                      style: TextStyle(color: Colors.white),
-                    )
-                  ],
+                      const Text(
+                        '  (Scroll down)',
+                        style: TextStyle(color: Colors.white),
+                      )
+                    ],
+                  ),
                 ),
               ),
 
