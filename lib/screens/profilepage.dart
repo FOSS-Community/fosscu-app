@@ -1,4 +1,5 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:convert';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -10,6 +11,7 @@ import 'package:fosscu_app/widgets/profile_page_widgets/profile_text_field.dart'
 import 'package:top_snackbar_flutter/custom_snack_bar.dart';
 import 'package:top_snackbar_flutter/top_snack_bar.dart';
 import 'package:url_launcher/url_launcher_string.dart';
+import 'package:http/http.dart' as http;
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -27,8 +29,10 @@ class _ProfilePageState extends State<ProfilePage> {
   final portfolioController = TextEditingController();
   final ownRoleController = TextEditingController();
 
+  String userId = '';
+
   // roles selection
-  String currentValue = 'Hindi';
+  String currentValue = 'Developer';
   void updateDropDownValue(String newValue) {
     setState(() {
       currentValue = newValue;
@@ -51,13 +55,39 @@ class _ProfilePageState extends State<ProfilePage> {
 
   // post data to airtable
   Future<void> postDataToAirtable() async {
+
     const urlPrefix = 'https://api.airtable.com/v0/$baseID';
     final headers = {
       'Authorization': 'Bearer $airtablePAT',
       "Content-type": "application/json"
     };
     final url = Uri.parse('$urlPrefix/$table');
+    final json = {
+      "records": [
+        {
+          "fields": {
+            "Name": nameController.text,
+            "GitHub Profile": githubController.text,
+            "Twitter Profile (Optional)": twitterController.text,
+            "LinkedIn Profile": linkedinController.text,
+            "Any Portfolio? (Optional)": portfolioController.text,
+            "Your Role": [currentValue],
+            "Create your own role": ""
+          }
+        }
+      ]
+    };
+    final body = jsonEncode(json);
+    final response = await http.post(url, headers: headers, body: body);
+    final responseBody = response.body;
+    final data = jsonDecode(responseBody);
+    setState(() {
+      userId = data['records'][0]['id'];
+    });
+    print(userId);
   }
+
+  // now since I have user id, I can use a condition to check if usedId.isnull then use post function else use patch function also if userid is not null fetch the values to the textfield
 
   @override
   void initState() {
@@ -227,7 +257,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
               GestureDetector(
                 onTap: () {
-                  // setUserData();
+                  postDataToAirtable();
                   _showSuccessMessage(context, 'Data Updated Successfuly');
                 },
                 child: Container(
