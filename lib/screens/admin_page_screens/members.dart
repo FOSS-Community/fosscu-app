@@ -1,12 +1,9 @@
 import 'dart:convert';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:fosscu_app/constants/apikey.dart';
 import 'package:fosscu_app/constants/color.dart';
 import 'package:fosscu_app/widgets/member_widgets.dart/airtable_list_tile.dart';
-import 'package:fosscu_app/widgets/member_widgets.dart/member_class.dart';
-import 'package:fosscu_app/widgets/member_widgets.dart/member_list_tile.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 
@@ -23,7 +20,7 @@ class _MembersPageState extends State<MembersPage> {
   Stream<List<dynamic>> getAirtableUsers() async* {
     final response = await http.get(
         Uri.parse(
-            "https://api.airtable.com/v0/app56OIvmSDDANlXb/Table%201?view=XP%20Leaderboard"),
+            "https://api.airtable.com/v0/appTj8FebWrjmDGUz/Table%201?view=XP%20Leaderboard"),
         headers: {'Authorization': 'Bearer $airtablePAT'});
 
     final jsonBody = jsonDecode(response.body);
@@ -32,7 +29,7 @@ class _MembersPageState extends State<MembersPage> {
     final records = jsonBody['records'];
     final List<dynamic> airtableUserList = records.map((record) {
       final fields = record['fields'];
-      return fields['Name'];
+      return record;
       // discordUsername: fields['Discord Username'] as String,
       // xp: (fields['XP'] as num).toDouble(),
     }).toList();
@@ -92,8 +89,9 @@ class _MembersPageState extends State<MembersPage> {
                       itemCount: members.length,
                       itemBuilder: (context, index) {
                         // Member member = members[index];
-                        return AirtableListTile(
-                          title: members[index],
+                        return AirtableListTile( 
+                          title: members[index]['fields']['Name'],
+                          userAirtableId: members[index]['id'],
                         );
                       },
                     ),
