@@ -261,7 +261,6 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
 
               /// End of join Fosscu
- 
 
               /// Text Fields
               SizedBox(height: screenHeight * 0.04),
@@ -327,13 +326,23 @@ class _ProfilePageState extends State<ProfilePage> {
 
               GestureDetector(
                 onTap: () {
-                  if (userId.isEmpty) {
-                    postDataToAirtable();
+                  if (nameController.text.isNotEmpty &&
+                      githubController.text.isNotEmpty &&
+                      linkedinController.text.isNotEmpty &&
+                      discordController.text.isNotEmpty) {
+                    if (userId.isEmpty) {
+                      postDataToAirtable();
+                  _showSuccessMessage(context, 'Data Updated Successfuly');
+
+                    } else {
+                      updateDataToAirtable();
+                  _showSuccessMessage(context, 'Data Updated Successfuly');
+
+                    }
                   } else {
-                    updateDataToAirtable();
+                    _showErrorsMessage(context, 'Please enter all the fields');
                   }
 
-                  _showSuccessMessage(context, 'Data Updated Successfuly');
                 },
                 child: Container(
                   width: screenWidth * 0.2,
@@ -366,5 +375,10 @@ class _ProfilePageState extends State<ProfilePage> {
   void _showSuccessMessage(BuildContext context, String message) {
     showTopSnackBar(
         Overlay.of(context), CustomSnackBar.success(message: message));
+  }
+
+    void _showErrorsMessage(BuildContext context, String message) {
+    showTopSnackBar(
+        Overlay.of(context), CustomSnackBar.error(message: message));
   }
 }
