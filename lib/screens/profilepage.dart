@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -39,7 +40,6 @@ class _ProfilePageState extends State<ProfilePage> {
     });
   }
 
-  String xp = '0';
   @override
   void dispose() {
     nameController.dispose();
@@ -55,7 +55,6 @@ class _ProfilePageState extends State<ProfilePage> {
 
   // post data to airtable
   Future<void> postDataToAirtable() async {
-
     const urlPrefix = 'https://api.airtable.com/v0/$baseID';
     final headers = {
       'Authorization': 'Bearer $airtablePAT',
@@ -72,7 +71,7 @@ class _ProfilePageState extends State<ProfilePage> {
             "LinkedIn Profile": linkedinController.text,
             "Any Portfolio? (Optional)": portfolioController.text,
             "Your Role": [currentValue],
-            "Create your own role": ""
+            "Create your own role": ownRoleController.text
           }
         }
       ]
@@ -85,12 +84,103 @@ class _ProfilePageState extends State<ProfilePage> {
       userId = data['records'][0]['id'];
     });
     print(userId);
+    postAirtableUserIdToFirestore();
+  }
+
+  // got the userId? now put this user id to the firebase doc of the user
+  void postAirtableUserIdToFirestore() {
+    User? user = FirebaseAuth.instance.currentUser;
+    String userIdGoogle = user!.uid;
+    FirebaseFirestore.instance.collection('users').doc(userIdGoogle).set({
+      'airtableId': userId,
+    });
+  }
+
+  // now fetch this airtableId on initState
+  void fetchAirtableUserIdFromFirebase() async {
+    User? user = FirebaseAuth.instance.currentUser;
+    String userIdGoogle = user!.uid;
+
+    DocumentSnapshot snapshot = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(userIdGoogle)
+        .get();
+
+    if (snapshot.exists) {
+      String airtableId = snapshot.get('airtableId');
+      setState(() {
+        userId = airtableId;
+      });
+    }
   }
 
   // now since I have user id, I can use a condition to check if usedId.isnull then use post function else use patch function also if userid is not null fetch the values to the textfield
 
+  // update data to airtable
+  Future<void> updateDataToAirtable() async {
+    const urlPrefix = 'https://api.airtable.com/v0/$baseID';
+    final headers = {
+      'Authorization': 'Bearer $airtablePAT',
+      "Content-type": "application/json"
+    };
+    final url = Uri.parse('$urlPrefix/$table');
+    final json = {
+      "records": [
+        {
+          "id": userId,
+          "fields": {
+            "Name": nameController.text,
+            "GitHub Profile": githubController.text,
+            "Twitter Profile (Optional)": twitterController.text,
+            "LinkedIn Profile": linkedinController.text,
+            "Discord Username": discordController.text,
+            "Any Portfolio? (Optional)": portfolioController.text,
+            "Your Role": [currentValue],
+            "Create your own role": ownRoleController.text
+          }
+        }
+      ]
+    };
+    final body = jsonEncode(json);
+    final response = await http.patch(url, headers: headers, body: body);
+    print(response.statusCode);
+  }
+
+  // fetch data from airtable field to the text fields.
+  Future<void> getDataFromAirtable() async {
+    const urlPrefix = 'https://api.airtable.com/v0/$baseID';
+    final headers = {
+      'Authorization': 'Bearer $airtablePAT',
+      "Content-type": "application/json"
+    };
+    final url = Uri.parse('$urlPrefix/$table');
+
+    final response = await http.get(url, headers: headers);
+    final jsonBody = jsonDecode(response.body);
+    final records = jsonBody['records'];
+
+    for (var record in records) {
+      if (record['id'] == userId) {
+        final fields = record['fields'];
+
+        setState(() {
+          nameController.text = fields['Name'] ?? '';
+          githubController.text = fields['GitHub Profile'] ?? '';
+          twitterController.text = fields['Twitter Profile (Optional)'] ?? '';
+          linkedinController.text = fields['LinkedIn Profile'] ?? '';
+          discordController.text = fields['Discord Username'] ?? '';
+          portfolioController.text = fields['Any Portfolio? (Optional)'] ?? '';
+          currentValue = fields['Your Role'] ?? '';
+          ownRoleController.text = fields['Create your own role'] ?? '';
+        });
+      }
+    }
+  }
+
   @override
   void initState() {
+    fetchAirtableUserIdFromFirebase();
+    getDataFromAirtable();
     super.initState();
   }
 
@@ -171,27 +261,7 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
 
               /// End of join Fosscu
-
-              SizedBox(height: screenHeight * 0.05),
-
-              Container(
-                margin: EdgeInsets.only(left: screenWidth * 0.05),
-                child: Row(
-                  children: [
-                    const Text(
-                      'Your Current XP is : ',
-                      style: TextStyle(color: Colors.white, fontSize: 16),
-                    ),
-                    Text(
-                      xp,
-                      style: const TextStyle(
-                          color: greenColor,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16),
-                    )
-                  ],
-                ),
-              ),
+ 
 
               /// Text Fields
               SizedBox(height: screenHeight * 0.04),
@@ -257,7 +327,12 @@ class _ProfilePageState extends State<ProfilePage> {
 
               GestureDetector(
                 onTap: () {
-                  postDataToAirtable();
+                  if (userId.isEmpty) {
+                    postDataToAirtable();
+                  } else {
+                    updateDataToAirtable();
+                  }
+
                   _showSuccessMessage(context, 'Data Updated Successfuly');
                 },
                 child: Container(
