@@ -36,7 +36,7 @@ class _ProfilePageState extends State<ProfilePage> {
   String userId = '';
 
   // roles selection
-  String currentValue = 'Developer';
+  String currentValue = 'Select any role';
   void updateDropDownValue(String newValue) {
     setState(() {
       currentValue = newValue;
@@ -364,12 +364,17 @@ class _ProfilePageState extends State<ProfilePage> {
                   onValueChanged: updateDropDownValue,
                 ),
               ),
-              const ProfileText(text: 'Create your own role'),
-              ProfileTextField(
-                textEditingController: ownRoleController,
-                hintText: 'Leave empty if you have selected a role',
-                icon: FontAwesomeIcons.personBurst,
-                color: darkGreyColor,
+              Visibility(
+                  visible: currentValue == 'Create your own role!',
+                  child: const ProfileText(text: 'Create your own role')),
+              Visibility(
+                visible: currentValue == 'Create your own role!',
+                child: ProfileTextField(
+                  textEditingController: ownRoleController,
+                  hintText: 'Leave empty if you have selected a role',
+                  icon: FontAwesomeIcons.personBurst,
+                  color: darkGreyColor,
+                ),
               ),
               ProfileText(text: dob),
               SizedBox(height: screenWidth * 0.03),
@@ -410,7 +415,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   if (nameController.text.isNotEmpty &&
                       githubController.text.isNotEmpty &&
                       linkedinController.text.isNotEmpty &&
-                      discordController.text.isNotEmpty) {
+                      discordController.text.isNotEmpty && currentValue != 'Select any role') {
                     if (userId.isEmpty) {
                       postDataToAirtable();
                       _showSuccessMessage(context, 'Data Updated Successfuly');
