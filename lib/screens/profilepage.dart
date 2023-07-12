@@ -2,7 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:fosscu_app/constants/apikey.dart';
 import 'package:fosscu_app/constants/color.dart';
+import 'package:fosscu_app/widgets/profile_page_widgets/dropdown.dart';
 import 'package:fosscu_app/widgets/profile_page_widgets/profile_text.dart';
 import 'package:fosscu_app/widgets/profile_page_widgets/profile_text_field.dart';
 import 'package:top_snackbar_flutter/custom_snack_bar.dart';
@@ -20,88 +22,46 @@ class _ProfilePageState extends State<ProfilePage> {
   final nameController = TextEditingController();
   final githubController = TextEditingController();
   final discordController = TextEditingController();
-  final achievementController = TextEditingController();
-  final proofOfWorkController = TextEditingController();
-  final proofOfWorkController2 = TextEditingController();
-  final proofOfWorkController3 = TextEditingController();
+  final linkedinController = TextEditingController();
+  final twitterController = TextEditingController();
+  final portfolioController = TextEditingController();
+  final ownRoleController = TextEditingController();
+
+  // roles selection
+  String currentValue = 'Hindi';
+  void updateDropDownValue(String newValue) {
+    setState(() {
+      currentValue = newValue;
+    });
+  }
+
   String xp = '0';
   @override
   void dispose() {
     nameController.dispose();
     githubController.dispose();
     discordController.dispose();
-    achievementController.dispose();
-    proofOfWorkController.dispose();
-    proofOfWorkController2.dispose();
-    proofOfWorkController3.dispose();
+    linkedinController.dispose();
+    twitterController.dispose();
+    portfolioController.dispose();
+    ownRoleController.dispose();
+
     super.dispose();
+  }
+
+  // post data to airtable
+  Future<void> postDataToAirtable() async {
+    const urlPrefix = 'https://api.airtable.com/v0/$baseID';
+    final headers = {
+      'Authorization': 'Bearer $airtablePAT',
+      "Content-type": "application/json"
+    };
+    final url = Uri.parse('$urlPrefix/$table');
   }
 
   @override
   void initState() {
     super.initState();
-    fetchUserData();
-  }
-
-  void setUserData() {
-    User? user = FirebaseAuth.instance.currentUser;
-    String userId = user!.uid;
-    FirebaseFirestore.instance
-        .collection('users')
-        .doc(user.displayName.toString())
-        .set({
-      'your name': nameController.text,
-      'github': githubController.text,
-      'discord': discordController.text,
-      'achievement': achievementController.text,
-      'proof': proofOfWorkController.text,
-      'proof2': proofOfWorkController2.text,
-      'proof3': proofOfWorkController3.text,
-    });
-  }
-
-  void fetchUserData() async {
-    User? user = FirebaseAuth.instance.currentUser;
-    String userId = user!.uid;
-
-    DocumentSnapshot snapshot = await FirebaseFirestore.instance
-        .collection('users')
-        .doc(user.displayName.toString())
-        .get();
-
-    DocumentSnapshot xpSnapshot = await FirebaseFirestore.instance
-        .collection('users')
-        .doc(user.displayName.toString())
-        .collection('xp')
-        .doc(user.displayName.toString())
-        .get();
-
-    if (snapshot.exists) {
-      String yourName = snapshot.get('your name');
-      String github = snapshot.get('github');
-      String discord = snapshot.get('discord');
-      String achievement = snapshot.get('achievement');
-      String proof = snapshot.get('proof');
-      String proof2 = snapshot.get('proof2');
-      String proof3 = snapshot.get('proof3');
-
-      setState(() {
-        nameController.text = yourName;
-        githubController.text = github;
-        discordController.text = discord;
-        achievementController.text = achievement;
-        proofOfWorkController.text = proof;
-        proofOfWorkController2.text = proof2;
-        proofOfWorkController3.text = proof3;
-      });
-    }
-    // check whether xp is created or not
-    if (xpSnapshot.exists) {
-      String points = xpSnapshot.get('points');
-      setState(() {
-        xp = points;
-      });
-    }
   }
 
   @override
@@ -212,11 +172,25 @@ class _ProfilePageState extends State<ProfilePage> {
                 icon: FontAwesomeIcons.person,
                 color: darkGreyColor,
               ),
-              const ProfileText(text: 'Your Github Username'),
+              const ProfileText(text: 'Your Github Link'),
               ProfileTextField(
                 textEditingController: githubController,
-                hintText: 'github username',
+                hintText: 'github profile',
                 icon: FontAwesomeIcons.github,
+                color: darkGreyColor,
+              ),
+              const ProfileText(text: 'Your Twitter Lnk (Optional)'),
+              ProfileTextField(
+                textEditingController: twitterController,
+                hintText: 'twitter link',
+                icon: FontAwesomeIcons.twitter,
+                color: darkGreyColor,
+              ),
+              const ProfileText(text: 'Your LinkedIn Profile Link'),
+              ProfileTextField(
+                textEditingController: linkedinController,
+                hintText: 'linkedin link',
+                icon: FontAwesomeIcons.linkedin,
                 color: darkGreyColor,
               ),
               const ProfileText(text: 'Your Discord Username'),
@@ -226,38 +200,34 @@ class _ProfilePageState extends State<ProfilePage> {
                 icon: FontAwesomeIcons.discord,
                 color: darkGreyColor,
               ),
-              const ProfileText(text: 'Any recent achievement'),
+              const ProfileText(text: 'Any Portfolio? (Optional)'),
               ProfileTextField(
-                textEditingController: achievementController,
-                hintText: 'recent achievement',
-                icon: FontAwesomeIcons.personArrowUpFromLine,
+                textEditingController: portfolioController,
+                hintText: 'portfolio link',
+                icon: FontAwesomeIcons.link,
                 color: darkGreyColor,
               ),
-              const ProfileText(text: 'Proof of Achievement'),
-              ProfileTextField(
-                textEditingController: proofOfWorkController,
-                hintText: 'proof of work',
-                icon: FontAwesomeIcons.personBurst,
-                color: darkGreyColor,
+              const ProfileText(text: 'Select your role'),
+              Container(
+                margin: EdgeInsets.symmetric(
+                    horizontal: screenWidth * 0.07,
+                    vertical: screenWidth * 0.04),
+                alignment: Alignment.centerLeft,
+                child: DropDown(
+                  onValueChanged: updateDropDownValue,
+                ),
               ),
-              const ProfileText(text: 'Additional proof'),
+              const ProfileText(text: 'Create your own role'),
               ProfileTextField(
-                textEditingController: proofOfWorkController2,
-                hintText: 'additional proof',
-                icon: FontAwesomeIcons.personBurst,
-                color: darkGreyColor,
-              ),
-              const ProfileText(text: 'Additional proof'),
-              ProfileTextField(
-                textEditingController: proofOfWorkController3,
-                hintText: 'additional proof',
+                textEditingController: ownRoleController,
+                hintText: 'Leave empty if you have selected a role',
                 icon: FontAwesomeIcons.personBurst,
                 color: darkGreyColor,
               ),
 
               GestureDetector(
                 onTap: () {
-                  setUserData();
+                  // setUserData();
                   _showSuccessMessage(context, 'Data Updated Successfuly');
                 },
                 child: Container(

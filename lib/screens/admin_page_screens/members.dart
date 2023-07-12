@@ -90,7 +90,7 @@ class _MembersPageState extends State<MembersPage> {
                       itemBuilder: (context, index) {
                         // Member member = members[index];
                         return AirtableListTile( 
-                          title: members[index]['fields']['Name'],
+                          title: "${members[index]['fields']['Name']}  XP = ${members[index]['fields']['XP']}",
                           userAirtableId: members[index]['id'],
                         );
                       },

@@ -110,7 +110,7 @@ class _AirtableListTileState extends State<AirtableListTile> {
                         ),
                       ),
                       SizedBox(height: screenHeight * 0.01),
-                      const MemberText(text: 'Update details'),
+                      const MemberText(text: 'Update Member details'),
                       ProfileTextField(
                         textEditingController: airtablePointsController,
                         hintText: 'Points',
@@ -157,7 +157,7 @@ class _AirtableListTileState extends State<AirtableListTile> {
     final json = {
       "records": [
         {
-          "id": "recW6qHk50aVllgiO",
+          "id": widget.userAirtableId,
           "fields": {
             // "XP": 355,
             "Github Profile": "https://github.com/Utkarsh4517",
