@@ -261,9 +261,51 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
 
               /// End of join Fosscu
+              SizedBox(height: screenWidth * 0.03),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      launchUrlString(
+                        'https://airtable.com/appFzpoJmvsPbLnAL/shriwXfnjSNOCUv8X',
+                        mode: LaunchMode.externalApplication,
+                      );
+                    },
+                    child: Container(
+                      padding: EdgeInsets.all(screenWidth * 0.04),
+                      decoration: BoxDecoration(
+                          color: Colors.yellow,
+                          borderRadius: BorderRadius.circular(12)),
+                      child: const Text(
+                        '   Claim XP!   ',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      launchUrlString(
+                        'https://airtable.com/app56OIvmSDDANlXb/shrBRp59RlWJNMY7C/tbldp8NUWBzRLrPVb',
+                        mode: LaunchMode.externalApplication,
+                      );
+                    },
+                    child: Container(
+                      padding: EdgeInsets.all(screenWidth * 0.04),
+                      decoration: BoxDecoration(
+                          color: Colors.blueAccent,
+                          borderRadius: BorderRadius.circular(12)),
+                      child: const Text(
+                        'Points Table',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
 
               /// Text Fields
-              SizedBox(height: screenHeight * 0.04),
+              SizedBox(height: screenHeight * 0.03),
               const ProfileText(text: 'Your Name'),
               ProfileTextField(
                 textEditingController: nameController,
@@ -332,17 +374,14 @@ class _ProfilePageState extends State<ProfilePage> {
                       discordController.text.isNotEmpty) {
                     if (userId.isEmpty) {
                       postDataToAirtable();
-                  _showSuccessMessage(context, 'Data Updated Successfuly');
-
+                      _showSuccessMessage(context, 'Data Updated Successfuly');
                     } else {
                       updateDataToAirtable();
-                  _showSuccessMessage(context, 'Data Updated Successfuly');
-
+                      _showSuccessMessage(context, 'Data Updated Successfuly');
                     }
                   } else {
                     _showErrorsMessage(context, 'Please enter all the fields');
                   }
-
                 },
                 child: Container(
                   width: screenWidth * 0.2,
@@ -377,7 +416,7 @@ class _ProfilePageState extends State<ProfilePage> {
         Overlay.of(context), CustomSnackBar.success(message: message));
   }
 
-    void _showErrorsMessage(BuildContext context, String message) {
+  void _showErrorsMessage(BuildContext context, String message) {
     showTopSnackBar(
         Overlay.of(context), CustomSnackBar.error(message: message));
   }
