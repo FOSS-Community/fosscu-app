@@ -9,6 +9,7 @@ import 'package:fosscu_app/constants/color.dart';
 import 'package:fosscu_app/widgets/profile_page_widgets/dropdown.dart';
 import 'package:fosscu_app/widgets/profile_page_widgets/profile_text.dart';
 import 'package:fosscu_app/widgets/profile_page_widgets/profile_text_field.dart';
+import 'package:intl/intl.dart';
 import 'package:top_snackbar_flutter/custom_snack_bar.dart';
 import 'package:top_snackbar_flutter/top_snack_bar.dart';
 import 'package:url_launcher/url_launcher_string.dart';
@@ -29,6 +30,8 @@ class _ProfilePageState extends State<ProfilePage> {
   final twitterController = TextEditingController();
   final portfolioController = TextEditingController();
   final ownRoleController = TextEditingController();
+
+  String dob = 'Select your DOB';
 
   String userId = '';
 
@@ -71,7 +74,8 @@ class _ProfilePageState extends State<ProfilePage> {
             "LinkedIn Profile": linkedinController.text,
             "Any Portfolio? (Optional)": portfolioController.text,
             "Your Role": [currentValue],
-            "Create your own role": ownRoleController.text
+            "Create your own role": ownRoleController.text,
+            "dob": dob,
           }
         }
       ]
@@ -136,7 +140,8 @@ class _ProfilePageState extends State<ProfilePage> {
             "Discord Username": discordController.text,
             "Any Portfolio? (Optional)": portfolioController.text,
             "Your Role": [currentValue],
-            "Create your own role": ownRoleController.text
+            "Create your own role": ownRoleController.text,
+            "dob": dob,
           }
         }
       ]
@@ -172,6 +177,7 @@ class _ProfilePageState extends State<ProfilePage> {
           portfolioController.text = fields['Any Portfolio? (Optional)'] ?? '';
           currentValue = fields['Your Role'] ?? '';
           ownRoleController.text = fields['Create your own role'] ?? '';
+          dob = fields['dob'];
         });
       }
     }
@@ -365,6 +371,39 @@ class _ProfilePageState extends State<ProfilePage> {
                 icon: FontAwesomeIcons.personBurst,
                 color: darkGreyColor,
               ),
+              ProfileText(text: dob),
+              SizedBox(height: screenWidth * 0.03),
+              ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: brightGreyColor,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10))),
+                  onPressed: () async {
+                    DateTime? pickedDate = await showDatePicker(
+                        context: context,
+                        initialDate: DateTime.now(),
+                        firstDate: DateTime(1950),
+                        lastDate: DateTime(2100));
+                    if (pickedDate != null) {
+                      String formattedDate =
+                          DateFormat('yyyy-MM-dd').format(pickedDate);
+                      setState(() {
+                        dob = formattedDate;
+                      });
+                      print(dob);
+                    }
+                  },
+                  child: Container(
+                    padding:
+                        EdgeInsets.symmetric(horizontal: screenWidth * 0.2),
+                    child: const Text(
+                      'Select DOB',
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
+                  )),
+              SizedBox(height: screenWidth * 0.03),
 
               GestureDetector(
                 onTap: () {
