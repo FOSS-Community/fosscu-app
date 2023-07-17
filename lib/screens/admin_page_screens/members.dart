@@ -20,7 +20,7 @@ class _MembersPageState extends State<MembersPage> {
   Stream<List<dynamic>> getAirtableUsers() async* {
     final response = await http.get(
         Uri.parse(
-            "https://api.airtable.com/v0/appTj8FebWrjmDGUz/Table%201?view=XP%20Leaderboard"),
+            "https://api.airtable.com/v0/appTj8FebWrjmDGUz/tbl1CsKDLFnxxhaSz"),
         headers: {'Authorization': 'Bearer $airtablePAT'});
 
     final jsonBody = jsonDecode(response.body);
@@ -37,16 +37,6 @@ class _MembersPageState extends State<MembersPage> {
     yield airtableUserList;
   }
 
-// Stream method to fetch all the members from firebase
-  // Stream<List<Member>> getMembers() {
-  //   final collection = FirebaseFirestore.instance.collection('users');
-  //   return collection.snapshots().map((snapshot) {
-  //     return snapshot.docs.map((doc) {
-  //       // final data = doc.data();
-  //       return Member(memberName: doc.id);
-  //     }).toList();
-  //   });
-  // }
 
   @override
   Widget build(BuildContext context) {

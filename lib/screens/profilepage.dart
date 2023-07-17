@@ -167,7 +167,9 @@ class _ProfilePageState extends State<ProfilePage> {
     for (var record in records) {
       if (record['id'] == userId) {
         final fields = record['fields'];
-
+        setState(() {
+          dob = fields['dob'];
+        });
         setState(() {
           nameController.text = fields['Name'] ?? '';
           githubController.text = fields['GitHub Profile'] ?? '';
@@ -177,7 +179,6 @@ class _ProfilePageState extends State<ProfilePage> {
           portfolioController.text = fields['Any Portfolio? (Optional)'] ?? '';
           currentValue = fields['Your Role'] ?? '';
           ownRoleController.text = fields['Create your own role'] ?? '';
-          dob = fields['dob'];
         });
       }
     }
@@ -192,6 +193,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
+    
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
 
