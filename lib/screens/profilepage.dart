@@ -167,8 +167,13 @@ class _ProfilePageState extends State<ProfilePage> {
     for (var record in records) {
       if (record['id'] == userId) {
         final fields = record['fields'];
+
         setState(() {
           dob = fields['dob'];
+        });
+        setState(() {
+          currentValue = fields['Your Role'][0] ?? '';
+          print(currentValue);
         });
         setState(() {
           nameController.text = fields['Name'] ?? '';
@@ -177,7 +182,7 @@ class _ProfilePageState extends State<ProfilePage> {
           linkedinController.text = fields['LinkedIn Profile'] ?? '';
           discordController.text = fields['Discord Username'] ?? '';
           portfolioController.text = fields['Any Portfolio? (Optional)'] ?? '';
-          currentValue = fields['Your Role'] ?? '';
+
           ownRoleController.text = fields['Create your own role'] ?? '';
         });
       }
@@ -193,7 +198,6 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
 
@@ -417,7 +421,8 @@ class _ProfilePageState extends State<ProfilePage> {
                   if (nameController.text.isNotEmpty &&
                       githubController.text.isNotEmpty &&
                       linkedinController.text.isNotEmpty &&
-                      discordController.text.isNotEmpty && currentValue != 'Select any role') {
+                      discordController.text.isNotEmpty &&
+                      currentValue != 'Select any role') {
                     if (userId.isEmpty) {
                       postDataToAirtable();
                       _showSuccessMessage(context, 'Data Updated Successfuly');
