@@ -6,6 +6,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:fosscu_app/constants/color.dart';
 import 'package:fosscu_app/constants/svg.dart';
 import 'package:fosscu_app/screens/admin_page.dart';
+import 'package:fosscu_app/screens/birthdays.dart';
 import 'package:fosscu_app/screens/community.dart';
 import 'package:fosscu_app/screens/contributor.dart';
 import 'package:fosscu_app/screens/homepage.dart';
@@ -30,7 +31,6 @@ class _NavBarScreenState extends State<NavBarScreen> {
   void fetchEmail() async {
     User? user = FirebaseAuth.instance.currentUser;
     String emailId = user!.email!;
-    print(emailId);
     setState(() {
       currentUserEmailId = emailId;
     });
@@ -58,7 +58,6 @@ class _NavBarScreenState extends State<NavBarScreen> {
           isAdmin = true;
         });
       }
-      print(isAdmin);
     }
   }
 
@@ -115,6 +114,7 @@ class _NavBarScreenState extends State<NavBarScreen> {
                 text: 'Documentation', url: 'https://fosscu.org/resource'),
             const DrawerListTile(
                 text: 'Community', pageToLoad: CommunityPage()),
+            const DrawerListTile(text: 'Birthdays', pageToLoad: BirthdayScreen()),
             Visibility(
               visible: isAdmin,
               child: const DrawerListTile(
