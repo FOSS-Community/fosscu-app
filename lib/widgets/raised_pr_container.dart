@@ -208,30 +208,22 @@ class _RaisedPRContainerState extends State<RaisedPRContainer> {
                     SizedBox(
                       width: screenWidth * 0.03,
                     ),
-                    SizedBox(
-                      width: 65,
-                      height: 50,
-                      child: Center(
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                              backgroundColor: brightGreyColor,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20))),
-                          onPressed: () {
-                            _getRecentPRs(int.parse(days_controller.text));
-                            setState(() {
-                              hasSearched = true;
-                            });
-                          },
-                          child: const Center(
-                              child: Icon(
-                            Icons.search,
-                            color: orangeColor,
-                            weight: 20,
-                          )),
-                        ),
-                      ),
-                    ),
+                     ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            padding: EdgeInsets.symmetric(
+                                vertical: screenWidth * 0.04),
+                            backgroundColor: brightGreyColor),
+                        onPressed: () {
+                          _getRecentPRs(int.parse(days_controller.text));
+                          setState(() {
+                            hasSearched = true;
+                          });
+                        },
+                        child: const Icon(
+                          Icons.search,
+                          color: orangeColor,
+                          weight: 20,
+                        )),
                   ],
                 ),
               ),

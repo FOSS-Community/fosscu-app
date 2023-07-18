@@ -196,28 +196,24 @@ class _MergedPRContainerState extends State<MergedPRContainer> {
                     SizedBox(
                       width: screenWidth * 0.03,
                     ),
-                    SizedBox(
-                      width: 55,
-                      height: 50,
-                      child: ElevatedButton(
+
+                    ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                            backgroundColor: brightGreyColor,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(25))),
+                            padding: EdgeInsets.symmetric(
+                                vertical: screenWidth * 0.04),
+                            backgroundColor: brightGreyColor),
                         onPressed: () {
                           _getMergedPRs(int.parse(days_controller.text));
                           setState(() {
                             hasSearched = true;
                           });
                         },
-                        child: const Center(
-                            child: Icon(
+                        child: const Icon(
                           Icons.search,
                           color: purpleColor,
                           weight: 20,
                         )),
-                      ),
-                    ),
+                    // SizedBox(
                   ],
                 ),
               ),
