@@ -56,6 +56,7 @@ dependencies:
   stroke_text: ^0.0.2
   top_snackbar_flutter: ^3.1.0
   intl: ^0.18.1
+  flutter_launcher_icons: ^0.13.1
 
 dev_dependencies:
   flutter_test:
@@ -78,10 +79,17 @@ flutter:
   # the material Icons class.
   uses-material-design: true
 
+flutter_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/imgs/fosscu.png"
+  min_sdk_android: 21 
+
   # To add assets to your application, add an assets section, like this:
   assets:
 
    - assets/svgs/
+   - assets/imgs/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
