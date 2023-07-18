@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:fosscu_app/constants/apikey.dart';
 import 'package:fosscu_app/constants/color.dart';
 import 'package:fosscu_app/widgets/event_widgets/event_class.dart';
-import 'package:fosscu_app/widgets/listtile.dart';
+import 'package:fosscu_app/widgets/contributor_page_widgets/listtile.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';

@@ -5,76 +5,35 @@ import 'package:flutter_svg/svg.dart';
 import 'package:fosscu_app/constants/apikey.dart';
 import 'package:fosscu_app/constants/color.dart';
 import 'package:fosscu_app/constants/svg.dart';
-import 'package:fosscu_app/widgets/listtile.dart';
+import 'package:fosscu_app/widgets/contributor_page_widgets/listtile.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:shimmer_animation/shimmer_animation.dart';
 
-class Contributor {
-  final String login;
-  int contributions;
-
-  Contributor({required this.login, required this.contributions});
-
-  factory Contributor.fromJson(Map<String, dynamic> json) {
-    return Contributor(
-      login: json['login'],
-      contributions: json['contributions'],
-    );
-  }
-}
-
-class Top5Contributors extends StatefulWidget {
-  const Top5Contributors({super.key});
+class ContributorProfile extends StatefulWidget {
+  const ContributorProfile({super.key});
 
   @override
-  State<Top5Contributors> createState() => _Top5ContributorsState();
+  State<ContributorProfile> createState() => _ContributorProfileState();
 }
 
-class _Top5ContributorsState extends State<Top5Contributors> {
-  List<dynamic> contributors = [];
+class _ContributorProfileState extends State<ContributorProfile> {
+  List<dynamic> _contributors = [];
 
   @override
   void initState() {
-    fetchContributors();
     super.initState();
+    fetchContributors();
   }
 
   Future<void> fetchContributors() async {
-    print('fetching');
-
-    try{
-final response = await http.get(
-      Uri.parse('https://api.github.com/orgs/FOSS-Community/repos'),
-      headers: {
-        'Authorization': 'token $apikey',
-      },
-    );
-    if (response.statusCode == 200) {
-      final repos = jsonDecode(response.body);
-      for (final repo in repos) {
-        final contributorsResponse = await http.get(
-          Uri.parse(repo['contributors_url']),
-          headers: {
-            'Authorization': 'token $apikey',
-          },
-        );
-        if (contributorsResponse.statusCode == 200) {
-          final contributors = jsonDecode(contributorsResponse.body);
-          this.contributors.addAll(contributors);
-        }
-      }
-      contributors
-          .sort((a, b) => b['contributions'].compareTo(a['contributions']));
-      setState(() {});
-      print(contributors.length);
-    }
-    }
-    catch (e) {
-      // ignore: avoid_print
-      print(e.toString());
-    }
-    
+    final response = await http.get(
+        Uri.parse('https://api.github.com/orgs/FOSS-Community/members'),
+        headers: {'Authorization': 'token $apikey'});
+    final data = jsonDecode(response.body);
+    setState(() {
+      _contributors = data;
+    });
   }
 
   @override
@@ -108,17 +67,17 @@ final response = await http.get(
             Row(
               children: [
                 Container(
-                    margin: const EdgeInsets.all(10).copyWith(top: 0,left: 20),
+                    margin: const EdgeInsets.all(10).copyWith(top: 0, left: 22),
                     alignment: Alignment.topLeft,
-                    width: screenWidth * 0.55,
+                    width: screenWidth * 0.5,
                     child: Text(
-                      'Contributors Top 10',
+                      'Members by profile',
                       style: GoogleFonts.leagueSpartan(
-                          color: yellowColor,
+                          color: Colors.white,
                           fontWeight: FontWeight.bold,
                           fontSize: screenWidth * 0.09,
                           height: 1.2,
-                          decoration: null),
+                          decoration: null,),
                     )),
               ],
             ),
@@ -129,15 +88,14 @@ final response = await http.get(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(25),
               ),
-              child:  contributors.isNotEmpty
+              child: _contributors.isNotEmpty
                   ? ListView.builder(
-                      itemCount: contributors.length > 10 ? 10 : contributors.length,
+                      itemCount: _contributors.length,
                       itemBuilder: (BuildContext context, int index) {
-                        final contributor = contributors[index]; // 
-                        final user = contributor['login']; // 
-                        final url = contributor['html_url']; 
+                        final contributor = _contributors[index];
+                        final user = contributor['login'];
+                        final url = contributor['html_url'];
                         final userAvatarUrl = contributor['avatar_url'];
-                        final contributions = '${contributor['contributions']} contributions';
                         return Container(
                             margin:
                                 EdgeInsets.only(bottom: screenHeight * 0.02),
@@ -145,7 +103,7 @@ final response = await http.get(
                               buttonName: 'View Profile',
                                 user: user,
                                 mulitiplicationFactor: 0.175,
-                                repository: contributions,
+                                repository: '',
                                 title: user,
                                 url: url,
                                 userAvatarUrl: userAvatarUrl));

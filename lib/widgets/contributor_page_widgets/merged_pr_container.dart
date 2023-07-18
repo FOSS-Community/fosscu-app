@@ -5,7 +5,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:fosscu_app/constants/apikey.dart';
 import 'package:fosscu_app/constants/color.dart';
 import 'package:fosscu_app/constants/svg.dart';
-import 'package:fosscu_app/widgets/listtile.dart';
+import 'package:fosscu_app/widgets/contributor_page_widgets/listtile.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shimmer_animation/shimmer_animation.dart';
 import 'package:http/http.dart' as http;
