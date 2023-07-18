@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:fosscu_app/constants/color.dart';
 import 'package:fosscu_app/screens/admin_page_screens/events.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:top_snackbar_flutter/custom_snack_bar.dart';
-import 'package:top_snackbar_flutter/top_snack_bar.dart';
 
 class AdminPage extends StatefulWidget {
   const AdminPage({super.key});

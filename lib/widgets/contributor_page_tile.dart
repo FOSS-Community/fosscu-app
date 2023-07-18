@@ -19,6 +19,7 @@ class ContributionTile extends StatefulWidget {
 }
 
 class _ContributionTileState extends State<ContributionTile> {
+  // ignore: unused_field
   final bool _isTappedDown = false;
   @override
   Widget build(BuildContext context) {

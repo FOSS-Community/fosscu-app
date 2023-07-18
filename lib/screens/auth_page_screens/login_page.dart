@@ -1,12 +1,9 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:fosscu_app/constants/color.dart';
 import 'package:fosscu_app/constants/svg.dart';
 import 'package:fosscu_app/services/auth/auth_service.dart';
-import 'package:fosscu_app/widgets/auth_widgets/auth_button.dart';
-import 'package:fosscu_app/widgets/auth_widgets/auth_field.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class LogInPage extends StatefulWidget {

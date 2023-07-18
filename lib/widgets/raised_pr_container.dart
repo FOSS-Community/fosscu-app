@@ -6,7 +6,6 @@ import 'package:fosscu_app/constants/apikey.dart';
 import 'package:fosscu_app/constants/color.dart';
 import 'package:fosscu_app/constants/svg.dart';
 import 'package:fosscu_app/widgets/listtile.dart';
-import 'package:fosscu_app/widgets/mylisttile.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:shimmer_animation/shimmer_animation.dart';
@@ -21,6 +20,7 @@ class RaisedPRContainer extends StatefulWidget {
 class _RaisedPRContainerState extends State<RaisedPRContainer> {
   final String organization = 'FOSS-Community';
   final String personalAccessToken = apikey;
+  // ignore: non_constant_identifier_names
   final TextEditingController days_controller = TextEditingController();
   bool hasSearched = false;
 

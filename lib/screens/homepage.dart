@@ -34,6 +34,7 @@ class _HomePageState extends State<HomePage> {
   List<Map<String, dynamic>> _prs = [];
 
   /// Pageview controller
+  // ignore: unused_field
   final PageController _controller = PageController();
   bool onLastPage = false;
 
