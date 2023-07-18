@@ -1,33 +1,111 @@
-# fosscu_app
 
-A mobile app for fosscu community.
+# FOSSC Flutter App
 
-## Getting Started
+This repository contains the app for FOSS Community writter in Flutter 
 
-This project is a starting point for a Flutter application.
+## Table of Contents
 
-A few resources to get you started if this is your first Flutter project:
+- [Overview](#overview)
+- [Prerequisites](#prerequisites)
+- [Installation](#installation)
+- [Configuration](#configuration)
+- [Usage](#usage)
+- [Contributing](#contributing)
+- [License](#license)
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## Overview
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+The Flutter app is designed to manage events, get details about the recent raised PRs, recent merged PRs, a Learning page to get started with git and github, And much more.
 
-## How to setup the project:
+## Prerequisites
 
-Clone the repository using git clone.
+Before you proceed, ensure you have the following prerequisites installed and set up:
 
-Then Run this from terminal.
-```dart
-pub get
+1. [Flutter SDK](https://flutter.dev/docs/get-started/install) - Install Flutter and set up your development environment.
+
+2. [Firebase Account](https://firebase.google.com/) - Set up a Firebase project 
+
+3. [GitHub Personal Access Token](https://docs.github.com/en/github/authenticating-to-github/keeping-your-account-and-data-secure/creating-a-personal-access-token) - Create a GitHub Personal Access Token to access the GitHub API.
+
+4. [Airtable Account](https://airtable.com/) - Sign up for an Airtable account to obtain a Personal Access Token.
+
+## Installation
+
+1. Clone this repository to your local machine using the following command:
+
+   ```
+   git clone https://github.com/FOSS-Community/fosscu-app.git
+   ```
+
+2. Change your working directory to the app folder:
+
+   ```
+   cd fosscu-app
+   ```
+
+3. Fetch the Flutter dependencies:
+
+   ```
+   flutter pub get
+   ```
+
+## Configuration
+
+### Firebase Setup
+
+setup using this link https://firebase.flutter.dev/docs/overview/
+
+### Constants Configurations
+
+1. Open the Flutter app in your favorite code editor.
+
+2. Create a file `lib/constants/apikey.dart`.
+
+
 ```
-Under lib/constants create a new file as apikey.dart, It is your key used to fetch data from github api.
+const apikey =  'REPLACE_WITH_YOUR_GITHUB_PAT'; 
+const airtablePAT =  'REPLACE_WITH_YOUR_AIRTABLE_PAT';
 
-```dart
-const apikey = 'paste_your_apikey_here';
+const baseID =  'AIRTABLE_BASE_ID';
+
+const table =  'AIRTABLE_TABLE_ID';
+
+const xptable =  'AIRTABLE_XP_TABLE_ID'; 
 ```
+
+## Usage
+
+Now that you have completed the configuration, it's time to run the app:
+
+1. Ensure you have an Android/iOS emulator running or a physical device connected.
+
+2. Run the app using the following command:
+
+   ```
+   flutter run
+   ```
+
+3. The app will launch on your emulator/device, and you can explore its beautiful UI.
+
+## Contributing
+
+We welcome and appreciate contributions to make this Flutter app even more amazing. Feel free to submit issues and pull requests.
+
+1. Fork this repository to your GitHub account.
+
+2. Create a new branch with a descriptive name for your changes.
+
+3. Make your improvements and commit your changes.
+
+4. Push the changes to your forked repository.
+
+5. Open a pull request to this repository, describing the changes you made.
+
+## License
+
+This Flutter app is distributed under the [MIT License](LICENSE).
+
+
 
 
 
