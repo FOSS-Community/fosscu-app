@@ -1,111 +1,70 @@
+# fosscu_app
 
-# FOSSC Flutter App
-
-This repository contains the app for FOSS Community writter in Flutter 
-
-## Table of Contents
-
-- [Overview](#overview)
-- [Prerequisites](#prerequisites)
-- [Installation](#installation)
-- [Configuration](#configuration)
-- [Usage](#usage)
-- [Contributing](#contributing)
-- [License](#license)
-
-## Overview
-
-The Flutter app is designed to manage events, get details about the recent raised PRs, recent merged PRs, a Learning page to get started with git and github, And much more.
-
-## Prerequisites
-
-Before you proceed, ensure you have the following prerequisites installed and set up:
-
-1. [Flutter SDK](https://flutter.dev/docs/get-started/install) - Install Flutter and set up your development environment.
-
-2. [Firebase Account](https://firebase.google.com/) - Set up a Firebase project 
-
-3. [GitHub Personal Access Token](https://docs.github.com/en/github/authenticating-to-github/keeping-your-account-and-data-secure/creating-a-personal-access-token) - Create a GitHub Personal Access Token to access the GitHub API.
-
-4. [Airtable Account](https://airtable.com/) - Sign up for an Airtable account to obtain a Personal Access Token.
-
-## Installation
-
-1. Clone this repository to your local machine using the following command:
-
-   ```
-   git clone https://github.com/FOSS-Community/fosscu-app.git
-   ```
-
-2. Change your working directory to the app folder:
-
-   ```
-   cd fosscu-app
-   ```
-
-3. Fetch the Flutter dependencies:
-
-   ```
-   flutter pub get
-   ```
-
-## Configuration
-
-### Firebase Setup
-
-setup using this link https://firebase.flutter.dev/docs/overview/
-
-### Constants Configurations
-
-1. Open the Flutter app in your favorite code editor.
-
-2. Create a file `lib/constants/apikey.dart`.
+A mobile app for fosscu community.
 
 
+
+
+
+
+
+
+
+![8b8ec6c0-d722-41da-a027-15a6c0881a13](https://github.com/Utkarsh4517/fosscu-app/assets/71646773/8fcf2823-684e-402e-9d3b-6c29679e89b2)
+
+
+![d779af0c-46fd-4e29-b5fa-ad7892d23637](https://github.com/Utkarsh4517/fosscu-app/assets/71646773/0ffaba94-e239-4be7-9039-3f3d4a28698c)
+
+
+![d77e3be1-efcd-4bc3-8acc-ee77614abf7d](https://github.com/Utkarsh4517/fosscu-app/assets/71646773/5e759fce-cfa9-4234-9214-63f2aad560d7)
+
+
+![9d480dfa-be30-434b-80ae-39855ba3a666](https://github.com/Utkarsh4517/fosscu-app/assets/71646773/c4bd40bd-a5fb-449b-baea-f24e0906b567)
+
+
+![af96f3ac-ac0b-4199-ae76-d31c51725683](https://github.com/Utkarsh4517/fosscu-app/assets/71646773/4c44a589-2582-4ef5-9b59-8a8bcc0e9b21)
+
+
+![9c509e21-03bd-412f-9e46-c61d9aae9cea](https://github.com/Utkarsh4517/fosscu-app/assets/71646773/62a35659-391b-4ce3-90d4-ae0744a4c608)
+
+
+![39d3b256-2a11-4d57-8293-02b68a1906f2](https://github.com/Utkarsh4517/fosscu-app/assets/71646773/089df310-0b2c-4ffa-a88c-7e8cb50129a6)
+
+
+![9166a8c7-b4ff-490c-a960-93ba5b41709a](https://github.com/Utkarsh4517/fosscu-app/assets/71646773/379be5aa-9bd2-48d1-b3ad-ac85f0ccf0c0)
+
+
+![50fe758b-b1a5-4054-9b5f-f7018043c271](https://github.com/Utkarsh4517/fosscu-app/assets/71646773/2c951175-629e-4f63-bdad-404ab11bd7f5)
+
+
+
+
+## Getting Started
+
+This project is a starting point for a Flutter application.
+
+A few resources to get you started if this is your first Flutter project:
+
+- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
+- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+
+For help getting started with Flutter development, view the
+[online documentation](https://docs.flutter.dev/), which offers tutorials,
+samples, guidance on mobile development, and a full API reference.
+
+## How to setup the project:
+
+Clone the repository using git clone.
+
+Then Run this from terminal.
+```dart
+pub get
 ```
-const apikey =  'REPLACE_WITH_YOUR_GITHUB_PAT'; 
-const airtablePAT =  'REPLACE_WITH_YOUR_AIRTABLE_PAT';
+Under lib/constants create a new file as apikey.dart, It is your key used to fetch data from github api.
 
-const baseID =  'AIRTABLE_BASE_ID';
-
-const table =  'AIRTABLE_TABLE_ID';
-
-const xptable =  'AIRTABLE_XP_TABLE_ID'; 
+```dart
+const apikey = 'paste_your_apikey_here';
 ```
-
-## Usage
-
-Now that you have completed the configuration, it's time to run the app:
-
-1. Ensure you have an Android/iOS emulator running or a physical device connected.
-
-2. Run the app using the following command:
-
-   ```
-   flutter run
-   ```
-
-3. The app will launch on your emulator/device, and you can explore its beautiful UI.
-
-## Contributing
-
-We welcome and appreciate contributions to make this Flutter app even more amazing. Feel free to submit issues and pull requests.
-
-1. Fork this repository to your GitHub account.
-
-2. Create a new branch with a descriptive name for your changes.
-
-3. Make your improvements and commit your changes.
-
-4. Push the changes to your forked repository.
-
-5. Open a pull request to this repository, describing the changes you made.
-
-## License
-
-This Flutter app is distributed under the [MIT License](LICENSE).
-
-
 
 
 
@@ -113,8 +72,8 @@ This Flutter app is distributed under the [MIT License](LICENSE).
 Features
 - [x] Basic info of Club
 - [x] Login, Registration
-    - [x] Documentation links
-    - [x] Repositories
+    - [ ] Documentation links
+    - [ ] Repositories
     - [ ] Learning path
     - [ ] Gitpod setup links
     - [ ] View the deployed link for master branch
