@@ -385,38 +385,43 @@ class _ProfilePageState extends State<ProfilePage> {
                       color: darkGreyColor,
                     ),
                   ),
-                  ProfileText(text: dob),
-                  SizedBox(height: screenWidth * 0.03),
-                  ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                          backgroundColor: brightGreyColor,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10))),
-                      onPressed: () async {
-                        DateTime? pickedDate = await showDatePicker(
-                            context: context,
-                            initialDate: DateTime.now(),
-                            firstDate: DateTime(1950),
-                            lastDate: DateTime(2100));
-                        if (pickedDate != null) {
-                          String formattedDate =
-                              DateFormat('yyyy-MM-dd').format(pickedDate);
-                          setState(() {
-                            dob = formattedDate;
-                          });
-                          print(dob);
-                        }
-                      },
-                      child: Container(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: screenWidth * 0.2),
-                        child: const Text(
-                          'Select DOB',
-                          style: TextStyle(
-                            color: Colors.white,
-                          ),
-                        ),
-                      )),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: brightGreyColor,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10))),
+                          onPressed: () async {
+                            DateTime? pickedDate = await showDatePicker(
+                                context: context,
+                                initialDate: DateTime.now(),
+                                firstDate: DateTime(1950),
+                                lastDate: DateTime(2100));
+                            if (pickedDate != null) {
+                              String formattedDate =
+                                  DateFormat('yyyy-MM-dd').format(pickedDate);
+                              setState(() {
+                                dob = formattedDate;
+                              });
+                            }
+                          },
+                          child: Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: screenWidth * 0.13),
+                            child: const Text(
+                              'Select DOB',
+                              style: TextStyle(
+                                color: Colors.white,
+                              ),
+                            ),
+                          )),
+                      ProfileText(text: dob),
+
+                    ],
+                  ),
+
                   SizedBox(height: screenWidth * 0.03),
 
                   GestureDetector(
@@ -471,9 +476,8 @@ class _ProfilePageState extends State<ProfilePage> {
                   width: screenWidth * 0.7,
                   height: screenWidth * 0.3,
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    color: Colors.white
-                  ),
+                      borderRadius: BorderRadius.circular(20),
+                      color: Colors.white),
                   child: const Center(
                     child: CircularProgressIndicator(
                       color: blackColor,
