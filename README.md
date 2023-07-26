@@ -113,8 +113,8 @@ This Flutter app is distributed under the [MIT License](LICENSE).
 Features
 - [x] Basic info of Club
 - [x] Login, Registration
-    - [ ] Documentation links
-    - [ ] Repositories
+    - [x] Documentation links
+    - [x] Repositories
     - [ ] Learning path
     - [ ] Gitpod setup links
     - [ ] View the deployed link for master branch

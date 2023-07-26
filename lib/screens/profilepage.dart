@@ -23,6 +23,7 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  bool _isLoading = true;
   final nameController = TextEditingController();
   final githubController = TextEditingController();
   final discordController = TextEditingController();
@@ -173,7 +174,6 @@ class _ProfilePageState extends State<ProfilePage> {
         });
         setState(() {
           currentValue = fields['Your Role'][0] ?? '';
-          print(currentValue);
         });
         setState(() {
           nameController.text = fields['Name'] ?? '';
@@ -184,6 +184,7 @@ class _ProfilePageState extends State<ProfilePage> {
           portfolioController.text = fields['Any Portfolio? (Optional)'] ?? '';
 
           ownRoleController.text = fields['Create your own role'] ?? '';
+          _isLoading = false;
         });
       }
     }
@@ -204,259 +205,284 @@ class _ProfilePageState extends State<ProfilePage> {
     return Scaffold(
       backgroundColor: blackColor,
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              SizedBox(height: screenHeight * 0.04),
-
-              /// welcome to fosscu text container
-              Container(
-                alignment: const AlignmentDirectional(-1, 0),
-                margin: EdgeInsets.only(left: screenWidth * 0.05),
-                child: Row(
-                  children: [
-                    Text(
-                      'Welcome to ',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: screenWidth * 0.07,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    Text(
-                      'FOSSCU',
-                      style: TextStyle(
-                        color: greenColor,
-                        fontSize: screenWidth * 0.07,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-
-              /// end of welcome to fosscu text container
-
-              /// join fosscu
-
-              Container(
-                margin: EdgeInsets.symmetric(horizontal: screenWidth * 0.05)
-                    .copyWith(top: screenHeight * 0.03),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    SizedBox(
-                      width: screenWidth * 0.6,
-                      child: Text(
-                        'To become a member at FOSSCU Community Join Our Discord',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: screenWidth * 0.03,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        launchUrlString('https://discord.gg/jkCdRbC5pg',
-                            mode: LaunchMode.externalApplication);
-                      },
-                      child: const Text(
-                        'Join Us!',
-                        style: TextStyle(
-                          color: greenColor,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-
-              /// End of join Fosscu
-              SizedBox(height: screenWidth * 0.03),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        child: Stack(
+          children: [
+            SingleChildScrollView(
+              child: Column(
                 children: [
+                  SizedBox(height: screenHeight * 0.04),
+
+                  /// welcome to fosscu text container
+                  Container(
+                    alignment: const AlignmentDirectional(-1, 0),
+                    margin: EdgeInsets.only(left: screenWidth * 0.05),
+                    child: Row(
+                      children: [
+                        Text(
+                          'Welcome to ',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: screenWidth * 0.07,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Text(
+                          'FOSSCU',
+                          style: TextStyle(
+                            color: greenColor,
+                            fontSize: screenWidth * 0.07,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  /// end of welcome to fosscu text container
+
+                  /// join fosscu
+
+                  Container(
+                    margin: EdgeInsets.symmetric(horizontal: screenWidth * 0.05)
+                        .copyWith(top: screenHeight * 0.03),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        SizedBox(
+                          width: screenWidth * 0.6,
+                          child: Text(
+                            'To become a member at FOSSCU Community Join Our Discord',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: screenWidth * 0.03,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            launchUrlString('https://discord.gg/jkCdRbC5pg',
+                                mode: LaunchMode.externalApplication);
+                          },
+                          child: const Text(
+                            'Join Us!',
+                            style: TextStyle(
+                              color: greenColor,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  /// End of join Fosscu
+                  SizedBox(height: screenWidth * 0.03),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          launchUrlString(
+                            'https://airtable.com/appFzpoJmvsPbLnAL/shriwXfnjSNOCUv8X',
+                            mode: LaunchMode.externalApplication,
+                          );
+                        },
+                        child: Container(
+                          padding: EdgeInsets.all(screenWidth * 0.04),
+                          decoration: BoxDecoration(
+                              color: Colors.yellow,
+                              borderRadius: BorderRadius.circular(12)),
+                          child: const Text(
+                            '   Claim XP!   ',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          launchUrlString(
+                            'https://airtable.com/app56OIvmSDDANlXb/shrBRp59RlWJNMY7C/tbldp8NUWBzRLrPVb',
+                            mode: LaunchMode.externalApplication,
+                          );
+                        },
+                        child: Container(
+                          padding: EdgeInsets.all(screenWidth * 0.04),
+                          decoration: BoxDecoration(
+                              color: Colors.blueAccent,
+                              borderRadius: BorderRadius.circular(12)),
+                          child: const Text(
+                            'Points Table',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+
+                  /// Text Fields
+                  SizedBox(height: screenHeight * 0.03),
+                  const ProfileText(text: 'Your Name'),
+                  ProfileTextField(
+                    textEditingController: nameController,
+                    hintText: 'name',
+                    icon: FontAwesomeIcons.person,
+                    color: darkGreyColor,
+                  ),
+                  const ProfileText(text: 'Your Github Link'),
+                  ProfileTextField(
+                    textEditingController: githubController,
+                    hintText: 'github profile',
+                    icon: FontAwesomeIcons.github,
+                    color: darkGreyColor,
+                  ),
+                  const ProfileText(text: 'Your Twitter Lnk (Optional)'),
+                  ProfileTextField(
+                    textEditingController: twitterController,
+                    hintText: 'twitter link',
+                    icon: FontAwesomeIcons.twitter,
+                    color: darkGreyColor,
+                  ),
+                  const ProfileText(text: 'Your LinkedIn Profile Link'),
+                  ProfileTextField(
+                    textEditingController: linkedinController,
+                    hintText: 'linkedin link',
+                    icon: FontAwesomeIcons.linkedin,
+                    color: darkGreyColor,
+                  ),
+                  const ProfileText(text: 'Your Discord Username'),
+                  ProfileTextField(
+                    textEditingController: discordController,
+                    hintText: 'discord username',
+                    icon: FontAwesomeIcons.discord,
+                    color: darkGreyColor,
+                  ),
+                  const ProfileText(text: 'Any Portfolio? (Optional)'),
+                  ProfileTextField(
+                    textEditingController: portfolioController,
+                    hintText: 'portfolio link',
+                    icon: FontAwesomeIcons.link,
+                    color: darkGreyColor,
+                  ),
+                  const ProfileText(text: 'Select your role'),
+                  Container(
+                    margin: EdgeInsets.symmetric(
+                        horizontal: screenWidth * 0.07,
+                        vertical: screenWidth * 0.04),
+                    alignment: Alignment.centerLeft,
+                    child: DropDown(
+                      onValueChanged: updateDropDownValue,
+                    ),
+                  ),
+                  Visibility(
+                      visible: currentValue == 'Create your own role!',
+                      child: const ProfileText(text: 'Create your own role')),
+                  Visibility(
+                    visible: currentValue == 'Create your own role!',
+                    child: ProfileTextField(
+                      textEditingController: ownRoleController,
+                      hintText: 'Leave empty if you have selected a role',
+                      icon: FontAwesomeIcons.personBurst,
+                      color: darkGreyColor,
+                    ),
+                  ),
+                  ProfileText(text: dob),
+                  SizedBox(height: screenWidth * 0.03),
+                  ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: brightGreyColor,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10))),
+                      onPressed: () async {
+                        DateTime? pickedDate = await showDatePicker(
+                            context: context,
+                            initialDate: DateTime.now(),
+                            firstDate: DateTime(1950),
+                            lastDate: DateTime(2100));
+                        if (pickedDate != null) {
+                          String formattedDate =
+                              DateFormat('yyyy-MM-dd').format(pickedDate);
+                          setState(() {
+                            dob = formattedDate;
+                          });
+                          print(dob);
+                        }
+                      },
+                      child: Container(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: screenWidth * 0.2),
+                        child: const Text(
+                          'Select DOB',
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
+                        ),
+                      )),
+                  SizedBox(height: screenWidth * 0.03),
+
                   GestureDetector(
                     onTap: () {
-                      launchUrlString(
-                        'https://airtable.com/appFzpoJmvsPbLnAL/shriwXfnjSNOCUv8X',
-                        mode: LaunchMode.externalApplication,
-                      );
+                      if (nameController.text.isNotEmpty &&
+                          githubController.text.isNotEmpty &&
+                          linkedinController.text.isNotEmpty &&
+                          discordController.text.isNotEmpty &&
+                          currentValue != 'Select any role') {
+                        if (userId.isEmpty) {
+                          postDataToAirtable();
+                          _showSuccessMessage(
+                              context, 'Data Updated Successfuly');
+                        } else {
+                          updateDataToAirtable();
+                          _showSuccessMessage(
+                              context, 'Data Updated Successfuly');
+                        }
+                      } else {
+                        _showErrorsMessage(
+                            context, 'Please enter all the fields');
+                      }
                     },
                     child: Container(
-                      padding: EdgeInsets.all(screenWidth * 0.04),
+                      width: screenWidth * 0.2,
+                      height: screenHeight * 0.045,
                       decoration: BoxDecoration(
-                          color: Colors.yellow,
-                          borderRadius: BorderRadius.circular(12)),
-                      child: const Text(
-                        '   Claim XP!   ',
-                        style: TextStyle(fontWeight: FontWeight.bold),
+                        border: Border.all(
+                          color: brightGreyColor,
+                          width: 0.5,
+                        ),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: const Align(
+                        alignment: Alignment.center,
+                        child: Text(
+                          'Save',
+                          style: TextStyle(
+                              color: Colors.white, fontWeight: FontWeight.bold),
+                        ),
                       ),
                     ),
                   ),
-                  GestureDetector(
-                    onTap: () {
-                      launchUrlString(
-                        'https://airtable.com/app56OIvmSDDANlXb/shrBRp59RlWJNMY7C/tbldp8NUWBzRLrPVb',
-                        mode: LaunchMode.externalApplication,
-                      );
-                    },
-                    child: Container(
-                      padding: EdgeInsets.all(screenWidth * 0.04),
-                      decoration: BoxDecoration(
-                          color: Colors.blueAccent,
-                          borderRadius: BorderRadius.circular(12)),
-                      child: const Text(
-                        'Points Table',
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                  ),
+                  SizedBox(height: screenHeight * 0.05),
                 ],
               ),
-
-              /// Text Fields
-              SizedBox(height: screenHeight * 0.03),
-              const ProfileText(text: 'Your Name'),
-              ProfileTextField(
-                textEditingController: nameController,
-                hintText: 'name',
-                icon: FontAwesomeIcons.person,
-                color: darkGreyColor,
-              ),
-              const ProfileText(text: 'Your Github Link'),
-              ProfileTextField(
-                textEditingController: githubController,
-                hintText: 'github profile',
-                icon: FontAwesomeIcons.github,
-                color: darkGreyColor,
-              ),
-              const ProfileText(text: 'Your Twitter Lnk (Optional)'),
-              ProfileTextField(
-                textEditingController: twitterController,
-                hintText: 'twitter link',
-                icon: FontAwesomeIcons.twitter,
-                color: darkGreyColor,
-              ),
-              const ProfileText(text: 'Your LinkedIn Profile Link'),
-              ProfileTextField(
-                textEditingController: linkedinController,
-                hintText: 'linkedin link',
-                icon: FontAwesomeIcons.linkedin,
-                color: darkGreyColor,
-              ),
-              const ProfileText(text: 'Your Discord Username'),
-              ProfileTextField(
-                textEditingController: discordController,
-                hintText: 'discord username',
-                icon: FontAwesomeIcons.discord,
-                color: darkGreyColor,
-              ),
-              const ProfileText(text: 'Any Portfolio? (Optional)'),
-              ProfileTextField(
-                textEditingController: portfolioController,
-                hintText: 'portfolio link',
-                icon: FontAwesomeIcons.link,
-                color: darkGreyColor,
-              ),
-              const ProfileText(text: 'Select your role'),
-              Container(
-                margin: EdgeInsets.symmetric(
-                    horizontal: screenWidth * 0.07,
-                    vertical: screenWidth * 0.04),
-                alignment: Alignment.centerLeft,
-                child: DropDown(
-                  onValueChanged: updateDropDownValue,
-                ),
-              ),
-              Visibility(
-                  visible: currentValue == 'Create your own role!',
-                  child: const ProfileText(text: 'Create your own role')),
-              Visibility(
-                visible: currentValue == 'Create your own role!',
-                child: ProfileTextField(
-                  textEditingController: ownRoleController,
-                  hintText: 'Leave empty if you have selected a role',
-                  icon: FontAwesomeIcons.personBurst,
-                  color: darkGreyColor,
-                ),
-              ),
-              ProfileText(text: dob),
-              SizedBox(height: screenWidth * 0.03),
-              ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                      backgroundColor: brightGreyColor,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10))),
-                  onPressed: () async {
-                    DateTime? pickedDate = await showDatePicker(
-                        context: context,
-                        initialDate: DateTime.now(),
-                        firstDate: DateTime(1950),
-                        lastDate: DateTime(2100));
-                    if (pickedDate != null) {
-                      String formattedDate =
-                          DateFormat('yyyy-MM-dd').format(pickedDate);
-                      setState(() {
-                        dob = formattedDate;
-                      });
-                      print(dob);
-                    }
-                  },
-                  child: Container(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: screenWidth * 0.2),
-                    child: const Text(
-                      'Select DOB',
-                      style: TextStyle(
-                        color: Colors.white,
-                      ),
-                    ),
-                  )),
-              SizedBox(height: screenWidth * 0.03),
-
-              GestureDetector(
-                onTap: () {
-                  if (nameController.text.isNotEmpty &&
-                      githubController.text.isNotEmpty &&
-                      linkedinController.text.isNotEmpty &&
-                      discordController.text.isNotEmpty &&
-                      currentValue != 'Select any role') {
-                    if (userId.isEmpty) {
-                      postDataToAirtable();
-                      _showSuccessMessage(context, 'Data Updated Successfuly');
-                    } else {
-                      updateDataToAirtable();
-                      _showSuccessMessage(context, 'Data Updated Successfuly');
-                    }
-                  } else {
-                    _showErrorsMessage(context, 'Please enter all the fields');
-                  }
-                },
+            ),
+            Visibility(
+              visible: _isLoading,
+              child: Center(
                 child: Container(
-                  width: screenWidth * 0.2,
-                  height: screenHeight * 0.045,
+                  width: screenWidth * 0.7,
+                  height: screenWidth * 0.3,
                   decoration: BoxDecoration(
-                    border: Border.all(
-                      color: brightGreyColor,
-                      width: 0.5,
-                    ),
-                    borderRadius: BorderRadius.circular(10),
+                    borderRadius: BorderRadius.circular(20),
+                    color: Colors.white
                   ),
-                  child: const Align(
-                    alignment: Alignment.center,
-                    child: Text(
-                      'Save',
-                      style: TextStyle(
-                          color: Colors.white, fontWeight: FontWeight.bold),
+                  child: const Center(
+                    child: CircularProgressIndicator(
+                      color: blackColor,
                     ),
                   ),
                 ),
               ),
-              SizedBox(height: screenHeight * 0.05),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
