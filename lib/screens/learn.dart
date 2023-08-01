@@ -8,7 +8,7 @@ import 'package:fosscu_app/screens/learn_page_screens/start_with_fundamentals.da
 import 'package:fosscu_app/screens/learn_page_screens/understanding_branches.dart';
 import 'package:fosscu_app/screens/learn_page_screens/what_is_github.dart';
 import 'package:fosscu_app/screens/learn_page_screens/why_git.dart';
-import 'package:fosscu_app/widgets/learn_page_card.dart';
+import 'package:fosscu_app/widgets/learn_subpage_widgets/learn_page_card.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class LearnPage extends StatelessWidget {

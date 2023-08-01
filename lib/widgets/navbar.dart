@@ -1,18 +1,20 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:fosscu_app/constants/color.dart';
 import 'package:fosscu_app/constants/svg.dart';
-import 'package:fosscu_app/screens/community.dart';
+import 'package:fosscu_app/screens/drawer_page_screens/admin_page.dart';
+import 'package:fosscu_app/screens/drawer_page_screens/birthdays.dart';
+import 'package:fosscu_app/screens/drawer_page_screens/community.dart';
 import 'package:fosscu_app/screens/contributor.dart';
-import 'package:fosscu_app/screens/documentation.dart';
 import 'package:fosscu_app/screens/homepage.dart';
 import 'package:fosscu_app/screens/learn.dart';
 import 'package:fosscu_app/screens/profilepage.dart';
 import 'package:fosscu_app/widgets/drawer_widgets/drawer_listtile.dart';
 import 'package:fosscu_app/widgets/drawer_widgets/drawer_page_listtile.dart';
-import 'package:google_fonts/google_fonts.dart';
+// import 'package:google_fonts/google_fonts.dart';
 
 class NavBarScreen extends StatefulWidget {
   const NavBarScreen({super.key});
@@ -22,7 +24,50 @@ class NavBarScreen extends StatefulWidget {
 }
 
 class _NavBarScreenState extends State<NavBarScreen> {
+  String currentUserEmailId = '';
+  List<String> adminListFinal = [];
+  bool isAdmin = false;
+
+  void fetchEmail() async {
+    User? user = FirebaseAuth.instance.currentUser;
+    String emailId = user!.email!;
+    setState(() {
+      currentUserEmailId = emailId;
+    });
+  }
+
+  void fetchAdminList() async {
+    CollectionReference admin = FirebaseFirestore.instance.collection('admin');
+
+    QuerySnapshot adminList = await admin.get();
+
+    final adminUserList = adminList.docs
+        .map((doc) => doc.data() as Map<String, dynamic>)
+        .toList();
+
+    for (var event in adminUserList) {
+      adminListFinal.addAll(event.values.map((value) => value.toString()));
+    }
+    checkIsUserAdmin();
+  }
+
+  void checkIsUserAdmin() {
+    for (int i = 0; i < adminListFinal.length; i++) {
+      if (currentUserEmailId == adminListFinal[i]) {
+        setState(() {
+          isAdmin = true;
+        });
+      }
+    }
+  }
+
   int _selectedIndex = 0;
+  @override
+  void initState() {
+    fetchEmail();
+    fetchAdminList();
+    super.initState();
+  }
 
   void _navigateBottomBar(int index) {
     setState(() {
@@ -31,17 +76,27 @@ class _NavBarScreenState extends State<NavBarScreen> {
   }
 
   final List<Widget> _pages = const [
-    HomePage(),
-    ContributorPage(),
-    LearnPage(),
-    ProfilePage()
+    HomePage(
+      key: PageStorageKey('Page1'),
+    ),
+    ContributorPage(
+      key: PageStorageKey('Page2'),
+    ),
+    LearnPage(
+      key: PageStorageKey('Page3'),
+    ),
+    ProfilePage(
+      key: PageStorageKey('Page4'),
+    )
   ];
+
+  final PageStorageBucket bucket = PageStorageBucket();
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
-    TextStyle textStyle = GoogleFonts.leagueSpartan(
-        color: Colors.white, fontWeight: FontWeight.bold);
+    // TextStyle textStyle = GoogleFonts.leagueSpartan(
+    //     color: Colors.white, fontWeight: FontWeight.bold);
     return Scaffold(
       drawer: Drawer(
         backgroundColor: darkGreyColor,
@@ -59,6 +114,14 @@ class _NavBarScreenState extends State<NavBarScreen> {
                 text: 'Documentation', url: 'https://fosscu.org/resource'),
             const DrawerListTile(
                 text: 'Community', pageToLoad: CommunityPage()),
+            const DrawerListTile(text: 'Birthdays', pageToLoad: BirthdayScreen()),
+            Visibility(
+              visible: isAdmin,
+              child: const DrawerListTile(
+                text: 'Admin',
+                pageToLoad: AdminPage(),
+              ),
+            ),
             Container(
               child: TextButton(
                   onPressed: () {
@@ -87,7 +150,10 @@ class _NavBarScreenState extends State<NavBarScreen> {
       ),
       backgroundColor: Colors.black,
       extendBody: true,
-      body: _pages[_selectedIndex],
+      body: PageStorage(
+        bucket: bucket,
+        child: _pages[_selectedIndex],
+      ),
 
       /// BOTTOM NAVIGATION BAR
       bottomNavigationBar: Container(

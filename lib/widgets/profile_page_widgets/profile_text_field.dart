@@ -5,10 +5,12 @@ class ProfileTextField extends StatelessWidget {
   final TextEditingController textEditingController;
   final String hintText;
   final IconData icon;
+  final Color color;
   const ProfileTextField({
     required this.textEditingController,
     required this.hintText,
     required this.icon,
+    required this.color,
     super.key,
   });
 
@@ -23,7 +25,7 @@ class ProfileTextField extends StatelessWidget {
         style: const TextStyle(color: Colors.white),
         decoration: InputDecoration(
           prefixIcon: Icon(icon),
-          prefixIconColor: brightGreyColor,
+          prefixIconColor: Colors.white,
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10)
           ),
@@ -31,7 +33,7 @@ class ProfileTextField extends StatelessWidget {
             borderRadius: BorderRadius.circular(10)
           ),
           filled: true,
-          fillColor: darkGreyColor,
+          fillColor: color,
           hintText: hintText,
           hintStyle: const TextStyle(color: brightGreyColor),
         ),

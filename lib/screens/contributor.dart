@@ -4,12 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:fosscu_app/constants/apikey.dart';
 import 'package:fosscu_app/constants/color.dart';
 import 'package:fosscu_app/constants/svg.dart';
-import 'package:fosscu_app/widgets/contributor_page_tile.dart';
-import 'package:fosscu_app/widgets/contributors_profile_container.dart';
-import 'package:fosscu_app/widgets/listtile.dart';
-import 'package:fosscu_app/widgets/merged_pr_container.dart';
-import 'package:fosscu_app/widgets/raised_pr_container.dart';
-import 'package:fosscu_app/widgets/top5_contributors_container.dart';
+import 'package:fosscu_app/widgets/contributor_page_widgets/contributor_page_tile.dart';
+import 'package:fosscu_app/widgets/contributor_page_widgets/contributors_profile_container.dart';
+import 'package:fosscu_app/widgets/contributor_page_widgets/listtile.dart';
+import 'package:fosscu_app/widgets/contributor_page_widgets/merged_pr_container.dart';
+import 'package:fosscu_app/widgets/contributor_page_widgets/raised_pr_container.dart';
+import 'package:fosscu_app/widgets/contributor_page_widgets/top5_contributors_container.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:shimmer_animation/shimmer_animation.dart';
@@ -149,44 +149,42 @@ class _ContributorPageState extends State<ContributorPage> {
                             ),
                           ),
                         )),
-              Container(
-                child: Column(
-                  children: [
-                    Container(
-                      margin: EdgeInsets.only(bottom: screenHeight * 0.05),
-                      child: const Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          ContributionTile(
-                            picture: openPr,
-                            text: 'Raised PRs',
-                            containerToLoad: RaisedPRContainer(),
-                          ),
-                          ContributionTile(
-                            picture: mergedPr,
-                            text: 'Merged PRs',
-                            containerToLoad: MergedPRContainer(),
-                          )
-                        ],
-                      ),
-                    ),
-                    const Row(
+              Column(
+                children: [
+                  Container(
+                    margin: EdgeInsets.only(bottom: screenHeight * 0.05),
+                    child: const Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         ContributionTile(
-                          picture: gitIcon,
-                          text: "Members\n   Profile",
-                          containerToLoad: ContributorProfile(),
+                          picture: openPr,
+                          text: 'Raised PRs',
+                          containerToLoad: RaisedPRContainer(),
                         ),
                         ContributionTile(
-                          picture: glasses,
-                          text: "      Top 10\nContributor",
-                          containerToLoad: Top5Contributors(),
-                        ),
+                          picture: mergedPr,
+                          text: 'Merged PRs',
+                          containerToLoad: MergedPRContainer(),
+                        )
                       ],
-                    )
-                  ],
-                ),
+                    ),
+                  ),
+                  const Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      ContributionTile(
+                        picture: gitIcon,
+                        text: "Members\n   Profile",
+                        containerToLoad: ContributorProfile(),
+                      ),
+                      ContributionTile(
+                        picture: glasses,
+                        text: "      Top 10\nContributor",
+                        containerToLoad: Top5Contributors(),
+                      ),
+                    ],
+                  )
+                ],
               )
             ],
           ),

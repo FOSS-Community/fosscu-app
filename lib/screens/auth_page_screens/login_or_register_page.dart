@@ -1,7 +1,6 @@
 /// Purpose of this page is to switch between login and register page
 import 'package:flutter/material.dart';
 import 'package:fosscu_app/screens/auth_page_screens/login_page.dart';
-import 'package:fosscu_app/screens/auth_page_screens/register_page.dart';
 
 class LoginOrRegisterPage extends StatefulWidget {
   const LoginOrRegisterPage({super.key});
@@ -26,15 +25,16 @@ class _LoginOrRegisterPageState extends State<LoginOrRegisterPage> {
   
   @override
   Widget build(BuildContext context) {
-    if(showLoginPage){
+    // if(showLoginPage){
     return LogInPage(
       onTap: togglePages
     );
-    } 
-    else {
-      return RegisterPage(
-        onTap: togglePages
-      );
-    }
+    // } 
+    // removing register page as we need only continue with google as an option
+    // else {
+    //   return RegisterPage(
+    //     onTap: togglePages
+    //   );
+    // }
   }
 }
