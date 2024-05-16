@@ -1,36 +1,26 @@
 {
   "project_info": {
-    "project_number": "470079992749",
-    "project_id": "fosscu-92e09",
-    "storage_bucket": "fosscu-92e09.appspot.com"
+    "project_number": "1090384799851",
+    "project_id": "project1-12989",
+    "storage_bucket": "project1-12989.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:470079992749:android:d140367ab8de8e6c726724",
+        "mobilesdk_app_id": "1:1090384799851:android:22aed73cb1e3ee426be92e",
         "android_client_info": {
           "package_name": "com.example.fosscu_app"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "470079992749-0g1m4g6sbed6p07tqj64uubhs0c8kl2j.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
+      "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyDimFPNsm79qVuc4vlL0pmf-lM19IEvVYA"
+          "current_key": "AIzaSyCdPGi9VF_DLe43WPjO_qzHn8AgnNauA_g"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "470079992749-0g1m4g6sbed6p07tqj64uubhs0c8kl2j.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
+          "other_platform_oauth_client": []
         }
       }
     }

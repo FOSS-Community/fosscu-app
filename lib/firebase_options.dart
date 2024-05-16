@@ -44,40 +44,38 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyAI8XOBmSbUmswg7SlySaVuj6rQLqQnyCE',
-    appId: '1:470079992749:web:80dac0e5705e9577726724',
-    messagingSenderId: '470079992749',
-    projectId: 'fosscu-92e09',
-    authDomain: 'fosscu-92e09.firebaseapp.com',
-    storageBucket: 'fosscu-92e09.appspot.com',
-    measurementId: 'G-0S817285ZC',
+    apiKey: 'AIzaSyBS2ejGrWqrBkhMOQVT-311U_hehISIsI0',
+    appId: '1:1090384799851:web:6b89db2d6c2562ff6be92e',
+    messagingSenderId: '1090384799851',
+    projectId: 'project1-12989',
+    authDomain: 'project1-12989.firebaseapp.com',
+    storageBucket: 'project1-12989.appspot.com',
+    measurementId: 'G-BLPB8NVJSK',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyDimFPNsm79qVuc4vlL0pmf-lM19IEvVYA',
-    appId: '1:470079992749:android:d140367ab8de8e6c726724',
-    messagingSenderId: '470079992749',
-    projectId: 'fosscu-92e09',
-    storageBucket: 'fosscu-92e09.appspot.com',
+    apiKey: 'AIzaSyCdPGi9VF_DLe43WPjO_qzHn8AgnNauA_g',
+    appId: '1:1090384799851:android:22aed73cb1e3ee426be92e',
+    messagingSenderId: '1090384799851',
+    projectId: 'project1-12989',
+    storageBucket: 'project1-12989.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyAAwykQPjHhv9keQ1TNCy8MfOCJQWb51eQ',
-    appId: '1:470079992749:ios:2c6c32bf66013890726724',
-    messagingSenderId: '470079992749',
-    projectId: 'fosscu-92e09',
-    storageBucket: 'fosscu-92e09.appspot.com',
-    iosClientId: '470079992749-t3ge7gj5ounbe02d5fq827oihtvue92v.apps.googleusercontent.com',
+    apiKey: 'AIzaSyDs9Y4inNSa1m41W1svftQngKBBPNtYII0',
+    appId: '1:1090384799851:ios:9fb9926089a2bae46be92e',
+    messagingSenderId: '1090384799851',
+    projectId: 'project1-12989',
+    storageBucket: 'project1-12989.appspot.com',
     iosBundleId: 'com.example.fosscuApp',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyAAwykQPjHhv9keQ1TNCy8MfOCJQWb51eQ',
-    appId: '1:470079992749:ios:2c6c32bf66013890726724',
-    messagingSenderId: '470079992749',
-    projectId: 'fosscu-92e09',
-    storageBucket: 'fosscu-92e09.appspot.com',
-    iosClientId: '470079992749-t3ge7gj5ounbe02d5fq827oihtvue92v.apps.googleusercontent.com',
+    apiKey: 'AIzaSyDs9Y4inNSa1m41W1svftQngKBBPNtYII0',
+    appId: '1:1090384799851:ios:9fb9926089a2bae46be92e',
+    messagingSenderId: '1090384799851',
+    projectId: 'project1-12989',
+    storageBucket: 'project1-12989.appspot.com',
     iosBundleId: 'com.example.fosscuApp',
   );
 }
