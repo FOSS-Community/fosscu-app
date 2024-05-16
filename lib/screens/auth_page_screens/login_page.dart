@@ -18,6 +18,8 @@ class LogInPage extends StatefulWidget {
 }
 
 class _LogInPageState extends State<LogInPage> {
+
+  bool isLoading = false;
   /// Email Text Controller
   // final emailController = TextEditingController();
 
@@ -179,7 +181,12 @@ class _LogInPageState extends State<LogInPage> {
                 // ),
                 SizedBox(height: screenHeight * 0.05),
                 GestureDetector(
-                  onTap: () => AuthService().signInWithGoogle(),
+                  onTap: () {
+                    AuthService().signInWithGoogle();
+                    setState(() {
+                    isLoading = true;
+                    });
+                  },
                   child: Container(
                     width: screenWidth * 0.5,
                     height: screenHeight * 0.07,
@@ -189,7 +196,7 @@ class _LogInPageState extends State<LogInPage> {
                           width: 0.5,
                         ),
                         borderRadius: BorderRadius.circular(10)),
-                    child: const Row(
+                    child: !isLoading? const Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         Icon(
@@ -203,7 +210,7 @@ class _LogInPageState extends State<LogInPage> {
                           ),
                         )
                       ],
-                    ),
+                    ):const Center(child: CircularProgressIndicator(color: Colors.white,))
                   ),
                 )
               ],
