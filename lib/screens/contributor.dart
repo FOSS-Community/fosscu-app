@@ -1,9 +1,9 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:fosscu_app/constants/apikey.dart';
-import 'package:fosscu_app/constants/color.dart';
-import 'package:fosscu_app/constants/svg.dart';
+import 'package:fosscu_app/core/constants/apikey.dart';
+import 'package:fosscu_app/core/constants/color.dart';
+import 'package:fosscu_app/core/constants/svg.dart';
 import 'package:fosscu_app/widgets/contributor_page_widgets/contributor_page_tile.dart';
 import 'package:fosscu_app/widgets/contributor_page_widgets/contributors_profile_container.dart';
 import 'package:fosscu_app/widgets/contributor_page_widgets/listtile.dart';

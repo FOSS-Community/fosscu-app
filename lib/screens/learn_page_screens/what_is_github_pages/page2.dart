@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:fosscu_app/constants/color.dart';
+import 'package:fosscu_app/core/constants/color.dart';
 import 'package:fosscu_app/widgets/learn_subpage_widgets/body_text.dart';
 import 'package:fosscu_app/widgets/learn_subpage_widgets/heading.dart';
 import 'package:fosscu_app/widgets/learn_subpage_widgets/sub_heading.dart';
