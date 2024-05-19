@@ -1,6 +1,6 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
-import 'package:fosscu_app/constants/color.dart';
+import 'package:fosscu_app/core/constants/color.dart';
 import 'package:fosscu_app/screens/learn_page_screens/advanced_concepts.dart';
 import 'package:fosscu_app/screens/learn_page_screens/practice.dart';
 import 'package:fosscu_app/screens/learn_page_screens/start_contributing.dart';

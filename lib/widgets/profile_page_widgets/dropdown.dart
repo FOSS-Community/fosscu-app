@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:fosscu_app/constants/color.dart';
+import 'package:fosscu_app/core/constants/color.dart';
 
 class DropDown extends StatefulWidget {
   final ValueChanged<String>? onValueChanged;

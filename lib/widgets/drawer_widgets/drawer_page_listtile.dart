@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:fosscu_app/constants/color.dart';
+import 'package:fosscu_app/core/constants/color.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 

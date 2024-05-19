@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:fosscu_app/constants/color.dart';
+import 'package:fosscu_app/core/constants/color.dart';
 
 class ProfileTextField extends StatelessWidget {
   final TextEditingController textEditingController;

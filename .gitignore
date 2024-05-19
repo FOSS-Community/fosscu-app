@@ -1,4 +1,8 @@
 # Miscellaneous
+devtools_options.yaml
+ios/Podfile
+macos/Podfile
+pubspec.lock
 *.class
 *.log
 *.pyc
